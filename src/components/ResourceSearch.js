@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { fetchAllResources } from '../store/actions.js'
 import { connect } from 'react-redux'
+import '../stylesheets/ResourceSearch.css';
 
 class ResourceSearch extends Component {
 
@@ -14,7 +15,9 @@ class ResourceSearch extends Component {
     return (
       <div>
         <p>Resoure Search...</p>
-        {loaded ? <ul>{this.renderIndex()}</ul> : <p>Wait...</p>}
+        <ul className='results'>
+          {loaded ? this.renderIndex() : 'Wait...'}
+        </ul>
       </div>
     );
   }

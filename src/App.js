@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ResourceSearch from './components/ResourceSearch.js';
-import './App.css';
+import './stylesheets/App.css';
 
 class App extends Component {
   render() {
