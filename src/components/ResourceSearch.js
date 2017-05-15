@@ -17,8 +17,10 @@ class ResourceSearch extends Component {
       )
     } else {
       return (
-        this.props.resources.map(
-          (r) => <p>{r.type}: {r.provider.first_name} {r.provider.last_name}</p>
+        this.props.resources.map((r) =>
+          <li key={r.id}>
+            {r.type}: {r.provider.first_name} {r.provider.last_name}
+          </li>
         )
       )
     }
@@ -28,7 +30,7 @@ class ResourceSearch extends Component {
     return (
       <div>
         <p>Resoure Search...</p>
-        {this.renderResults()}
+        <ul>{this.renderResults()}</ul>
       </div>
     );
   }
