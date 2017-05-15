@@ -9,36 +9,31 @@ class ResourceSearch extends Component {
     dispatch(fetchAllResources());
   }
 
-  renderResults() {
-    const resources = this.props.resources;
-    if (typeof resources === 'undefined' || resources.length === 0) {
-      return (
-        <p>Waiting...</p>
-      )
-    } else {
-      return (
-        this.props.resources.map((r) =>
-          <li key={r.id}>
-            {r.type}: {r.provider.first_name} {r.provider.last_name}
-          </li>
-        )
-      )
-    }
-  }
-
   render() {
+    const loaded = this.props.resourcesLoaded;
     return (
       <div>
         <p>Resoure Search...</p>
-        <ul>{this.renderResults()}</ul>
+        {loaded ? <ul>{this.renderIndex()}</ul> : <p>Wait...</p>}
       </div>
     );
+  }
+
+  renderIndex() {
+    return(
+      this.props.resources.map((r) =>
+        <li key={r.id}>
+          {r.type}: {r.provider.first_name} {r.provider.last_name}
+        </li>
+      )
+    )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    resources: state.resources.resources
+    resources: state.resources.index,
+    resourcesLoaded: state.resources.loaded
   }
 }
 

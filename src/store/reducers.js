@@ -1,14 +1,12 @@
 import { combineReducers } from 'redux'
 import { REQUEST_RESOURCES, RECEIVE_RESOURCES } from './actions.js'
 
-function resources(state = {}, action) {
+function resources(state = {loaded: false}, action) {
   switch (action.type) {
     case REQUEST_RESOURCES:
-      return state
+      return {...state, loaded: false}
     case RECEIVE_RESOURCES:
-      return Object.assign({}, state, {
-        resources: action.resources
-      })
+      return {...state, index: action.resources, loaded: true}
     default:
       return state
   }
