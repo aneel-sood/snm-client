@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { fetchAllResources } from '../store/actions.js'
 import { connect } from 'react-redux'
 import '../stylesheets/ResourceSearch.css';
+import ResourceListItem from './ResourceListItem.js'
 
 class ResourceSearch extends Component {
 
@@ -24,10 +25,8 @@ class ResourceSearch extends Component {
 
   renderIndex() {
     return(
-      this.props.resources.map((r) =>
-        <li key={r.id}>
-          {r.type}: {r.provider.first_name} {r.provider.last_name}
-        </li>
+      this.props.resources.map((resource) =>
+        <ResourceListItem key={resource.id} vals={resource} />
       )
     )
   }
