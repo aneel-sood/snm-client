@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
-import { fetchAllResources } from '../store/actions.js'
+import { fetchResources } from '../store/actions.js'
 import { connect } from 'react-redux'
 import '../stylesheets/ResourceSearch.css';
 import ResourceListItem from './ResourceListItem.js'
 
 class ResourceSearch extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {type: 'translator'};
+
+    this.resourceTypeSelected = this.resourceTypeSelected.bind(this);
+  }
+
+  fetch(type) {
+    this.props.dispatch(fetchResources(type));
+  }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchAllResources());
+    this.fetch(this.state.type);
+  }
+
+  resourceTypeSelected(event) {
+    this.fetch(event.target.value);
+    this.setState({type: event.target.value});
   }
 
   render() {
@@ -16,6 +30,14 @@ class ResourceSearch extends Component {
     return (
       <div>
         <p>Resoure Search...</p>
+        <label>       
+          <select value={this.state.type} onChange={this.resourceTypeSelected}>
+            <option value="interpreter">Interpreter</option>
+            <option value="translator">Translator</option>
+            <option value="dentist">Dentist</option>
+            <option value="gp">General Practitioner</option>
+          </select>
+        </label>
         <ul className='results'>
           {loaded ? this.renderIndex() : 'Wait...'}
         </ul>
