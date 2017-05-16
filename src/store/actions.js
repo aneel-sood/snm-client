@@ -17,10 +17,19 @@ function receiveResources(json) {
   }
 }
 
+export function fetchResources(type) {
+  return dispatch => {
+    dispatch(requestResources())
+    return fetch('http://127.0.0.1:8000/resources/?type=' + type)
+      .then(response => response.json())
+      .then(json => dispatch(receiveResources(json)))
+  }
+}
+
 export function fetchAllResources() {
   return dispatch => {
     dispatch(requestResources())
-    return fetch('http://127.0.0.1:8000/interpreters/')
+    return fetch('http://127.0.0.1:8000/resources/')
       .then(response => response.json())
       .then(json => dispatch(receiveResources(json)))
   }
