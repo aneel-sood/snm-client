@@ -20,7 +20,7 @@ function receiveResources(json) {
 export function fetchResources(type) {
   return dispatch => {
     dispatch(requestResources())
-    return fetch('http://127.0.0.1:8000/resources/?type=' + type)
+    return fetch('https://sleepy-scrubland-24958.herokuapp.com/resources/?type=' + type)
       .then(response => response.json())
       .then(json => dispatch(receiveResources(json)))
   }
@@ -29,7 +29,7 @@ export function fetchResources(type) {
 export function fetchAllResources() {
   return dispatch => {
     dispatch(requestResources())
-    return fetch('http://127.0.0.1:8000/resources/')
+    return fetch('')
       .then(response => response.json())
       .then(json => dispatch(receiveResources(json)))
   }
