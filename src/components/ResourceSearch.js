@@ -3,46 +3,37 @@ import { fetchResources } from '../store/actions.js'
 import { connect } from 'react-redux'
 import '../stylesheets/ResourceSearch.css';
 import ResourceListItem from './ResourceListItem.js'
-import { Button, FormGroup, InputGroup, FormControl } from 'react-bootstrap';
+import SearchControls from './SearchControls.js'
 
 class ResourceSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {type: 'translator'};
-
-    this.resourceTypeSelected = this.resourceTypeSelected.bind(this);
+    this.typeSelected = this.typeSelected.bind(this);
+    this.search = this.search.bind(this);
   }
 
-  fetch(type) {
-    this.props.dispatch(fetchResources(type));
+  componentWillMount() {
+    this.fetch();
   }
 
-  componentDidMount() {
-    this.fetch(this.state.type);
-  }
-
-  resourceTypeSelected(event) {
-    this.fetch(event.target.value);
+  typeSelected(event) {
     this.setState({type: event.target.value});
+  }
+
+  search() {
+    this.fetch();
+  }
+
+  fetch() {
+    this.props.dispatch(fetchResources(this.state.type));
   }
 
   render() {
     const loaded = this.props.resourcesLoaded;
     return (
       <div className='resource-search'>
-        <FormGroup>
-          <InputGroup className='type-select'>
-            <FormControl componentClass="select" placeholder="select" value={this.state.type} onChange={this.resourceTypeSelected}>
-              <option value="interpreter">Interpreter</option>
-              <option value="translator">Translator</option>
-              <option value="dentist">Dentist</option>
-              <option value="gp">General Practitioner</option>
-            </FormControl>
-            <InputGroup.Button>
-              <Button bsStyle="primary">Search</Button>
-            </InputGroup.Button>
-          </InputGroup>
-        </FormGroup>
+        <SearchControls type={this.state.type} onTypeSelect={this.typeSelected} onSearch={this.search} />
         <ul className='results'>
           {loaded ? this.renderIndex() : 'Wait...'}
         </ul>
