@@ -3,6 +3,7 @@ import { fetchResources } from '../store/actions.js'
 import { connect } from 'react-redux'
 import '../stylesheets/ResourceSearch.css';
 import ResourceListItem from './ResourceListItem.js'
+import { Button, FormGroup, InputGroup, FormControl } from 'react-bootstrap';
 
 class ResourceSearch extends Component {
   constructor(props) {
@@ -28,16 +29,20 @@ class ResourceSearch extends Component {
   render() {
     const loaded = this.props.resourcesLoaded;
     return (
-      <div>
-        <p>Resoure Search...</p>
-        <label>       
-          <select value={this.state.type} onChange={this.resourceTypeSelected}>
-            <option value="interpreter">Interpreter</option>
-            <option value="translator">Translator</option>
-            <option value="dentist">Dentist</option>
-            <option value="gp">General Practitioner</option>
-          </select>
-        </label>
+      <div className='resource-search'>
+        <FormGroup>
+          <InputGroup className='type-select'>
+            <FormControl componentClass="select" placeholder="select" value={this.state.type} onChange={this.resourceTypeSelected}>
+              <option value="interpreter">Interpreter</option>
+              <option value="translator">Translator</option>
+              <option value="dentist">Dentist</option>
+              <option value="gp">General Practitioner</option>
+            </FormControl>
+            <InputGroup.Button>
+              <Button bsStyle="primary">Search</Button>
+            </InputGroup.Button>
+          </InputGroup>
+        </FormGroup>
         <ul className='results'>
           {loaded ? this.renderIndex() : 'Wait...'}
         </ul>

@@ -1,9 +1,13 @@
-ul.results {
-  list-style-type: none;
+div.resource-search {
+  margin: 30px;
 
-  li {
-    margin: 10px;
-    padding: 5px;
-    background-color: lightyellow;
+  .type-select {
+    width: 60%;
+    margin: auto;
+  }
+
+  ul.results {
+    list-style-type: none;
+    padding: 0;
   }
 }
