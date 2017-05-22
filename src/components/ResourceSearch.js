@@ -16,7 +16,7 @@ class ResourceSearch extends Component {
   }
 
   componentWillMount() {
-    this.fetch();
+    this.fetchData();
   }
 
   typeSelected(event) {
@@ -24,10 +24,10 @@ class ResourceSearch extends Component {
   }
 
   search() {
-    this.fetch();
+    this.fetchData();
   }
 
-  fetch() {
+  fetchData() {
     this.props.dispatch(fetchResources(this.state.type));
   }
 
@@ -36,7 +36,8 @@ class ResourceSearch extends Component {
     return (
       <div className='resource-search'>
         <Well>
-          <SearchControls type={this.state.type} onTypeSelect={this.typeSelected} onSearch={this.search} />
+          <SearchControls type={this.state.type} onTypeSelect={this.typeSelected} 
+            onSearch={this.search} />
         </Well>
         <ul className='results'>
           {loaded ? this.renderIndex() : 'Wait...'}

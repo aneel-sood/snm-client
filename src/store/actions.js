@@ -17,10 +17,13 @@ function receiveResources(json) {
   }
 }
 
+// const serverHost = 'https://sleepy-scrubland-24958.herokuapp.com';
+const serverHost = 'http://127.0.0.1:8000';
+
 export function fetchResources(type) {
   return dispatch => {
     dispatch(requestResources())
-    return fetch('https://sleepy-scrubland-24958.herokuapp.com/resources/?type=' + type)
+    return fetch(serverHost + '/resources/?type=' + type)
       .then(response => response.json())
       .then(json => dispatch(receiveResources(json)))
   }
