@@ -4,31 +4,25 @@ import { connect } from 'react-redux'
 import '../stylesheets/ResourceSearch.css';
 import ResourceListItem from './ResourceListItem.js'
 import SearchControls from './SearchControls.js'
-import { Well } from 'react-bootstrap';
+import { Well, FormGroup, InputGroup, FormControl} from 'react-bootstrap';
+
 
 
 class ResourceSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {type: 'translator'};
-    this.typeSelected = this.typeSelected.bind(this);
-    this.search = this.search.bind(this);
+    this.state = {type: 'translator'}; // this will be used to decide what type of SearchControl component to render
+
+    this.fetchData = this.fetchData.bind(this);
+    this.typeChanged = this.typeChanged.bind(this);
   }
 
-  componentWillMount() {
-    this.fetchData();
+  fetchData(params) {
+    this.props.dispatch(fetchResources(params));
   }
 
-  typeSelected(event) {
+  typeChanged(event) {
     this.setState({type: event.target.value});
-  }
-
-  search() {
-    this.fetchData();
-  }
-
-  fetchData() {
-    this.props.dispatch(fetchResources(this.state.type));
   }
 
   render() {
@@ -36,8 +30,17 @@ class ResourceSearch extends Component {
     return (
       <div className='resource-search'>
         <Well>
-          <SearchControls type={this.state.type} onTypeSelect={this.typeSelected} 
-            onSearch={this.search} />
+          <FormGroup>
+            <InputGroup className='type-select'>
+              <FormControl componentClass="select" onChange={this.typeChanged} value={this.state.type}>
+                <option value="interpreter">Interpreter</option>
+                <option value="translator">Translator</option>
+                <option value="dentist">Dentist</option>
+                <option value="gp">General Practitioner</option>
+              </FormControl>
+            </InputGroup>
+          </FormGroup>
+          <SearchControls fetchData={this.fetchData} />
         </Well>
         <ul className='results'>
           {loaded ? this.renderIndex() : 'Wait...'}

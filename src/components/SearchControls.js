@@ -1,29 +1,51 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, InputGroup, FormControl, ControlLabel, Form} from 'react-bootstrap';
+import { InputGroup, FormControl, ControlLabel, Form, Button} from 'react-bootstrap';
 import '../stylesheets/SearchControls.css';
 
 export default class SearchControls extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      source_lang: 'AR',
+      target_lang: 'EN'
+    }
+    this.updateSourceLang = this.updateSourceLang.bind(this);
+    this.updateTargetLang = this.updateTargetLang.bind(this);
+    this.onSearch = this.onSearch.bind(this);
+  }
+
+  componentWillMount() {
+    this.search();
+  }
+  
+  updateSourceLang(event) {
+    this.setState({source_lang: event.target.value});
+  }
+
+  updateTargetLang(event) {
+    this.setState({target_lang: event.target.value});
+  }
+
+  onSearch() {
+    this.search();
+  }
+
+  search() {
+    const searchParameters = {
+      type: 'translator', 
+      details: this.state
+    }
+    this.props.fetchData(searchParameters);
+  }
+
   render() {
-    const p = this.props;
+    const s = this.state;
     return (
       <div className='controls'>
-        <FormGroup>
-          <InputGroup className='type-select'>
-            <FormControl componentClass="select" onChange={p.onTypeSelect} value={p.type}>
-              <option value="interpreter">Interpreter</option>
-              <option value="translator">Translator</option>
-              <option value="dentist">Dentist</option>
-              <option value="gp">General Practitioner</option>
-            </FormControl>
-            <InputGroup.Button>
-              <Button bsStyle="primary" onClick={p.onSearch}>Search</Button>
-            </InputGroup.Button>
-          </InputGroup>
-        </FormGroup>
         <Form inline>
           <InputGroup className='language-select source'>
             <ControlLabel>Source Language</ControlLabel>
-            <FormControl componentClass="select">
+            <FormControl componentClass="select" onChange={this.updateSourceLang} value={s.source_lang}>
               <option value="AR">Arabic</option>
               <option value="EN">English</option>
               <option value="FR">French</option>
@@ -35,7 +57,7 @@ export default class SearchControls extends Component {
           </InputGroup>
           <InputGroup className='language-select target'>
             <ControlLabel>Target Language</ControlLabel>
-            <FormControl componentClass="select">
+            <FormControl componentClass="select" onChange={this.updateTargetLang} value={s.target_lang}>
               <option value="AR">Arabic</option>
               <option value="EN">English</option>
               <option value="FR">French</option>
@@ -46,6 +68,9 @@ export default class SearchControls extends Component {
             </FormControl>
           </InputGroup>
         </Form>
+        <InputGroup.Button>
+          <Button bsStyle="primary" onClick={this.onSearch}>Search</Button>
+        </InputGroup.Button>
       </div>
     )
   }

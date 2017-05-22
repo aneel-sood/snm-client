@@ -20,11 +20,14 @@ function receiveResources(json) {
 // const serverHost = 'https://sleepy-scrubland-24958.herokuapp.com';
 const serverHost = 'http://127.0.0.1:8000';
 
-export function fetchResources(type) {
+export function fetchResources(vals) {
   return dispatch => {
     dispatch(requestResources())
-    return fetch(serverHost + '/resources/?type=' + type)
-      .then(response => response.json())
+    let paramsJSON = JSON.stringify(vals),
+        paramsUrlEncoded = encodeURIComponent(paramsJSON),
+        url = serverHost + '/resources/?params=' + paramsUrlEncoded;
+
+    return fetch(url).then(response => response.json())
       .then(json => dispatch(receiveResources(json)))
   }
 }
