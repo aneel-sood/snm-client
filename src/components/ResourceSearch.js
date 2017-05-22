@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import '../stylesheets/ResourceSearch.css';
 import ResourceListItem from './ResourceListItem.js'
 import SearchControls from './SearchControls.js'
+import { Well } from 'react-bootstrap';
+
 
 class ResourceSearch extends Component {
   constructor(props) {
@@ -33,7 +35,9 @@ class ResourceSearch extends Component {
     const loaded = this.props.resourcesLoaded;
     return (
       <div className='resource-search'>
-        <SearchControls type={this.state.type} onTypeSelect={this.typeSelected} onSearch={this.search} />
+        <Well>
+          <SearchControls type={this.state.type} onTypeSelect={this.typeSelected} onSearch={this.search} />
+        </Well>
         <ul className='results'>
           {loaded ? this.renderIndex() : 'Wait...'}
         </ul>
