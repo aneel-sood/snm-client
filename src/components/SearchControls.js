@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, FormGroup, InputGroup, FormControl, ControlLabel, Form} from 'react-bootstrap';
+import '../stylesheets/SearchControls.css';
 
 export default class SearchControls extends Component {
   render() {
@@ -8,7 +9,7 @@ export default class SearchControls extends Component {
       <div className='controls'>
         <FormGroup>
           <InputGroup className='type-select'>
-            <FormControl componentClass="select" placeholder="select" onChange={p.onTypeSelect} value={p.type}>
+            <FormControl componentClass="select" onChange={p.onTypeSelect} value={p.type}>
               <option value="interpreter">Interpreter</option>
               <option value="translator">Translator</option>
               <option value="dentist">Dentist</option>
@@ -19,6 +20,32 @@ export default class SearchControls extends Component {
             </InputGroup.Button>
           </InputGroup>
         </FormGroup>
+        <Form inline>
+          <InputGroup className='language-select source'>
+            <ControlLabel>Source Language</ControlLabel>
+            <FormControl componentClass="select">
+              <option value="AR">Arabic</option>
+              <option value="EN">English</option>
+              <option value="FR">French</option>
+              <option value="GK">Greek</option>
+              <option value="IT">Italian</option>
+              <option value="RU">Russian</option>
+              <option value="SP">Spanish</option>
+            </FormControl>
+          </InputGroup>
+          <InputGroup className='language-select target'>
+            <ControlLabel>Target Language</ControlLabel>
+            <FormControl componentClass="select">
+              <option value="AR">Arabic</option>
+              <option value="EN">English</option>
+              <option value="FR">French</option>
+              <option value="GK">Greek</option>
+              <option value="IT">Italian</option>
+              <option value="RU">Russian</option>
+              <option value="SP">Spanish</option>
+            </FormControl>
+          </InputGroup>
+        </Form>
       </div>
     )
   }
