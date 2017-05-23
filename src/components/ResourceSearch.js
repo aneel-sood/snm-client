@@ -15,6 +15,7 @@ class ResourceSearch extends Component {
 
     this.fetchData = this.fetchData.bind(this);
     this.typeChanged = this.typeChanged.bind(this);
+    this.getFiltersComponentName = this.getFiltersComponentName.bind(this);
   }
 
   fetchData(detailsParams) {
@@ -31,6 +32,7 @@ class ResourceSearch extends Component {
 
   render() {
     const loaded = this.props.resourcesLoaded;
+    const FiltersComponent = this.getFiltersComponentName();
     return (
       <div className='resource-search'>
         <Well>
@@ -45,13 +47,25 @@ class ResourceSearch extends Component {
               </FormControl>
             </InputGroup>
           </FormGroup>
-          <SearchControls fetchData={this.fetchData} />
+          {this.state.type !== '' &&
+            <FiltersComponent fetchData={this.fetchData} />
+          }
         </Well>
         <ul className='results'>
           {loaded ? this.renderIndex() : 'Wait...'}
         </ul>
       </div>
     );
+  }
+
+  getFiltersComponentName() {
+    switch (this.state.type) {
+      case 'interpreter':
+      case 'translator':
+        return SearchControls;
+      default:
+        return SearchControls;
+    }
   }
 
   renderIndex() {
