@@ -6,16 +6,12 @@ export default class SearchControls extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      source_lang: 'AR',
-      target_lang: 'EN'
+      source_lang: 'ANY',
+      target_lang: 'ANY'
     }
     this.updateSourceLang = this.updateSourceLang.bind(this);
     this.updateTargetLang = this.updateTargetLang.bind(this);
-    this.onSearch = this.onSearch.bind(this);
-  }
-
-  componentWillMount() {
-    this.search();
+    this.search = this.search.bind(this);
   }
   
   updateSourceLang(event) {
@@ -26,16 +22,12 @@ export default class SearchControls extends Component {
     this.setState({target_lang: event.target.value});
   }
 
-  onSearch() {
-    this.search();
-  }
-
   search() {
-    const searchParameters = {
-      type: 'translator', 
-      details: this.state
-    }
-    this.props.fetchData(searchParameters);
+    const s = this.state;
+    let params = {};
+    if (s.source_lang !== 'ANY') { params.source_lang = s.source_lang }
+    if (s.target_lang !== 'ANY') { params.target_lang = s.target_lang }
+    this.props.fetchData(params);
   }
 
   render() {
@@ -46,6 +38,7 @@ export default class SearchControls extends Component {
           <InputGroup className='language-select source'>
             <ControlLabel>Source Language</ControlLabel>
             <FormControl componentClass="select" onChange={this.updateSourceLang} value={s.source_lang}>
+              <option value="ANY">Any</option>
               <option value="AR">Arabic</option>
               <option value="EN">English</option>
               <option value="FR">French</option>
@@ -58,6 +51,7 @@ export default class SearchControls extends Component {
           <InputGroup className='language-select target'>
             <ControlLabel>Target Language</ControlLabel>
             <FormControl componentClass="select" onChange={this.updateTargetLang} value={s.target_lang}>
+              <option value="ANY">Any</option>
               <option value="AR">Arabic</option>
               <option value="EN">English</option>
               <option value="FR">French</option>
@@ -69,7 +63,7 @@ export default class SearchControls extends Component {
           </InputGroup>
         </Form>
         <InputGroup.Button>
-          <Button bsStyle="primary" onClick={this.onSearch}>Search</Button>
+          <Button bsStyle="primary" onClick={this.search}>Search</Button>
         </InputGroup.Button>
       </div>
     )

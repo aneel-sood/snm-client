@@ -11,18 +11,22 @@ import { Well, FormGroup, InputGroup, FormControl} from 'react-bootstrap';
 class ResourceSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {type: 'translator'}; // this will be used to decide what type of SearchControl component to render
+    this.state = {type: ''};
 
     this.fetchData = this.fetchData.bind(this);
     this.typeChanged = this.typeChanged.bind(this);
   }
 
-  fetchData(params) {
+  fetchData(detailsParams) {
+    const params = {
+      type: this.state.type,
+      details: detailsParams
+    }
     this.props.dispatch(fetchResources(params));
   }
 
   typeChanged(event) {
-    this.setState({type: event.target.value});
+    this.setState({type: event.target.value}, () => {this.fetchData({})});
   }
 
   render() {
@@ -33,6 +37,7 @@ class ResourceSearch extends Component {
           <FormGroup>
             <InputGroup className='type-select'>
               <FormControl componentClass="select" onChange={this.typeChanged} value={this.state.type}>
+                <option value=""></option>
                 <option value="interpreter">Interpreter</option>
                 <option value="translator">Translator</option>
                 <option value="dentist">Dentist</option>
