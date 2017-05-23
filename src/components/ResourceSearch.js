@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { fetchResources } from '../store/actions.js'
 import { connect } from 'react-redux'
-import 'stylesheets/ResourceSearch.css';
+import '../stylesheets/ResourceSearch.css';
 import ResourceListItem from './ResourceListItem.js'
 import SearchControls from './SearchControls.js'
 import Filters from './resource_search/Filters.js'
