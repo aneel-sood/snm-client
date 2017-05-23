@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { fetchResources } from '../store/actions.js'
 import { connect } from 'react-redux'
-import '../stylesheets/ResourceSearch.css';
+import 'stylesheets/ResourceSearch.css';
 import ResourceListItem from './ResourceListItem.js'
 import SearchControls from './SearchControls.js'
+import Filters from './resource_search/Filters.js'
 import { Well, FormGroup, InputGroup, FormControl} from 'react-bootstrap';
-
-
 
 class ResourceSearch extends Component {
   constructor(props) {
@@ -43,7 +42,6 @@ class ResourceSearch extends Component {
                 <option value="interpreter">Interpreter</option>
                 <option value="translator">Translator</option>
                 <option value="dentist">Dentist</option>
-                <option value="gp">General Practitioner</option>
               </FormControl>
             </InputGroup>
           </FormGroup>
@@ -64,7 +62,7 @@ class ResourceSearch extends Component {
       case 'translator':
         return SearchControls;
       default:
-        return SearchControls;
+        return Filters;
     }
   }
 
