@@ -52,14 +52,6 @@ export default class LanguageServiceFilters extends Component {
     )
   }
 
-  updateSourceLang(event) {
-    this.setState({source_lang: event.target.value});
-  }
-
-  updateTargetLang(event) {
-    this.setState({target_lang: event.target.value});
-  }
-
   search() {
     const s = this.state;
     let params = {};
@@ -68,4 +60,17 @@ export default class LanguageServiceFilters extends Component {
     this.props.fetchData(params);
   }
 
+  updateSourceLang(event) {
+    this.setState({source_lang: event.target.value});
+  }
+
+  updateTargetLang(event) {
+    this.setState({target_lang: event.target.value});
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.resourceType !== nextProps.resourceType) {
+      this.setState({source_lang: 'ANY', target_lang: 'ANY'});
+    }
+  }
 };

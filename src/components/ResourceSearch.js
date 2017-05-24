@@ -40,7 +40,7 @@ class ResourceSearch extends Component {
           </FormGroup>
           <div className='filters'>
             {this.state.type !== '' &&
-              <FiltersComponent fetchData={this.fetchData} />
+              <FiltersComponent fetchData={this.fetchData} resourceType={this.state.type} />
             }
           </div>
         </Well>
