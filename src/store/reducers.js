@@ -1,17 +1,17 @@
 import { combineReducers } from 'redux'
-import { REQUEST_RESOURCES, RECEIVE_RESOURCES } from './actions.js'
+import { REQUEST_PROVIDERS, RECEIVE_PROVIDERS } from './actions.js'
 
-function resources(state = {loaded: false}, action) {
+function providers(state = {loaded: false}, action) {
   switch (action.type) {
-    case REQUEST_RESOURCES:
+    case REQUEST_PROVIDERS:
       return {...state, loaded: false}
-    case RECEIVE_RESOURCES:
-      return {...state, index: action.resources, loaded: true}
+    case RECEIVE_PROVIDERS:
+      return {...state, index: action.providers, loaded: true}
     default:
       return state
   }
 }
 
 export const rootReducer = combineReducers({
-  resources
+  providers
 });

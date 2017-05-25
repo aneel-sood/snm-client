@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { InputGroup, FormControl, ControlLabel, Form, FormGroup, Button} from 'react-bootstrap';
 
 export default class Filters extends Component {

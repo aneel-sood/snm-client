@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { fetchResources } from '../store/actions.js'
+import { fetchProviders } from '../store/actions.js'
 import { connect } from 'react-redux'
 
 // components
 import Filters from './resource_search/Filters.js'
 import LanguageServiceFilters from './resource_search/LanguageServiceFilters.js'
-import ResourceListItem from './ResourceListItem.js'
+import Results from './resource_search/Results.js'
 import { Well, FormGroup, InputGroup, FormControl} from 'react-bootstrap';
 
 // stylesheets
 import '../stylesheets/ResourceSearch.css';
 import '../stylesheets/Filters.css';
+import '../stylesheets/Results.css';
 
 class ResourceSearch extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class ResourceSearch extends Component {
   }
 
   render() {
-    const loaded = this.props.resourcesLoaded;
+    const p = this.props
     const FiltersComponent = this.filtersComponent();
     return (
       <div className='resource-search'>
@@ -44,9 +45,7 @@ class ResourceSearch extends Component {
             }
           </div>
         </Well>
-        <ul className='results'>
-          {loaded ? this.renderIndex() : 'Wait...'}
-        </ul>
+        <Results providers={p.providers} loaded={p.resultsLoaded} />
       </div>
     );
   }
@@ -63,29 +62,21 @@ class ResourceSearch extends Component {
 
   fetchData(detailsParams) {
     const params = {
-      type: this.state.type,
+      resource_type: this.state.type,
       details: detailsParams
     }
-    this.props.dispatch(fetchResources(params));
+    this.props.dispatch(fetchProviders(params));
   }
 
   typeChanged(event) {
     this.setState({type: event.target.value}, () => {this.fetchData({})});
   }
-
-  renderIndex() {
-    return(
-      this.props.resources.map((resource) =>
-        <ResourceListItem key={resource.id} vals={resource} />
-      )
-    )
-  }
 }
 
 const mapStateToProps = (state) => {
   return {
-    resources: state.resources.index,
-    resourcesLoaded: state.resources.loaded
+    providers: state.providers.index,
+    resultsLoaded: state.providers.loaded
   }
 }
 
