@@ -12,8 +12,13 @@ class ClientNeeds extends Component {
       <div>
         {p.clientLoaded && 
           <div>
-            <h4>Client: {client.first_name} {client.last_name}</h4>
+            <h4>Newcomer: {client.first_name} {client.last_name}</h4>
             <ResourceSearch />
+            {
+              client.needs.map((n) => {
+                return <ResourceSearch key={n.id} need={n} />
+              })
+            }
           </div>
         }
       </div>

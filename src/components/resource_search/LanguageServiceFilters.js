@@ -4,10 +4,13 @@ import { InputGroup, FormControl, ControlLabel, Form, FormGroup, Button} from 'r
 export default class LanguageServiceFilters extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    let defaultState = {
       source_lang: 'ANY',
       target_lang: 'ANY'
     }
+
+    this.state = props.requirements || defaultState;
+
     this.updateSourceLang = this.updateSourceLang.bind(this);
     this.updateTargetLang = this.updateTargetLang.bind(this);
     this.search = this.search.bind(this);

@@ -16,7 +16,17 @@ import '../stylesheets/Results.css';
 class ResourceSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {type: ''};
+
+    let initialState = {};
+    if (props.need) {
+      initialState.need = props.need;
+      initialState.type = props.need.type;
+    } else {
+      initialState.need = {};
+      initialState.type = "";
+    }
+
+    this.state = initialState;
 
     this.fetchData = this.fetchData.bind(this);
     this.typeChanged = this.typeChanged.bind(this);
@@ -24,8 +34,8 @@ class ResourceSearch extends Component {
   }
 
   render() {
-    const p = this.props
-    const FiltersComponent = this.filtersComponent();
+    const p = this.props,
+          FiltersComponent = this.filtersComponent();
     return (
       <div className='resource-search'>
         <Well>
@@ -41,7 +51,8 @@ class ResourceSearch extends Component {
           </FormGroup>
           <div className='filters'>
             {this.state.type !== '' &&
-              <FiltersComponent fetchData={this.fetchData} resourceType={this.state.type} />
+              <FiltersComponent fetchData={this.fetchData} resourceType={this.state.type}
+                requirements={this.state.need.requirements} />
             }
           </div>
         </Well>
@@ -51,13 +62,16 @@ class ResourceSearch extends Component {
   }
 
   filtersComponent() {
+    let Component;
     switch (this.state.type) {
       case 'interpreter':
       case 'translator':
-        return LanguageServiceFilters;
+        Component = LanguageServiceFilters;
+        break;
       default:
-        return Filters;
+        Component = Filters;
     }
+    return Component;
   }
 
   fetchData(detailsParams) {

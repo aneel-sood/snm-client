@@ -4,9 +4,11 @@ import { InputGroup, FormControl, ControlLabel, Form, FormGroup, Button} from 'r
 export default class Filters extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    let defaultState = {
       language_of_service: 'ANY'
     };
+
+    this.state = props.requirements || defaultState;
 
     this.updateLanguage = this.updateLanguage.bind(this);
     this.search = this.search.bind(this);
