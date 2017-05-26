@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ProviderListItem from './ProviderListItem.js'
 
 export default class Results extends Component {
   render() {  
@@ -6,14 +7,7 @@ export default class Results extends Component {
       <ul className='results'>
         {this.props.loaded && 
           this.props.providers.map((p) => { 
-            return (
-              <li className='provider' key={p.id}>
-                <div>
-                  <span className='full-name'>{p.first_name} {p.last_name}</span><br />
-                  <span className='email'>{p.email} </span>
-                </div>
-              </li>
-            )
+            return(<ProviderListItem key={p.id} provider={p} />)
           })
         }
       </ul>
