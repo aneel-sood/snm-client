@@ -1,33 +1,19 @@
 import React, { Component } from 'react';
 import { InputGroup, FormControl, ControlLabel, Form, FormGroup, Button} from 'react-bootstrap';
-import '../stylesheets/SearchControls.css';
 
-export default class SearchControls extends Component {
+export default class LanguageServiceFilters extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    let defaultState = {
       source_lang: 'ANY',
       target_lang: 'ANY'
     }
+
+    this.state = props.requirements || defaultState;
+
     this.updateSourceLang = this.updateSourceLang.bind(this);
     this.updateTargetLang = this.updateTargetLang.bind(this);
     this.search = this.search.bind(this);
-  }
-  
-  updateSourceLang(event) {
-    this.setState({source_lang: event.target.value});
-  }
-
-  updateTargetLang(event) {
-    this.setState({target_lang: event.target.value});
-  }
-
-  search() {
-    const s = this.state;
-    let params = {};
-    if (s.source_lang !== 'ANY') { params.source_lang = s.source_lang }
-    if (s.target_lang !== 'ANY') { params.target_lang = s.target_lang }
-    this.props.fetchData(params);
   }
 
   render() {
@@ -69,4 +55,25 @@ export default class SearchControls extends Component {
     )
   }
 
-}
+  search() {
+    const s = this.state;
+    let params = {};
+    if (s.source_lang !== 'ANY') { params.source_lang = s.source_lang }
+    if (s.target_lang !== 'ANY') { params.target_lang = s.target_lang }
+    this.props.fetchData(params);
+  }
+
+  updateSourceLang(event) {
+    this.setState({source_lang: event.target.value});
+  }
+
+  updateTargetLang(event) {
+    this.setState({target_lang: event.target.value});
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.resourceType !== nextProps.resourceType) {
+      this.setState({source_lang: 'ANY', target_lang: 'ANY'});
+    }
+  }
+};

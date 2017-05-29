@@ -1,37 +1,41 @@
 import React, { Component } from 'react';
-import { fetchResources } from '../store/actions.js'
+import { fetchProviders } from '../store/actions.js'
 import { connect } from 'react-redux'
-import '../stylesheets/ResourceSearch.css';
-import ResourceListItem from './ResourceListItem.js'
-import SearchControls from './SearchControls.js'
+
+// components
 import Filters from './resource_search/Filters.js'
+import LanguageServiceFilters from './resource_search/LanguageServiceFilters.js'
+import Results from './resource_search/Results.js'
 import { Well, FormGroup, InputGroup, FormControl} from 'react-bootstrap';
+
+// stylesheets
+import '../stylesheets/ResourceSearch.css';
+import '../stylesheets/Filters.css';
+import '../stylesheets/Results.css';
 
 class ResourceSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {type: ''};
+
+    let initialState = {};
+    if (props.need) {
+      initialState.need = props.need;
+      initialState.type = props.need.type;
+    } else {
+      initialState.need = {id: props.tempId};
+      initialState.type = "";
+    }
+
+    this.state = initialState;
 
     this.fetchData = this.fetchData.bind(this);
     this.typeChanged = this.typeChanged.bind(this);
-    this.getFiltersComponentName = this.getFiltersComponentName.bind(this);
-  }
-
-  fetchData(detailsParams) {
-    const params = {
-      type: this.state.type,
-      details: detailsParams
-    }
-    this.props.dispatch(fetchResources(params));
-  }
-
-  typeChanged(event) {
-    this.setState({type: event.target.value}, () => {this.fetchData({})});
+    this.filtersComponent = this.filtersComponent.bind(this);
   }
 
   render() {
-    const loaded = this.props.resourcesLoaded;
-    const FiltersComponent = this.getFiltersComponentName();
+    const p = this.props,
+          FiltersComponent = this.filtersComponent();
     return (
       <div className='resource-search'>
         <Well>
@@ -45,40 +49,50 @@ class ResourceSearch extends Component {
               </FormControl>
             </InputGroup>
           </FormGroup>
-          {this.state.type !== '' &&
-            <FiltersComponent fetchData={this.fetchData} />
-          }
+          <div className='filters'>
+            {this.state.type !== '' &&
+              <FiltersComponent fetchData={this.fetchData} resourceType={this.state.type}
+                requirements={this.state.need.requirements} />
+            }
+          </div>
         </Well>
-        <ul className='results'>
-          {loaded ? this.renderIndex() : 'Wait...'}
-        </ul>
+        {this.state.type !== '' && p.searchResultsById[this.state.need.id] &&
+          <Results searchResults={p.searchResultsById[this.state.need.id].result} 
+            loaded={p.searchResultsById[this.state.need.id].loaded} />
+        }
       </div>
     );
   }
 
-  getFiltersComponentName() {
+  filtersComponent() {
+    let Component;
     switch (this.state.type) {
       case 'interpreter':
       case 'translator':
-        return SearchControls;
+        Component = LanguageServiceFilters;
+        break;
       default:
-        return Filters;
+        Component = Filters;
     }
+    return Component;
   }
 
-  renderIndex() {
-    return(
-      this.props.resources.map((resource) =>
-        <ResourceListItem key={resource.id} vals={resource} />
-      )
-    )
+  fetchData(detailsParams) {
+    const params = {
+      resource_type: this.state.type,
+      details: detailsParams
+    }
+    this.props.dispatch(fetchProviders(this.state.need.id, params));
+  }
+
+  typeChanged(event) {
+    this.setState({type: event.target.value}, () => {this.fetchData({})});
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    resources: state.resources.index,
-    resourcesLoaded: state.resources.loaded
+    searchResultsById: state.providers
   }
 }
 
