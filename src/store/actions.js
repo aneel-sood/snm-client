@@ -1,21 +1,21 @@
 import fetch from 'isomorphic-fetch';
 
-export const REQUEST_PROVIDERS = 'REQUEST_PROVIDERS';
-export const RECEIVE_PROVIDERS = 'RECEIVE_PROVIDERS';
+export const SEARCH_REQUESTED = 'SEARCH_REQUESTED';
+export const SEARCH_RESPONSE_RECEIVED = 'SEARCH_RESPONSE_RECEIVED';
 
 export const REQUEST_CLIENT = 'REQUEST_CLIENT';
 export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 
-function requestProviders(needId) {
+function resourceSearchRequested(needId) {
   return {
-    type: REQUEST_PROVIDERS,
+    type: SEARCH_REQUESTED,
     needId: needId
   }
 }
 
-function receiveProviders(needId, json) {
+function resourceSearchResponseReceived(needId, json) {
   return {
-    type: RECEIVE_PROVIDERS,
+    type: SEARCH_RESPONSE_RECEIVED,
     needId: needId,
     providers: json,
     receivedAt: Date.now()
@@ -40,15 +40,15 @@ function receiveClient(id, json) {
 // const serverHost = 'https://sleepy-scrubland-24958.herokuapp.com';
 const serverHost = 'http://127.0.0.1:8000';
 
-export function fetchProviders(needId, params) {
+export function fetchProviderResources(needId, params) {
   return dispatch => {
-    dispatch(requestProviders(needId))
+    dispatch(resourceSearchRequested(needId))
     let paramsJSON = JSON.stringify(params),
         paramsUrlEncoded = encodeURIComponent(paramsJSON),
         url = serverHost + '/providers/?params=' + paramsUrlEncoded;
 
     return fetch(url).then(response => response.json())
-      .then(json => dispatch(receiveProviders(needId, json)))
+      .then(json => dispatch(resourceSearchResponseReceived(needId, json)))
   }
 }
 

@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
-import { REQUEST_PROVIDERS, RECEIVE_PROVIDERS, REQUEST_CLIENT, RECEIVE_CLIENT } from './actions.js'
+import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, RECEIVE_CLIENT } from './actions.js'
 
-function providers(state = {}, action) {
+function searchResultsByNeedId(state = {}, action) {
   let nextResultObj;
   switch (action.type) {
-    case REQUEST_PROVIDERS:
+    case SEARCH_REQUESTED:
       nextResultObj = {...state[action.needId], loaded: false};
       return {...state, [action.needId]: nextResultObj};
-    case RECEIVE_PROVIDERS:
+    case SEARCH_RESPONSE_RECEIVED:
       nextResultObj = {...state[action.needId], result: action.providers, loaded: true};
       return {...state, [action.needId]: nextResultObj}
     default:
@@ -36,6 +36,6 @@ function clients(state = {loaded: false, items: {}}, action) {
 }
 
 export const rootReducer = combineReducers({
-  providers,
+  searchResultsByNeedId,
   clients
 });

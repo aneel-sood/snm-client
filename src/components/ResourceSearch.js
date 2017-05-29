@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchProviders } from '../store/actions.js'
+import { fetchProviderResources } from '../store/actions.js'
 import { connect } from 'react-redux'
 
 // components
@@ -82,7 +82,7 @@ class ResourceSearch extends Component {
       resource_type: this.state.type,
       details: detailsParams
     }
-    this.props.dispatch(fetchProviders(this.state.need.id, params));
+    this.props.dispatch(fetchProviderResources(this.state.need.id, params));
   }
 
   typeChanged(event) {
@@ -92,7 +92,7 @@ class ResourceSearch extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    searchResultsById: state.providers
+    searchResultsById: state.searchResultsByNeedId
   }
 }
 
