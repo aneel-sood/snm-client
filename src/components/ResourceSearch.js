@@ -56,7 +56,7 @@ class ResourceSearch extends Component {
             }
           </div>
         </Well>
-        {this.state.type !== '' && p.searchResultsById[this.state.need.id] &&
+        {p.searchResultsById[this.state.need.id] &&
           <Results searchResults={p.searchResultsById[this.state.need.id].result} 
             loaded={p.searchResultsById[this.state.need.id].loaded} />
         }
