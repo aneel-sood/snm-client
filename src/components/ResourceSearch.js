@@ -22,7 +22,7 @@ class ResourceSearch extends Component {
       initialState.need = props.need;
       initialState.type = props.need.type;
     } else {
-      initialState.need = {};
+      initialState.need = {id: props.tempId};
       initialState.type = "";
     }
 
@@ -56,7 +56,10 @@ class ResourceSearch extends Component {
             }
           </div>
         </Well>
-        <Results providers={p.providers} loaded={p.resultsLoaded} />
+        {this.state.type !== '' && p.searchResultsById[this.state.need.id] &&
+          <Results searchResults={p.searchResultsById[this.state.need.id].result} 
+            loaded={p.searchResultsById[this.state.need.id].loaded} />
+        }
       </div>
     );
   }
@@ -79,7 +82,7 @@ class ResourceSearch extends Component {
       resource_type: this.state.type,
       details: detailsParams
     }
-    this.props.dispatch(fetchProviders(params));
+    this.props.dispatch(fetchProviders(this.state.need.id, params));
   }
 
   typeChanged(event) {
@@ -89,8 +92,7 @@ class ResourceSearch extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    providers: state.providers.index,
-    resultsLoaded: state.providers.loaded
+    searchResultsById: state.providers
   }
 }
 

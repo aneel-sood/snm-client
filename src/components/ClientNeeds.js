@@ -7,13 +7,13 @@ import ResourceSearch from './ResourceSearch.js'
 class ClientNeeds extends Component {
   render() {  
     const p = this.props,
-          client = p.clients[1];
+          client = p.client;
     return(
       <div>
         {p.clientLoaded && 
           <div>
             <h4>Newcomer: {client.first_name} {client.last_name}</h4>
-            <ResourceSearch />
+            <ResourceSearch tempId={this.tempNeedId()} />
             {
               client.needs.map((n) => {
                 return <ResourceSearch key={n.id} need={n} />
@@ -32,11 +32,18 @@ class ClientNeeds extends Component {
   componentWillMount() {
     this.props.dispatch(fetchClient(1));
   }
+
+  tempNeedId() {
+    const allNeedIds = this.props.client.needs.map((n) => {return n.id}),
+          currentMaxId = Math.max(...allNeedIds);
+
+    return currentMaxId + 1;
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
-    clients: state.clients.items,
+    client: state.clients.items[1],
     clientLoaded: state.clients.loaded
   }
 }
