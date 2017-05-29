@@ -17,7 +17,7 @@ export default class Filters extends Component {
   render() {
     const s = this.state;
     return (
-      <Form>
+      <Form className='filters'>
         <FormGroup>
           <InputGroup className='language_of_service-select'>
             <ControlLabel>Language of Service</ControlLabel>

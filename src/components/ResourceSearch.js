@@ -35,7 +35,10 @@ class ResourceSearch extends Component {
 
   render() {
     const p = this.props,
-          FiltersComponent = this.filtersComponent();
+          FiltersComponent = this.filtersComponent(),
+          typeSet = this.state.type !== '',
+          searchRequested = p.searchResultsById[this.state.need.id];
+
     return (
       <div className='resource-search'>
         <Well>
@@ -49,14 +52,12 @@ class ResourceSearch extends Component {
               </FormControl>
             </InputGroup>
           </FormGroup>
-          <div className='filters'>
-            {this.state.type !== '' &&
-              <FiltersComponent fetchData={this.fetchData} resourceType={this.state.type}
-                requirements={this.state.need.requirements} />
-            }
-          </div>
+          {typeSet &&
+            <FiltersComponent fetchData={this.fetchData} resourceType={this.state.type}
+              requirements={this.state.need.requirements} />
+          }
         </Well>
-        {p.searchResultsById[this.state.need.id] &&
+        {searchRequested &&
           <Results searchResults={p.searchResultsById[this.state.need.id].result} 
             loaded={p.searchResultsById[this.state.need.id].loaded} />
         }
