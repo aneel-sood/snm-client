@@ -13,7 +13,7 @@ class ClientNeeds extends Component {
         {p.clientLoaded && 
           <div>
             <h4>Newcomer: {client.first_name} {client.last_name}</h4>
-            <ResourceSearch tempId={this.tempNeedId()} />
+            <ResourceSearch need={{id: this.tempNeedId()}} />
             {
               client.needs.map((n) => {
                 return <ResourceSearch key={n.id} need={n} />

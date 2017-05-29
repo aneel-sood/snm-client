@@ -17,16 +17,10 @@ class ResourceSearch extends Component {
   constructor(props) {
     super(props);
 
-    let initialState = {};
-    if (props.need) {
-      initialState.need = props.need;
-      initialState.type = props.need.type;
-    } else {
-      initialState.need = {id: props.tempId};
-      initialState.type = "";
-    }
-
-    this.state = initialState;
+    this.state = {
+      need: props.need,
+      type: props.need.type || ""
+    } 
 
     this.fetchData = this.fetchData.bind(this);
     this.typeChanged = this.typeChanged.bind(this);
@@ -37,7 +31,8 @@ class ResourceSearch extends Component {
     const p = this.props,
           FiltersComponent = this.filtersComponent(),
           typeSet = this.state.type !== '',
-          searchRequested = p.searchResultsById[this.state.need.id];
+          needId = this.state.need.id,
+          searchRequestObj = p.searchResultsById[needId];
 
     return (
       <div className='resource-search'>
@@ -57,10 +52,7 @@ class ResourceSearch extends Component {
               requirements={this.state.need.requirements} />
           }
         </Well>
-        {searchRequested &&
-          <Results searchResults={p.searchResultsById[this.state.need.id].result} 
-            loaded={p.searchResultsById[this.state.need.id].loaded} />
-        }
+        {searchRequestObj && <Results searchResponse={searchRequestObj} />}
       </div>
     );
   }
