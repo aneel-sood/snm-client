@@ -88,7 +88,7 @@ class ResourceSearch extends Component {
     p = this.props,
     params = {
       need_type: s.type,
-      details: requirementsParams
+      requirements: requirementsParams
     };
     p.saveNeed(params);
   }

@@ -6,6 +6,8 @@ export const SEARCH_RESPONSE_RECEIVED = 'SEARCH_RESPONSE_RECEIVED';
 export const REQUEST_CLIENT = 'REQUEST_CLIENT';
 export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 
+export const RECEIVE_CLIENT_NEED = 'RECEIVE_CLIENT_NEED';
+
 function resourceSearchRequested(needId) {
   return {
     type: SEARCH_REQUESTED,
@@ -33,6 +35,15 @@ function receiveClient(id, json) {
     type: RECEIVE_CLIENT,
     id: id,
     client: json,
+    receivedAt: Date.now()
+  }
+}
+
+function receiveClientNeed(clientId, json) {
+  return {
+    type: RECEIVE_CLIENT_NEED,
+    clientId: clientId,
+    need: json,
     receivedAt: Date.now()
   }
 }
@@ -67,12 +78,13 @@ export function createNeed(clientId, params) {
   return dispatch => {
     const url = serverHost + '/client/' + clientId + '/need/20/';
           
-    fetch(url, {
+    return fetch(url, {
       method: "POST",
       body: JSON.stringify(params),
       headers: {
         "Content-Type": "application/json"
       }
-    })
+    }).then(response => response.json())
+      .then(json => dispatch(receiveClientNeed(clientId, json)));
   }
 }
