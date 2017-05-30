@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { fetchClient } from '../store/actions.js'
+import { fetchClient, createNeed } from '../store/actions.js'
 import { connect } from 'react-redux'
 
 import ResourceSearch from './ResourceSearch.js'
 
 class ClientNeeds extends Component {
+  constructor(props) {
+    super(props);
+    this.saveNewNeed = this.saveNewNeed.bind(this);
+  }
+
   render() {  
     const p = this.props,
           client = p.client;
@@ -13,7 +18,7 @@ class ClientNeeds extends Component {
         {p.clientLoaded && 
           <div>
             <h4>Newcomer: {client.first_name} {client.last_name}</h4>
-            <ResourceSearch need={{id: this.tempNeedId()}} />
+            <ResourceSearch need={{id: this.tempNeedId()}} saveNeed={this.saveNewNeed} />
             {
               client.needs.map((n) => {
                 return <ResourceSearch key={n.id} need={n} />
@@ -31,6 +36,11 @@ class ClientNeeds extends Component {
 
   componentWillMount() {
     this.props.dispatch(fetchClient(1));
+  }
+
+  saveNewNeed(requirementsParams) {
+    const p = this.props;
+    p.dispatch(createNeed(p.client.id, requirementsParams));
   }
 
   tempNeedId() {

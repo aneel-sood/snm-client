@@ -44,6 +44,8 @@ export default class Filters extends Component {
   }
 
   updateLanguage(event) {
-    this.setState({language_of_service: event.target.value});
+    this.setState({language_of_service: event.target.value}, () => {
+      this.props.saveNeed(this.state);
+    });
   }
 }

@@ -71,15 +71,33 @@ class ResourceSearch extends Component {
   }
 
   fetchData(detailsParams) {
-    const params = {
-      resource_type: this.state.type,
+    const
+    s = this.state,
+    p = this.props,
+    params = {
+      resource_type: s.type,
       details: detailsParams
     }
-    this.props.dispatch(fetchProviderResources(this.state.need.id, params));
+
+    p.dispatch(fetchProviderResources(s.need.id, params));
+  }
+
+  saveNeed(requirementsParams) {
+    const
+    s = this.state,
+    p = this.props,
+    params = {
+      need_type: s.type,
+      details: requirementsParams
+    };
+    p.saveNeed(params);
   }
 
   typeChanged(event) {
-    this.setState({type: event.target.value}, () => {this.fetchData({})});
+    this.setState({type: event.target.value}, () => {
+      this.fetchData({});
+      this.saveNeed({});
+    });
   }
 }
 

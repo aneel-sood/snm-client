@@ -43,9 +43,10 @@ const serverHost = 'http://127.0.0.1:8000';
 export function fetchProviderResources(needId, params) {
   return dispatch => {
     dispatch(resourceSearchRequested(needId))
-    let paramsJSON = JSON.stringify(params),
-        paramsUrlEncoded = encodeURIComponent(paramsJSON),
-        url = serverHost + '/providers/?params=' + paramsUrlEncoded;
+    
+    const paramsJSON = JSON.stringify(params),
+          paramsUrlEncoded = encodeURIComponent(paramsJSON),
+          url = serverHost + '/providers/?params=' + paramsUrlEncoded;
 
     return fetch(url).then(response => response.json())
       .then(json => dispatch(resourceSearchResponseReceived(needId, json)))
@@ -55,9 +56,23 @@ export function fetchProviderResources(needId, params) {
 export function fetchClient(id) {
   return dispatch => {
     dispatch(requestClient())
-    let url = serverHost + '/client/' + id;
+    const url = serverHost + '/client/' + id;
 
     return fetch(url).then(response => response.json())
       .then(json => dispatch(receiveClient(id, json)))
+  }
+}
+
+export function createNeed(clientId, params) {
+  return dispatch => {
+    const url = serverHost + '/client/' + clientId + '/need/20/';
+          
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
   }
 }
