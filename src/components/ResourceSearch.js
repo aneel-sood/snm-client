@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Filters from './resource_search/Filters.js'
 import LanguageServiceFilters from './resource_search/LanguageServiceFilters.js'
 import Results from './resource_search/Results.js'
-import { Well, FormGroup, InputGroup, FormControl } from 'react-bootstrap';
+import { Well, FormGroup, InputGroup, FormControl, Glyphicon } from 'react-bootstrap';
 
 // stylesheets
 import '../stylesheets/ResourceSearch.css';
@@ -25,6 +25,7 @@ class ResourceSearch extends Component {
     this.typeChanged = this.typeChanged.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.saveNeed = this.saveNeed.bind(this);
+    this.removeNeed = this.removeNeed.bind(this);
     this.filtersComponent = this.filtersComponent.bind(this);
   }
 
@@ -38,6 +39,7 @@ class ResourceSearch extends Component {
     return (
       <div className='resource-search'>
         <Well>
+          <Glyphicon onClick={this.removeNeed} glyph="glyphicon glyphicon-remove" />
           <FormGroup>
             <InputGroup className='type-select'>
               <FormControl componentClass="select" onChange={this.typeChanged} value={this.state.type}>
@@ -87,6 +89,11 @@ class ResourceSearch extends Component {
       requirements: requirementsParams
     };
     p.updateNeed(params, p.need.id);
+  }
+
+  removeNeed() {
+    const p = this.props;
+    p.removeNeed(p.need.id);
   }
 
   filtersComponent() {
