@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchClient, createClientNeed, updateClientNeed } from '../store/actions.js'
+import { fetchClient, createClientNeed, updateClientNeed, deleteClientNeed } from '../store/actions.js'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap';
 
@@ -10,6 +10,7 @@ class ClientNeeds extends Component {
     super(props);
     this.addNeed = this.addNeed.bind(this);
     this.updateNeed = this.updateNeed.bind(this);
+    this.deleteNeed = this.deleteNeed.bind(this);
   }
 
   render() {  
@@ -23,7 +24,8 @@ class ClientNeeds extends Component {
             <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
             {
               client.needs.map((n) => {
-                return <ResourceSearch key={n.id} need={n} updateNeed={this.updateNeed} />
+                return <ResourceSearch key={n.id} need={n} updateNeed={this.updateNeed} 
+                  removeNeed={this.deleteNeed} />
               })
             }
           </div>
@@ -48,6 +50,11 @@ class ClientNeeds extends Component {
   updateNeed(requirementsParams, needId) {
     const p = this.props;
     p.dispatch(updateClientNeed(p.client.id, needId, requirementsParams));
+  }
+
+  deleteNeed(needId) {
+    const p = this.props;
+    p.dispatch(deleteClientNeed(p.client.id, needId));
   }
 }
 

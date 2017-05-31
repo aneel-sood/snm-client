@@ -7,6 +7,7 @@ export const REQUEST_CLIENT = 'REQUEST_CLIENT';
 export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 
 export const RECEIVE_CLIENT_NEED = 'RECEIVE_CLIENT_NEED';
+export const REMOVE_CLIENT_NEED = 'REMOVE_CLIENT_NEED';
 
 function resourceSearchRequested(needId) {
   return {
@@ -44,6 +45,15 @@ function receiveClientNeed(clientId, json) {
     type: RECEIVE_CLIENT_NEED,
     clientId: clientId,
     need: json,
+    receivedAt: Date.now()
+  }
+}
+
+function removeClientNeed(clientId, needId) {
+  return {
+    type: REMOVE_CLIENT_NEED,
+    clientId: clientId,
+    needId: needId,
     receivedAt: Date.now()
   }
 }
@@ -88,10 +98,21 @@ export function updateClientNeed(clientId, needId, params) {
     const url = serverHost + '/client/' + clientId + '/need/' + needId + '/';
           
     return fetch(url, {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify(params),
       headers: {
         "Content-Type": "application/json"
+      }
+    });
+  }
+}
+
+export function deleteClientNeed(clientId, needId, params) {
+  return dispatch => {
+    const url = serverHost + '/client/' + clientId + '/need/' + needId + '/';
+    return fetch(url, {method: "DELETE"}).then(response => {
+      if (response.status === 200) {
+        dispatch(removeClientNeed(clientId, needId))
       }
     });
   }

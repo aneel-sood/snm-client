@@ -1,3 +1,14 @@
 div.resource-search {
   margin: 30px;
+
+  .glyphicon-remove {
+    float: right;
+    padding: 4px;
+    border-radius: 20px;
+
+    &:hover {
+      background-color: gray;
+      cursor: pointer;
+    }
+  }
 }
