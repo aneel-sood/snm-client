@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux'
-import { REQUEST_PROVIDERS, RECEIVE_PROVIDERS, REQUEST_CLIENT, RECEIVE_CLIENT } from './actions.js'
+import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, 
+          RECEIVE_CLIENT, RECEIVE_CLIENT_NEED} from './actions.js'
 
-function providers(state = {}, action) {
+function searchResultsByNeedId(state = {}, action) {
   let nextResultObj;
   switch (action.type) {
-    case REQUEST_PROVIDERS:
+    case SEARCH_REQUESTED:
       nextResultObj = {...state[action.needId], loaded: false};
       return {...state, [action.needId]: nextResultObj};
-    case RECEIVE_PROVIDERS:
+    case SEARCH_RESPONSE_RECEIVED:
       nextResultObj = {...state[action.needId], result: action.providers, loaded: true};
       return {...state, [action.needId]: nextResultObj}
     default:
@@ -15,27 +16,25 @@ function providers(state = {}, action) {
   }
 }
 
-  // searchResultsByNeedId = {
-  //   10: {
-  //     result: [provider, provider, provider, ...],
-  //     loaded: true
-  //   }
-  // }
-  // This object can be flushed whenever a new client page is opened up
-
 function clients(state = {loaded: false, items: {}}, action) {
+  let nextItems;
   switch (action.type) {
     case REQUEST_CLIENT:
       return {...state, loaded: false}
     case RECEIVE_CLIENT:
-      let nextItems = {...state.items, [action.id]: action.client}
+      nextItems = {...state.items, [action.id]: action.client}
       return {...state, items: nextItems, loaded: true}
+    case RECEIVE_CLIENT_NEED:
+      let nextClientNeedsSet = [action.need, ...state.items[action.clientId].needs],
+          nextClient = {...state.items[action.clientId], needs: nextClientNeedsSet};
+      nextItems = {...state.items, [action.clientId]: nextClient}
+      return {...state, items: nextItems}    
     default:
       return state
   }
 }
 
 export const rootReducer = combineReducers({
-  providers,
+  searchResultsByNeedId,
   clients
 });

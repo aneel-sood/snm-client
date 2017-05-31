@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { fetchProviders } from '../store/actions.js'
+import { fetchProviderResources } from '../store/actions.js'
 import { connect } from 'react-redux'
 
 // components
 import Filters from './resource_search/Filters.js'
 import LanguageServiceFilters from './resource_search/LanguageServiceFilters.js'
 import Results from './resource_search/Results.js'
-import { Well, FormGroup, InputGroup, FormControl} from 'react-bootstrap';
+import { Well, FormGroup, InputGroup, FormControl } from 'react-bootstrap';
 
 // stylesheets
 import '../stylesheets/ResourceSearch.css';
@@ -17,25 +17,24 @@ class ResourceSearch extends Component {
   constructor(props) {
     super(props);
 
-    let initialState = {};
-    if (props.need) {
-      initialState.need = props.need;
-      initialState.type = props.need.type;
-    } else {
-      initialState.need = {id: props.tempId};
-      initialState.type = "";
-    }
+    this.state = {
+      need: props.need,
+      type: props.need.type || ""
+    } 
 
-    this.state = initialState;
-
-    this.fetchData = this.fetchData.bind(this);
     this.typeChanged = this.typeChanged.bind(this);
+    this.fetchData = this.fetchData.bind(this);
+    this.saveNeed = this.saveNeed.bind(this);
     this.filtersComponent = this.filtersComponent.bind(this);
   }
 
   render() {
     const p = this.props,
-          FiltersComponent = this.filtersComponent();
+          FiltersComponent = this.filtersComponent(),
+          typeSet = this.state.type !== '',
+          needId = this.state.need.id,
+          searchRequestObj = p.searchResultsById[needId];
+
     return (
       <div className='resource-search'>
         <Well>
@@ -49,19 +48,45 @@ class ResourceSearch extends Component {
               </FormControl>
             </InputGroup>
           </FormGroup>
-          <div className='filters'>
-            {this.state.type !== '' &&
-              <FiltersComponent fetchData={this.fetchData} resourceType={this.state.type}
-                requirements={this.state.need.requirements} />
-            }
-          </div>
+          {typeSet &&
+            <FiltersComponent resourceType={this.state.type} 
+              requirements={this.state.need.requirements} 
+              fetchData={this.fetchData} saveNeed={this.saveNeed} />
+          }
         </Well>
-        {this.state.type !== '' && p.searchResultsById[this.state.need.id] &&
-          <Results searchResults={p.searchResultsById[this.state.need.id].result} 
-            loaded={p.searchResultsById[this.state.need.id].loaded} />
-        }
+        {searchRequestObj && <Results searchResponse={searchRequestObj} />}
       </div>
     );
+  }
+
+  typeChanged(event) {
+    this.setState({type: event.target.value}, () => {
+      this.fetchData({});
+      this.saveNeed({});
+    });
+  }
+
+  fetchData(detailsParams) {
+    const
+    s = this.state,
+    p = this.props,
+    params = {
+      resource_type: s.type,
+      details: detailsParams
+    }
+
+    p.dispatch(fetchProviderResources(s.need.id, params));
+  }
+
+  saveNeed(requirementsParams) {
+    const
+    s = this.state,
+    p = this.props,
+    params = {
+      need_type: s.type,
+      requirements: requirementsParams
+    };
+    p.updateNeed(params, p.need.id);
   }
 
   filtersComponent() {
@@ -76,23 +101,11 @@ class ResourceSearch extends Component {
     }
     return Component;
   }
-
-  fetchData(detailsParams) {
-    const params = {
-      resource_type: this.state.type,
-      details: detailsParams
-    }
-    this.props.dispatch(fetchProviders(this.state.need.id, params));
-  }
-
-  typeChanged(event) {
-    this.setState({type: event.target.value}, () => {this.fetchData({})});
-  }
 }
 
 const mapStateToProps = (state) => {
   return {
-    searchResultsById: state.providers
+    searchResultsById: state.searchResultsByNeedId
   }
 }
 

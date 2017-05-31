@@ -64,11 +64,15 @@ export default class LanguageServiceFilters extends Component {
   }
 
   updateSourceLang(event) {
-    this.setState({source_lang: event.target.value});
+    this.setState({source_lang: event.target.value}, () => {
+      this.props.saveNeed(this.state);
+    });
   }
 
   updateTargetLang(event) {
-    this.setState({target_lang: event.target.value});
+    this.setState({target_lang: event.target.value}, () => {
+      this.props.saveNeed(this.state);
+    });
   }
 
   componentWillReceiveProps(nextProps) {
