@@ -88,7 +88,7 @@ export function updateClientNeed(clientId, needId, params) {
     const url = serverHost + '/client/' + clientId + '/need/' + needId + '/';
           
     return fetch(url, {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify(params),
       headers: {
         "Content-Type": "application/json"
