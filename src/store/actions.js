@@ -76,14 +76,14 @@ export function fetchClient(id) {
 
 export function createNeed(clientId, params) {
   return dispatch => {
-    const url = serverHost + '/client/' + clientId + '/need/20/';
+    const url = serverHost + '/client/' + clientId + '/needs/';
           
     return fetch(url, {
-      method: "POST",
-      body: JSON.stringify(params),
-      headers: {
-        "Content-Type": "application/json"
-      }
+      method: "POST"
+      // body: JSON.stringify(params),
+      // headers: {
+      //   "Content-Type": "application/json"
+      // }
     }).then(response => response.json())
       .then(json => dispatch(receiveClientNeed(clientId, json)));
   }

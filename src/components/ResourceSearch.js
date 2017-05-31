@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Filters from './resource_search/Filters.js'
 import LanguageServiceFilters from './resource_search/LanguageServiceFilters.js'
 import Results from './resource_search/Results.js'
-import { Well, FormGroup, InputGroup, FormControl} from 'react-bootstrap';
+import { Well, FormGroup, InputGroup, FormControl } from 'react-bootstrap';
 
 // stylesheets
 import '../stylesheets/ResourceSearch.css';

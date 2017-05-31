@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { fetchClient, createNeed } from '../store/actions.js'
 import { connect } from 'react-redux'
+import { Button } from 'react-bootstrap';
 
 import ResourceSearch from './ResourceSearch.js'
 
@@ -8,6 +9,7 @@ class ClientNeeds extends Component {
   constructor(props) {
     super(props);
     this.saveNewNeed = this.saveNewNeed.bind(this);
+    this.addNewNeed = this.addNewNeed.bind(this);
   }
 
   render() {  
@@ -18,7 +20,7 @@ class ClientNeeds extends Component {
         {p.clientLoaded && 
           <div>
             <h4>Newcomer: {client.first_name} {client.last_name}</h4>
-            <ResourceSearch need={{id: this.tempNeedId()}} saveNeed={this.saveNewNeed} />
+            <Button bsStyle="info" onClick={this.addNewNeed}>New Need</Button>
             {
               client.needs.map((n) => {
                 return <ResourceSearch key={n.id} need={n} />
@@ -34,20 +36,17 @@ class ClientNeeds extends Component {
     this.props.dispatch(fetchClient(id));
   }
 
-  componentWillMount() {
+  componentWillMount() { // this is probably no longer necessary after the clients index page is created
     this.props.dispatch(fetchClient(1));
+  }
+
+  addNewNeed(event) {
+    this.saveNewNeed({});
   }
 
   saveNewNeed(requirementsParams) {
     const p = this.props;
     p.dispatch(createNeed(p.client.id, requirementsParams));
-  }
-
-  tempNeedId() {
-    const allNeedIds = this.props.client.needs.map((n) => {return n.id}),
-          currentMaxId = Math.max(...allNeedIds);
-
-    return currentMaxId + 1;
   }
 }
 
