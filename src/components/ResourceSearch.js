@@ -22,8 +22,9 @@ class ResourceSearch extends Component {
       type: props.need.type || ""
     } 
 
-    this.fetchData = this.fetchData.bind(this);
     this.typeChanged = this.typeChanged.bind(this);
+    this.fetchData = this.fetchData.bind(this);
+    this.saveNeed = this.saveNeed.bind(this);
     this.filtersComponent = this.filtersComponent.bind(this);
   }
 
@@ -48,8 +49,9 @@ class ResourceSearch extends Component {
             </InputGroup>
           </FormGroup>
           {typeSet &&
-            <FiltersComponent fetchData={this.fetchData} resourceType={this.state.type}
-              requirements={this.state.need.requirements} />
+            <FiltersComponent resourceType={this.state.type} 
+              requirements={this.state.need.requirements} 
+              fetchData={this.fetchData} saveNeed={this.saveNeed} />
           }
         </Well>
         {searchRequestObj && <Results searchResponse={searchRequestObj} />}
@@ -57,17 +59,11 @@ class ResourceSearch extends Component {
     );
   }
 
-  filtersComponent() {
-    let Component;
-    switch (this.state.type) {
-      case 'interpreter':
-      case 'translator':
-        Component = LanguageServiceFilters;
-        break;
-      default:
-        Component = Filters;
-    }
-    return Component;
+  typeChanged(event) {
+    this.setState({type: event.target.value}, () => {
+      this.fetchData({});
+      this.saveNeed({});
+    });
   }
 
   fetchData(detailsParams) {
@@ -90,14 +86,20 @@ class ResourceSearch extends Component {
       need_type: s.type,
       requirements: requirementsParams
     };
-    p.saveNeed(params);
+    p.updateNeed(params, p.need.id);
   }
 
-  typeChanged(event) {
-    this.setState({type: event.target.value}, () => {
-      this.fetchData({});
-      this.saveNeed({});
-    });
+  filtersComponent() {
+    let Component;
+    switch (this.state.type) {
+      case 'interpreter':
+      case 'translator':
+        Component = LanguageServiceFilters;
+        break;
+      default:
+        Component = Filters;
+    }
+    return Component;
   }
 }
 

@@ -74,17 +74,25 @@ export function fetchClient(id) {
   }
 }
 
-export function createNeed(clientId, params) {
+export function createClientNeed(clientId) {
   return dispatch => {
     const url = serverHost + '/client/' + clientId + '/needs/';
           
-    return fetch(url, {
-      method: "POST"
-      // body: JSON.stringify(params),
-      // headers: {
-      //   "Content-Type": "application/json"
-      // }
-    }).then(response => response.json())
+    return fetch(url, {method: "POST"}).then(response => response.json())
       .then(json => dispatch(receiveClientNeed(clientId, json)));
+  }
+}
+
+export function updateClientNeed(clientId, needId, params) {
+  return dispatch => {
+    const url = serverHost + '/client/' + clientId + '/need/' + needId + '/';
+          
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   }
 }

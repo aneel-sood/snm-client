@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchClient, createNeed } from '../store/actions.js'
+import { fetchClient, createClientNeed, updateClientNeed } from '../store/actions.js'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap';
 
@@ -8,8 +8,8 @@ import ResourceSearch from './ResourceSearch.js'
 class ClientNeeds extends Component {
   constructor(props) {
     super(props);
-    this.saveNewNeed = this.saveNewNeed.bind(this);
-    this.addNewNeed = this.addNewNeed.bind(this);
+    this.addNeed = this.addNeed.bind(this);
+    this.updateNeed = this.updateNeed.bind(this);
   }
 
   render() {  
@@ -20,10 +20,10 @@ class ClientNeeds extends Component {
         {p.clientLoaded && 
           <div>
             <h4>Newcomer: {client.first_name} {client.last_name}</h4>
-            <Button bsStyle="info" onClick={this.addNewNeed}>New Need</Button>
+            <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
             {
               client.needs.map((n) => {
-                return <ResourceSearch key={n.id} need={n} />
+                return <ResourceSearch key={n.id} need={n} updateNeed={this.updateNeed} />
               })
             }
           </div>
@@ -40,13 +40,14 @@ class ClientNeeds extends Component {
     this.props.dispatch(fetchClient(1));
   }
 
-  addNewNeed(event) {
-    this.saveNewNeed({});
+  addNeed(event) {
+    const p = this.props;
+    p.dispatch(createClientNeed(p.client.id));
   }
 
-  saveNewNeed(requirementsParams) {
+  updateNeed(requirementsParams, needId) {
     const p = this.props;
-    p.dispatch(createNeed(p.client.id, requirementsParams));
+    p.dispatch(updateClientNeed(p.client.id, needId, requirementsParams));
   }
 }
 
