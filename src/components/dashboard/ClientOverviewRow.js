@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class ClientOverviewRow extends Component {
   render() {
     const c = this.props.client;
     return(
-      <li>{c.first_name} {c.last_name} {c.pending_needs_count} 
-        {c.fulfilled_needs_count} {this.bookmarkDateStr()}</li>
+      <li>
+        <Link to={`/client/${c.id}`}>
+          {c.first_name} {c.last_name} {c.pending_needs_count} 
+          {c.fulfilled_needs_count} {this.bookmarkDateStr()}
+        </Link>
+      </li>   
     )
   }
 

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard.js';
+import ClientNeeds from './components/ClientNeeds.js';
 import './stylesheets/App.css';
 
 class App extends Component {
@@ -9,7 +11,8 @@ class App extends Component {
         <div className="App-header">
           <h2>SNM Impact</h2>
         </div>
-        <Dashboard />
+        <Route exact path='/' component={Dashboard}/>
+        <Route exact path='/client/:id' component={ClientNeeds}/>
       </div>
     );
   }
