@@ -6,6 +6,9 @@ export const SEARCH_RESPONSE_RECEIVED = 'SEARCH_RESPONSE_RECEIVED';
 export const REQUEST_CLIENT = 'REQUEST_CLIENT';
 export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 
+export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
+export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
+
 export const RECEIVE_CLIENT_NEED = 'RECEIVE_CLIENT_NEED';
 export const REMOVE_CLIENT_NEED = 'REMOVE_CLIENT_NEED';
 
@@ -36,6 +39,20 @@ function receiveClient(id, json) {
     type: RECEIVE_CLIENT,
     id: id,
     client: json,
+    receivedAt: Date.now()
+  }
+}
+
+function requestDashboardClientData() {
+  return {
+    type: REQUEST_DASHBOARD_CLIENT_DATA
+  }
+}
+
+function receieveDashboardClientData(json) {
+  return {
+    type: RECEIEVE_DASHBOARD_CLIENT_DATA,
+    clients: json,
     receivedAt: Date.now()
   }
 }
@@ -81,6 +98,16 @@ export function fetchClient(id) {
 
     return fetch(url).then(response => response.json())
       .then(json => dispatch(receiveClient(id, json)))
+  }
+}
+
+export function fetchDashboardClientData(id) {
+  return dispatch => {
+    dispatch(requestDashboardClientData())
+    const url = serverHost + '/dashboard/clients/';
+
+    return fetch(url).then(response => response.json())
+      .then(json => dispatch(receieveDashboardClientData(json)))
   }
 }
 

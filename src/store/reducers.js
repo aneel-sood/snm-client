@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, 
-          RECEIVE_CLIENT, RECEIVE_CLIENT_NEED, REMOVE_CLIENT_NEED} from './actions.js'
+          RECEIVE_CLIENT, RECEIVE_CLIENT_NEED, REMOVE_CLIENT_NEED,
+          REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA } from './actions.js'
 import _ from 'lodash'
 
 function searchResultsByNeedId(state = {}, action) {
@@ -17,7 +18,7 @@ function searchResultsByNeedId(state = {}, action) {
   }
 }
 
-function clients(state = {loaded: false, items: {}}, action) {
+function clients(state = {loaded: false, items: {}, dashboard: {index: [], loaded: false} }, action) {
   let nextItems, nextClientNeedsSet, nextClient;
   switch (action.type) {
     case REQUEST_CLIENT:
@@ -25,6 +26,10 @@ function clients(state = {loaded: false, items: {}}, action) {
     case RECEIVE_CLIENT:
       nextItems = {...state.items, [action.id]: action.client}
       return {...state, items: nextItems, loaded: true}
+    case REQUEST_DASHBOARD_CLIENT_DATA:
+      return {...state, dashboard: {index: [], loaded: false}}
+    case RECEIEVE_DASHBOARD_CLIENT_DATA:
+      return {...state, dashboard: { index: action.clients, loaded: true } }
     case RECEIVE_CLIENT_NEED:
       nextClientNeedsSet = [action.need, ...state.items[action.clientId].needs];
       nextClient = {...state.items[action.clientId], needs: nextClientNeedsSet};
