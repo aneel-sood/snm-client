@@ -28,9 +28,10 @@ function resourceSearchResponseReceived(needId, json) {
   }
 }
 
-function requestClient() {
+function requestClient(id) {
   return {
-    type: REQUEST_CLIENT
+    type: REQUEST_CLIENT,
+    id: id
   }
 }
 
@@ -93,7 +94,7 @@ export function fetchProviderResources(needId, params) {
 
 export function fetchClient(id) {
   return dispatch => {
-    dispatch(requestClient())
+    dispatch(requestClient(id))
     const url = serverHost + '/client/' + id;
 
     return fetch(url).then(response => response.json())
