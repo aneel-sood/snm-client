@@ -5,12 +5,16 @@ export default class ClientOverviewRow extends Component {
   render() {
     const c = this.props.client;
     return(
-      <li>
-        <Link to={`/client/${c.id}`}>
-          {c.first_name} {c.last_name} {c.pending_needs_count} 
-          {c.fulfilled_needs_count} {this.bookmarkDateStr()}
-        </Link>
-      </li>   
+      <tr>
+        <td>
+          <Link to={`/client/${c.id}`}>
+          {c.first_name} {c.last_name}
+          </Link>
+        </td>
+        <td>{c.pending_needs_count}</td>
+        <td>{c.fulfilled_needs_count}</td>
+        <td>{this.bookmarkDateStr()}</td>
+      </tr>
     )
   }
 
