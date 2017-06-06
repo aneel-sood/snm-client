@@ -8,17 +8,19 @@ import ResourceSearch from './ResourceSearch.js'
 class ClientNeeds extends Component {
   constructor(props) {
     super(props);
+
     this.addNeed = this.addNeed.bind(this);
     this.updateNeed = this.updateNeed.bind(this);
     this.deleteNeed = this.deleteNeed.bind(this);
   }
 
-  render() {  
+  render() { 
     const p = this.props,
-          client = p.client;
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId];
     return(
       <div>
-        {p.clientLoaded && 
+        {client && client.loaded &&
           <div>
             <h4>Newcomer: {client.first_name} {client.last_name}</h4>
             <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
@@ -34,34 +36,33 @@ class ClientNeeds extends Component {
     )
   }
 
-  fetchData(id=1) {
-    this.props.dispatch(fetchClient(id));
-  }
-
-  componentWillMount() { // this is probably no longer necessary after the clients index page is created
-    this.props.dispatch(fetchClient(1));
+  componentWillMount() { 
+    const clientId = this.props.match.params.id;
+    this.props.dispatch(fetchClient(clientId));
   }
 
   addNeed(event) {
-    const p = this.props;
-    p.dispatch(createClientNeed(p.client.id));
+    const p = this.props,
+          clientId = this.props.match.params.id;
+    p.dispatch(createClientNeed(clientId));
   }
 
   updateNeed(requirementsParams, needId) {
-    const p = this.props;
-    p.dispatch(updateClientNeed(p.client.id, needId, requirementsParams));
+    const p = this.props,
+              clientId = this.props.match.params.id;
+    p.dispatch(updateClientNeed(clientId, needId, requirementsParams));
   }
 
   deleteNeed(needId) {
-    const p = this.props;
-    p.dispatch(deleteClientNeed(p.client.id, needId));
+    const p = this.props,
+              clientId = this.props.match.params.id;
+    p.dispatch(deleteClientNeed(clientId, needId));
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    client: state.clients.items[1],
-    clientLoaded: state.clients.loaded
+    clientsById: state.clients.byId
   }
 }
 
