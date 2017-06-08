@@ -12,6 +12,8 @@ export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
 export const RECEIVE_CLIENT_NEED = 'RECEIVE_CLIENT_NEED';
 export const REMOVE_CLIENT_NEED = 'REMOVE_CLIENT_NEED';
 
+export const BOOKMARK_RESOURCE = 'BOOKMARK_RESOURCE';
+
 function resourceSearchRequested(needId) {
   return {
     type: SEARCH_REQUESTED,
@@ -72,6 +74,16 @@ function removeClientNeed(clientId, needId) {
     type: REMOVE_CLIENT_NEED,
     clientId: clientId,
     needId: needId,
+    receivedAt: Date.now()
+  }
+}
+
+function bookmarkResource(needId, resourceId, fulfilled) {
+  return {
+    type: BOOKMARK_RESOURCE,
+    needId: needId,
+    resourceId: resourceId,
+    fulfilled: fulfilled,
     receivedAt: Date.now()
   }
 }
@@ -141,6 +153,20 @@ export function deleteClientNeed(clientId, needId, params) {
     return fetch(url, {method: "DELETE"}).then(response => {
       if (response.status === 200) {
         dispatch(removeClientNeed(clientId, needId))
+      }
+    });
+  }
+}
+
+export function bookmarkResourceForNeed(resourceId, needId, fulfilled) {
+  return dispatch => {
+    const url = serverHost + '/need/' + needId + '/resource/' + resourceId + '/',
+          params = { fulfilled: fulfilled };
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
       }
     });
   }
