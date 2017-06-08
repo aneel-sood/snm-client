@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
-import { fetchClient, createClientNeed, updateClientNeed, deleteClientNeed } from '../store/actions.js'
 import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap';
+import { fetchClient, createClientNeed, updateClientNeed, deleteClientNeed } from '../store/actions.js'
 
 import ResourceSearch from './ResourceSearch.js'
+import ClientBio from './client_needs/ClientBio.js'
+
+import { Button } from 'react-bootstrap';
+import '../stylesheets/ClientNeeds.css';
+
+
 
 class ClientNeeds extends Component {
   constructor(props) {
@@ -21,15 +26,17 @@ class ClientNeeds extends Component {
     return(
       <div>
         {client && client.loaded &&
-          <div>
-            <h4>Newcomer: {client.first_name} {client.last_name}</h4>
-            <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
-            {
-              client.needs.map((n) => {
-                return <ResourceSearch key={n.id} need={n} updateNeed={this.updateNeed} 
-                  removeNeed={this.deleteNeed} />
-              })
-            }
+          <div className='client-needs'>
+            <ClientBio client={client} />
+            <div className='needs'>
+              <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
+              {
+                client.needs.map((n) => {
+                  return <ResourceSearch key={n.id} need={n} updateNeed={this.updateNeed} 
+                    removeNeed={this.deleteNeed} />
+                })
+              }
+            </div>
           </div>
         }
       </div>

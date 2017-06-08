@@ -1,0 +1,16 @@
+div.client-needs {
+  display: flex;
+  flex-direction: row;
+
+  .bio {
+    width: 300px;
+    margin-right: 5px;
+    border-right: 1px black solid;
+    padding: 0 10px;
+  }
+
+  .needs {
+    width: 100%;
+  }
+
+}
