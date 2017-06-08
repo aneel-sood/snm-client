@@ -11,4 +11,14 @@ div.resource-search {
       cursor: pointer;
     }
   }
+
+  .resource .glyphicon {
+    margin: 5px;
+    float: right;
+
+    &:hover {
+      color: orange;
+      cursor: pointer;
+    }
+  }
 }

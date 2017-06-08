@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchProviderResources } from '../store/actions.js'
+import { fetchProviderResources, bookmarkResourceForNeed } from '../store/actions.js'
 import { connect } from 'react-redux'
 
 // components
@@ -27,6 +27,7 @@ class ResourceSearch extends Component {
     this.saveNeed = this.saveNeed.bind(this);
     this.removeNeed = this.removeNeed.bind(this);
     this.filtersComponent = this.filtersComponent.bind(this);
+    this.bookmarkResource = this.bookmarkResource.bind(this);
   }
 
   render() {
@@ -56,7 +57,8 @@ class ResourceSearch extends Component {
               fetchData={this.fetchData} saveNeed={this.saveNeed} />
           }
         </Well>
-        {searchRequestObj && <Results searchResponse={searchRequestObj} />}
+        {searchRequestObj && 
+          <Results searchResponse={searchRequestObj} bookmarkResource={this.bookmarkResource} />}
       </div>
     );
   }
@@ -107,6 +109,13 @@ class ResourceSearch extends Component {
         Component = Filters;
     }
     return Component;
+  }
+
+  bookmarkResource(resourceId, fulfilled) {
+    const 
+    s = this.state,
+    p = this.props;
+    p.dispatch(bookmarkResourceForNeed(resourceId, s.need.id, fulfilled));
   }
 }
 
