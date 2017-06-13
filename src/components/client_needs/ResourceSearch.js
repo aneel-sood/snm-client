@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Filters from './resource_search/Filters.js';
 import LanguageServiceFilters from './resource_search/LanguageServiceFilters.js';
 import Results from './resource_search/Results.js';
-import { Well, FormGroup, InputGroup, FormControl, Glyphicon, Modal } from 'react-bootstrap';
+import { Well, FormGroup, InputGroup, FormControl, Glyphicon, Modal, ControlLabel } from 'react-bootstrap';
 
 // stylesheets
 import '../../stylesheets/ResourceSearch.css';
@@ -39,21 +39,22 @@ class ResourceSearch extends Component {
     return (
       <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" aria-labelledby="contained-modal-title-lg">
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-lg">Resource Search</Modal.Title>
+        <FormGroup>
+          <ControlLabel>Need Type:</ControlLabel>
+          <InputGroup className='type-select'>
+            <FormControl componentClass="select" onChange={this.typeChanged} value={this.state.type}>
+              <option value=""></option>
+              <option value="interpreter">Interpreter</option>
+              <option value="translator">Translator</option>
+              <option value="dentist">Dentist</option>
+            </FormControl>
+          </InputGroup>
+        </FormGroup>
       </Modal.Header>
       <Modal.Body>
         <div className='resource-search'>
           <Well>
-            <FormGroup>
-              <InputGroup className='type-select'>
-                <FormControl componentClass="select" onChange={this.typeChanged} value={this.state.type}>
-                  <option value=""></option>
-                  <option value="interpreter">Interpreter</option>
-                  <option value="translator">Translator</option>
-                  <option value="dentist">Dentist</option>
-                </FormControl>
-              </InputGroup>
-            </FormGroup>
+            <h4>Need Requirements:</h4>
             {typeSet &&
               <FiltersComponent resourceType={this.state.type} 
                 requirements={this.state.need.requirements} 
