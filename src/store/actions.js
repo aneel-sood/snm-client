@@ -10,6 +10,7 @@ export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
 
 export const RECEIVE_CLIENT_NEED = 'RECEIVE_CLIENT_NEED';
+export const RECEIVE_UPDATED_CLIENT_NEED = 'RECEIVE_UPDATED_CLIENT_NEED';
 export const REMOVE_CLIENT_NEED = 'REMOVE_CLIENT_NEED';
 
 export const BOOKMARK_RESOURCE = 'BOOKMARK_RESOURCE';
@@ -64,6 +65,16 @@ function receiveClientNeed(clientId, json) {
   return {
     type: RECEIVE_CLIENT_NEED,
     clientId: clientId,
+    need: json,
+    receivedAt: Date.now()
+  }
+}
+
+function receiveUpdatedClientNeed(clientId, needId, json) {
+  return {
+    type: RECEIVE_UPDATED_CLIENT_NEED,
+    clientId: clientId,
+    needId: needId,
     need: json,
     receivedAt: Date.now()
   }
@@ -143,7 +154,8 @@ export function updateClientNeed(clientId, needId, params) {
       headers: {
         "Content-Type": "application/json"
       }
-    });
+    }).then(response => response.json())
+      .then(json => dispatch(receiveUpdatedClientNeed(clientId, needId, json)));
   }
 }
 

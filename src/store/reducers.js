@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, 
           RECEIVE_CLIENT, RECEIVE_CLIENT_NEED, REMOVE_CLIENT_NEED,
-          REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA } from './actions.js'
+          REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA,
+          RECEIVE_UPDATED_CLIENT_NEED } from './actions.js'
 import _ from 'lodash'
 
 function searchResultsByNeedId(state = {}, action) {
@@ -36,6 +37,13 @@ function clients(state = {byId: {}, dashboard: {index: [], loaded: false} }, act
       nextClient = {...state.byId[action.clientId], needs: nextClientNeedsSet};
       nextById = {...state.byId, [action.clientId]: nextClient}
       return {...state, byId: nextById}    
+    case RECEIVE_UPDATED_CLIENT_NEED:
+      nextClientNeedsSet = _.clone(state.byId[action.clientId].needs);
+      _.remove(nextClientNeedsSet, (n) => { return n.id === action.needId });
+      nextClientNeedsSet = [action.need, ...nextClientNeedsSet];
+      nextClient = {...state.byId[action.clientId], needs: nextClientNeedsSet};
+      nextById = {...state.byId, [action.clientId]: nextClient};
+      return {...state, byId: nextById}
     case REMOVE_CLIENT_NEED:
       nextClientNeedsSet = _.clone(state.byId[action.clientId].needs);
       _.remove(nextClientNeedsSet, (n) => { return n.id === action.needId });

@@ -57,7 +57,7 @@ class ResourceSearch extends Component {
             <h4>Need Requirements:</h4>
             {typeSet &&
               <FiltersComponent resourceType={this.state.type} 
-                requirements={this.state.need.requirements} 
+                requirements={this.props.need.requirements} 
                 fetchData={this.fetchData} saveNeed={this.saveNeed} />
             }
           </Well>
@@ -67,6 +67,15 @@ class ResourceSearch extends Component {
       </Modal.Body>
       </Modal>
     )
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.need.id !== nextProps.need.id) {
+      this.setState({
+        need: nextProps.need,
+        type: nextProps.need.type || ""
+      })
+    }
   }
 
   typeChanged(event) {

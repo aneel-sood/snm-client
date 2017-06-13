@@ -10,16 +10,13 @@ import ResourceSearch from './client_needs/ResourceSearch.js';
 import { Button, Panel } from 'react-bootstrap';
 import '../stylesheets/ClientNeeds.css';
 
-
-
 class ClientNeeds extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       showSearchModal: false,
-      activeNeed: undefined
-    } 
+      activeNeed: undefined    } 
 
     this.addNeed = this.addNeed.bind(this);
     this.updateNeed = this.updateNeed.bind(this);
@@ -76,6 +73,18 @@ class ClientNeeds extends Component {
         }
       </div>
     )
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const p = this.props,
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId],
+          newNeed = _.find(client.needs, (n) => {return n.type === ''});
+
+
+    if (newNeed && !prevState.showSearchModal) {
+      this.setState({ activeNeed: newNeed, showSearchModal: true});
+    }
   }
 
   showSearchModal(needId) {
