@@ -7,7 +7,7 @@ import Need from './client_needs/Need.js';
 import ClientBio from './client_needs/ClientBio.js';
 import ResourceSearch from './client_needs/ResourceSearch.js';
 
-import { Button } from 'react-bootstrap';
+import { Button, Panel } from 'react-bootstrap';
 import '../stylesheets/ClientNeeds.css';
 
 
@@ -39,30 +39,34 @@ class ClientNeeds extends Component {
             <ClientBio client={client} />
             <div className='needs'>
               <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
-              <h5>Not Matched to any Resource</h5>
-              {
-                this.needsWithoutAnyMatchingResources().map((n) => {
-                  return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
-                })
-              }
-              <h5>Matched to Potential Resource(s)</h5>
-              {
-                this.needsWithPotentialResources().map((n) => {
-                  return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
-                })
-              }
-              <h5>Matched to Pending Resource(s)</h5>
-              {
-                this.needsWithPendingResources().map((n) => {
-                  return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
-                })
-              }
-              <h5>Fulfilled</h5>
-              {
-                this.fulfilledNeeds().map((n) => {
-                  return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
-                })
-              }
+              <Panel header="Not Matched to any Resource" bsStyle="primary">
+                {
+                  this.needsWithoutAnyMatchingResources().map((n) => {
+                    return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
+                  })
+                }
+              </Panel>
+              <Panel header="Matched to Potential Resource(s)" bsStyle="success">
+                {
+                  this.needsWithPotentialResources().map((n) => {
+                    return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
+                  })
+                }
+              </Panel>
+              <Panel header="Matched to Pending Resource(s)" bsStyle="info">
+                {
+                  this.needsWithPendingResources().map((n) => {
+                    return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
+                  })
+                }
+              </Panel>
+              <Panel header="Fulfilled" bsStyle="warning">
+                {
+                  this.fulfilledNeeds().map((n) => {
+                    return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
+                  })
+                }
+              </Panel>
               {this.state.activeNeed &&
                 <ResourceSearch show={this.state.showSearchModal} onHide={this.closeSearchModal} need={this.state.activeNeed} 
                   updateNeed={this.updateNeed} removeNeed={this.deleteNeed}/>
