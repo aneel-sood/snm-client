@@ -10,7 +10,8 @@ export default class Results extends Component {
       <ul className='results'>
         {responseLoaded && 
           providerResources.map((provider) => { 
-            return(<ProviderListItem key={provider.id} provider={provider} />)
+            return(<ProviderListItem key={provider.id} provider={provider} 
+                      bookmarkResource={p.bookmarkResource} />);
           })
         }
       </ul>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Resource from './Resource.js';
 
 export default class ProviderListItem extends Component {
   render() {  
@@ -14,15 +15,7 @@ export default class ProviderListItem extends Component {
             {
               p.provider.resources.map((r) => { 
                 return (
-                  <li key={r.id}>
-                    {
-                      Object.keys(r.details).map((key, i) => {
-                        return (
-                          <p key={i}>{key}: {r.details[key].toString()}</p>
-                        )
-                      })
-                    }
-                  </li>
+                  <Resource key={r.id} resource={r} bookmarkResource={p.bookmarkResource} />
                 )
               })
             }

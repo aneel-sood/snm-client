@@ -10,7 +10,10 @@ export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
 
 export const RECEIVE_CLIENT_NEED = 'RECEIVE_CLIENT_NEED';
+export const RECEIVE_UPDATED_CLIENT_NEED = 'RECEIVE_UPDATED_CLIENT_NEED';
 export const REMOVE_CLIENT_NEED = 'REMOVE_CLIENT_NEED';
+
+export const BOOKMARK_RESOURCE = 'BOOKMARK_RESOURCE';
 
 function resourceSearchRequested(needId) {
   return {
@@ -67,6 +70,16 @@ function receiveClientNeed(clientId, json) {
   }
 }
 
+function receiveUpdatedClientNeed(clientId, needId, json) {
+  return {
+    type: RECEIVE_UPDATED_CLIENT_NEED,
+    clientId: clientId,
+    needId: needId,
+    need: json,
+    receivedAt: Date.now()
+  }
+}
+
 function removeClientNeed(clientId, needId) {
   return {
     type: REMOVE_CLIENT_NEED,
@@ -78,6 +91,16 @@ function removeClientNeed(clientId, needId) {
 
 const serverHost = 'https://sleepy-scrubland-24958.herokuapp.com';
 // const serverHost = 'http://127.0.0.1:8000';
+
+function bookmarkResource(needId, resourceId, fulfilled) {
+  return {
+    type: BOOKMARK_RESOURCE,
+    needId: needId,
+    resourceId: resourceId,
+    fulfilled: fulfilled,
+    receivedAt: Date.now()
+  }
+}
 
 export function fetchProviderResources(needId, params) {
   return dispatch => {
@@ -131,7 +154,8 @@ export function updateClientNeed(clientId, needId, params) {
       headers: {
         "Content-Type": "application/json"
       }
-    });
+    }).then(response => response.json())
+      .then(json => dispatch(receiveUpdatedClientNeed(clientId, needId, json)));
   }
 }
 
@@ -141,6 +165,20 @@ export function deleteClientNeed(clientId, needId, params) {
     return fetch(url, {method: "DELETE"}).then(response => {
       if (response.status === 200) {
         dispatch(removeClientNeed(clientId, needId))
+      }
+    });
+  }
+}
+
+export function bookmarkResourceForNeed(resourceId, needId, fulfilled) {
+  return dispatch => {
+    const url = serverHost + '/need/' + needId + '/resource/' + resourceId + '/',
+          params = { fulfilled: fulfilled };
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
       }
     });
   }

@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
-import { fetchClient, createClientNeed, updateClientNeed, deleteClientNeed } from '../store/actions.js'
-import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { fetchClient, createClientNeed, updateClientNeed, deleteClientNeed } from '../store/actions.js';
+import _ from 'lodash';
 
-import ResourceSearch from './ResourceSearch.js'
+import Need from './client_needs/Need.js';
+import ClientBio from './client_needs/ClientBio.js';
+import ResourceSearch from './client_needs/ResourceSearch.js';
+
+import { Button, Panel } from 'react-bootstrap';
+import '../stylesheets/ClientNeeds.css';
 
 class ClientNeeds extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      showSearchModal: false,
+      activeNeed: undefined    } 
+
     this.addNeed = this.addNeed.bind(this);
     this.updateNeed = this.updateNeed.bind(this);
     this.deleteNeed = this.deleteNeed.bind(this);
+    this.showSearchModal = this.showSearchModal.bind(this);
+    this.closeSearchModal = this.closeSearchModal.bind(this);
   }
 
   render() { 
@@ -21,19 +32,114 @@ class ClientNeeds extends Component {
     return(
       <div>
         {client && client.loaded &&
-          <div>
-            <h4>Newcomer: {client.first_name} {client.last_name}</h4>
-            <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
-            {
-              client.needs.map((n) => {
-                return <ResourceSearch key={n.id} need={n} updateNeed={this.updateNeed} 
-                  removeNeed={this.deleteNeed} />
-              })
-            }
+          <div className='client-needs'>
+            <ClientBio client={client} />
+            <div className='needs'>
+              <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
+              <Panel header="Not Matched to any Resource" bsStyle="primary">
+                {
+                  this.needsWithoutAnyMatchingResources().map((n) => {
+                    return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
+                  })
+                }
+              </Panel>
+              <Panel header="Matched to Potential Resource(s)" bsStyle="success">
+                {
+                  this.needsWithPotentialResources().map((n) => {
+                    return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
+                  })
+                }
+              </Panel>
+              <Panel header="Matched to Pending Resource(s)" bsStyle="info">
+                {
+                  this.needsWithPendingResources().map((n) => {
+                    return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
+                  })
+                }
+              </Panel>
+              <Panel header="Fulfilled" bsStyle="warning">
+                {
+                  this.fulfilledNeeds().map((n) => {
+                    return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
+                  })
+                }
+              </Panel>
+              {this.state.activeNeed &&
+                <ResourceSearch show={this.state.showSearchModal} onHide={this.closeSearchModal} need={this.state.activeNeed} 
+                  updateNeed={this.updateNeed} removeNeed={this.deleteNeed}/>
+              }
+            </div>
           </div>
         }
       </div>
     )
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const p = this.props,
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId],
+          newNeed = _.find(client.needs, (n) => {return n.type === ''});
+
+
+    if (newNeed && !prevState.showSearchModal) {
+      this.setState({ activeNeed: newNeed, showSearchModal: true});
+    }
+  }
+
+  showSearchModal(needId) {
+    const activeNeed = this.getNeedById(needId);
+    this.setState({ activeNeed: activeNeed, showSearchModal: true });
+  }
+
+  closeSearchModal() {
+    this.setState({ showSearchModal: false });
+  }
+
+  getNeedById(id) {
+    const p = this.props,
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId],
+          need = _.find(client.needs, (n) => {return n.id === id});
+    return need;
+  }
+
+  needsWithoutAnyMatchingResources() {
+    const p = this.props,
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId],
+          needs = _.filter(client.needs, (n) => {return n.resources.length === 0});
+    return needs;
+  }
+
+  needsWithPotentialResources() {
+    const p = this.props,
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId],
+          needs = _.filter(client.needs, (n) => {
+            return _.find(n.resources, (r) => {return !r.pending && !r.fulfilled});
+          });
+    return needs;
+  }
+
+  needsWithPendingResources() {
+    const p = this.props,
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId],
+          needs = _.filter(client.needs, (n) => {
+            return _.find(n.resources, (r) => {return r.pending});
+          });
+    return needs;
+  }
+
+  fulfilledNeeds() {
+    const p = this.props,
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId],
+          needs = _.filter(client.needs, (n) => {
+            return _.find(n.resources, (r) => {return r.fulfilled});
+          });
+    return needs;
   }
 
   componentWillMount() { 
@@ -45,7 +151,7 @@ class ClientNeeds extends Component {
     const p = this.props,
           clientId = this.props.match.params.id;
     p.dispatch(createClientNeed(clientId));
-  }
+  }   
 
   updateNeed(requirementsParams, needId) {
     const p = this.props,
