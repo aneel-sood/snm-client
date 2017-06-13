@@ -47,7 +47,15 @@ function clients(state = {byId: {}, dashboard: {index: [], loaded: false} }, act
   }
 }
 
+function needs(state = {byClientId: {}}, action) {
+  switch (action.type) {
+    default: 
+      return state
+  }
+}
+
 export const rootReducer = combineReducers({
   searchResultsByNeedId,
-  clients
+  clients,
+  needs
 });

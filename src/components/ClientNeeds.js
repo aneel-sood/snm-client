@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { fetchClient, createClientNeed, updateClientNeed, deleteClientNeed } from '../store/actions.js'
+import { connect } from 'react-redux';
+import { fetchClient, createClientNeed, updateClientNeed, deleteClientNeed } from '../store/actions.js';
 import _ from 'lodash';
 
-import Need from './client_needs/Need.js'
-import ClientBio from './client_needs/ClientBio.js'
+import Need from './client_needs/Need.js';
+import ClientBio from './client_needs/ClientBio.js';
+import ResourceSearch from './client_needs/ResourceSearch.js';
 
 import { Button } from 'react-bootstrap';
 import '../stylesheets/ClientNeeds.css';
@@ -15,9 +16,16 @@ class ClientNeeds extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      showSearchModal: false,
+      activeNeed: undefined
+    } 
+
     this.addNeed = this.addNeed.bind(this);
     this.updateNeed = this.updateNeed.bind(this);
     this.deleteNeed = this.deleteNeed.bind(this);
+    this.showSearchModal = this.showSearchModal.bind(this);
+    this.closeSearchModal = this.closeSearchModal.bind(this);
   }
 
   render() { 
@@ -34,38 +42,53 @@ class ClientNeeds extends Component {
               <h5>Not Matched to any Resource</h5>
               {
                 this.needsWithoutAnyMatchingResources().map((n) => {
-                  return <Need key={n.id} need={n} />
+                  return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
                 })
               }
               <h5>Matched to Potential Resource(s)</h5>
               {
                 this.needsWithPotentialResources().map((n) => {
-                  return <Need key={n.id} need={n} />
+                  return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
                 })
               }
               <h5>Matched to Pending Resource(s)</h5>
               {
                 this.needsWithPendingResources().map((n) => {
-                  return <Need key={n.id} need={n} />
+                  return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
                 })
               }
               <h5>Fulfilled</h5>
               {
                 this.fulfilledNeeds().map((n) => {
-                  return <Need key={n.id} need={n} />
+                  return <Need key={n.id} need={n} showSearchModal={this.showSearchModal}/>
                 })
               }
-              {/*
-                client.needs.map((n) => {
-                  return <ResourceSearch key={n.id} need={n} updateNeed={this.updateNeed} 
-                    removeNeed={this.deleteNeed} />
-                })
-              */}
+              {this.state.activeNeed &&
+                <ResourceSearch show={this.state.showSearchModal} onHide={this.closeSearchModal} need={this.state.activeNeed} 
+                  updateNeed={this.updateNeed} removeNeed={this.deleteNeed}/>
+              }
             </div>
           </div>
         }
       </div>
     )
+  }
+
+  showSearchModal(needId) {
+    const activeNeed = this.getNeedById(needId);
+    this.setState({ activeNeed: activeNeed, showSearchModal: true });
+  }
+
+  closeSearchModal() {
+    this.setState({ showSearchModal: false });
+  }
+
+  getNeedById(id) {
+    const p = this.props,
+          clientId = p.match.params.id,
+          client = p.clientsById[clientId],
+          need = _.find(client.needs, (n) => {return n.id === id});
+    return need;
   }
 
   needsWithoutAnyMatchingResources() {
