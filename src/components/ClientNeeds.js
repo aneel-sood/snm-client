@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import Need from './client_needs/Need.js';
 import ClientBio from './client_needs/ClientBio.js';
-import ResourceSearch from './client_needs/ResourceSearch.js';
+import ResourceSearch from './ResourceSearch.js';
 
 import { Button, Panel } from 'react-bootstrap';
 import '../stylesheets/ClientNeeds.css';

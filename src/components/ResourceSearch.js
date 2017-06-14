@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchProviderResources, bookmarkResourceForNeed } from '../../store/actions.js';
+import { fetchProviderResources, bookmarkResourceForNeed } from '../store/actions.js';
 import { connect } from 'react-redux';
 
 // components
@@ -9,9 +9,9 @@ import Results from './resource_search/Results.js';
 import { Well, FormGroup, InputGroup, FormControl, Glyphicon, Modal, ControlLabel } from 'react-bootstrap';
 
 // stylesheets
-import '../../stylesheets/ResourceSearch.css';
-import '../../stylesheets/Filters.css';
-import '../../stylesheets/Results.css';
+import '../stylesheets/ResourceSearch.css';
+import '../stylesheets/Filters.css';
+import '../stylesheets/Results.css';
 
 class ResourceSearch extends Component {
   constructor(props) {
