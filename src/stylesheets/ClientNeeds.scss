@@ -1,6 +1,9 @@
 div.client-needs {
   display: flex;
   flex-direction: row;
+  position: absolute;
+  height: 100%;
+  width: 100%;
 
   .bio {
     width: 300px;
@@ -25,6 +28,14 @@ div.client-needs {
       border-bottom: 1px solid black;
       margin: 5px;
     }
+  }
+
+  .modal-container {
+    position: relative;
+  }
+  
+  .modal-container .modal, .modal-container .modal-backdrop {
+    position: absolute;
   }
 
 }

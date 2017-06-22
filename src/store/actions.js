@@ -92,15 +92,15 @@ function removeClientNeed(clientId, needId) {
 const serverHost = 'https://sleepy-scrubland-24958.herokuapp.com';
 // const serverHost = 'http://127.0.0.1:8000';
 
-function bookmarkResource(needId, resourceId, fulfilled) {
-  return {
-    type: BOOKMARK_RESOURCE,
-    needId: needId,
-    resourceId: resourceId,
-    fulfilled: fulfilled,
-    receivedAt: Date.now()
-  }
-}
+// function bookmarkResource(needId, resourceId, fulfilled) {
+//   return {
+//     type: BOOKMARK_RESOURCE,
+//     needId: needId,
+//     resourceId: resourceId,
+//     fulfilled: fulfilled,
+//     receivedAt: Date.now()
+//   }
+// }
 
 export function fetchProviderResources(needId, params) {
   return dispatch => {
