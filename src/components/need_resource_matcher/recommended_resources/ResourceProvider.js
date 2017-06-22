@@ -15,7 +15,7 @@ export default class ResourceProvider extends Component {
             {
               p.provider.resources.map((r) => { 
                 return (
-                  <Resource key={r.id} resource={r} bookmarkResource={p.bookmarkResource} />
+                  <Resource key={r.id} resource={r} saveMatchState={p.saveMatchState} />
                 )
               })
             }

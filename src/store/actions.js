@@ -13,7 +13,7 @@ export const RECEIVE_CLIENT_NEED = 'RECEIVE_CLIENT_NEED';
 export const RECEIVE_UPDATED_CLIENT_NEED = 'RECEIVE_UPDATED_CLIENT_NEED';
 export const REMOVE_CLIENT_NEED = 'REMOVE_CLIENT_NEED';
 
-export const BOOKMARK_RESOURCE = 'BOOKMARK_RESOURCE';
+// export const SAVE_RESOURCE_MATCH_STATE = 'SAVE_RESOURCE_MATCH_STATE';
 
 function resourceSearchRequested(needId) {
   return {
@@ -89,11 +89,12 @@ function removeClientNeed(clientId, needId) {
   }
 }
 
-// function bookmarkResource(needId, resourceId, fulfilled) {
+// function saveResourceMatchState(needId, resourceId, pending, fulfilled) {
 //   return {
-//     type: BOOKMARK_RESOURCE,
+//     type: SAVE_RESOURCE_MATCH_STATE,
 //     needId: needId,
 //     resourceId: resourceId,
+//     pending: pending,
 //     fulfilled: fulfilled,
 //     receivedAt: Date.now()
 //   }
@@ -170,10 +171,10 @@ export function deleteClientNeed(clientId, needId, params) {
   }
 }
 
-export function bookmarkResourceForNeed(resourceId, needId, fulfilled) {
+export function saveResourceMatchState(resourceId, needId, pending, fulfilled) {
   return dispatch => {
     const url = serverHost + '/need/' + needId + '/resource/' + resourceId + '/',
-          params = { fulfilled: fulfilled };
+          params = { pending: pending, fulfilled: fulfilled };
     return fetch(url, {
       method: "POST",
       body: JSON.stringify(params),
