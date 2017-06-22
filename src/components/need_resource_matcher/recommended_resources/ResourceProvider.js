@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Resource from './Resource.js';
 
-export default class ProviderListItem extends Component {
+export default class ResourceProvider extends Component {
   render() {  
     const p = this.props;
     return(
