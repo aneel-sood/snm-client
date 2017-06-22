@@ -6,7 +6,7 @@ import { fetchProviderResources } from '../store/actions.js';
 import { connect } from 'react-redux';
 
 // Components
-import NeedDetails from './need_resource_matcher/NeedDetails.js';
+import NeedControls from './need_resource_matcher/NeedControls.js';
 import RecommendedResources from './need_resource_matcher/RecommendedResources.js';
 
 // Styles
@@ -25,7 +25,7 @@ class NeedResourceMatcher extends Component {
       <Modal show={p.show} onHide={p.onHide} container={p.modalContainer} bsSize='lg'
         aria-labelledby="contained-modal-title">
         <Modal.Header closeButton>
-          <NeedDetails need={p.need} updateNeed={p.updateNeed} fetchResources={this.fetchResources} />
+          <NeedControls need={p.need} updateNeed={p.updateNeed} fetchResources={this.fetchResources} />
         </Modal.Header>
         <Modal.Body>
         {resourcesLoaded &&
