@@ -18,7 +18,7 @@ class ClientNeeds extends Component {
         {client && client.loaded &&
           <div className='client-needs'>
             <ClientBio client={client} />
-            <NeedsByStatus needs={client.needs} clientId={client.id} />
+            <NeedsByStatus />
           </div>
         }
       </div>

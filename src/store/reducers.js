@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux'
-import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, 
-          RECEIVE_CLIENT, RECEIVE_CLIENT_NEED, REMOVE_CLIENT_NEED,
-          REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA,
-          RECEIVE_UPDATED_CLIENT_NEED } from './actions.js'
+import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, RECEIVE_CLIENT, 
+          REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA } from './actions.js'
+import { needs } from './reducers/needReducers.js';
 import _ from 'lodash'
 
 function searchResultsByNeedId(state = {}, action) {
@@ -20,7 +19,7 @@ function searchResultsByNeedId(state = {}, action) {
 }
 
 function clients(state = {byId: {}, dashboard: {index: [], loaded: false} }, action) {
-  let nextById, nextClientNeedsSet, nextClient;
+  let nextById;
   switch (action.type) {
     case REQUEST_CLIENT:
       nextById = { ...state.byId, [action.id]: { loaded: false } }
@@ -31,37 +30,11 @@ function clients(state = {byId: {}, dashboard: {index: [], loaded: false} }, act
     case REQUEST_DASHBOARD_CLIENT_DATA:
       return {...state, dashboard: {index: [], loaded: false}}
     case RECEIEVE_DASHBOARD_CLIENT_DATA:
-      return {...state, dashboard: { index: action.clients, loaded: true } }
-    case RECEIVE_CLIENT_NEED:
-      nextClientNeedsSet = [action.need, ...state.byId[action.clientId].needs];
-      nextClient = {...state.byId[action.clientId], needs: nextClientNeedsSet};
-      nextById = {...state.byId, [action.clientId]: nextClient}
-      return {...state, byId: nextById}    
-    case RECEIVE_UPDATED_CLIENT_NEED:
-      nextClientNeedsSet = _.clone(state.byId[action.clientId].needs);
-      _.remove(nextClientNeedsSet, (n) => { return n.id === action.needId });
-      nextClientNeedsSet = [action.need, ...nextClientNeedsSet];
-      nextClient = {...state.byId[action.clientId], needs: nextClientNeedsSet};
-      nextById = {...state.byId, [action.clientId]: nextClient};
-      return {...state, byId: nextById}
-    case REMOVE_CLIENT_NEED:
-      nextClientNeedsSet = _.clone(state.byId[action.clientId].needs);
-      _.remove(nextClientNeedsSet, (n) => { return n.id === action.needId });
-      nextClient = {...state.byId[action.clientId], needs: nextClientNeedsSet};
-      nextById = {...state.byId, [action.clientId]: nextClient};
-      return {...state, byId: nextById}
+      return {...state, dashboard: { index: action.clients, loaded: true } }   
     default:
       return state
   }
 }
-
-function needs(state = {byClientId: {}}, action) {
-  switch (action.type) {
-    default: 
-      return state
-  }
-}
-
 export const rootReducer = combineReducers({
   searchResultsByNeedId,
   clients,

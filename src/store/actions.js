@@ -1,4 +1,6 @@
 import fetch from 'isomorphic-fetch';
+import { serverHost } from './defaults.js';
+import { receiveNeeds } from './actions/needActions.js'
 
 export const SEARCH_REQUESTED = 'SEARCH_REQUESTED';
 export const SEARCH_RESPONSE_RECEIVED = 'SEARCH_RESPONSE_RECEIVED';
@@ -8,10 +10,6 @@ export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 
 export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
-
-export const RECEIVE_CLIENT_NEED = 'RECEIVE_CLIENT_NEED';
-export const RECEIVE_UPDATED_CLIENT_NEED = 'RECEIVE_UPDATED_CLIENT_NEED';
-export const REMOVE_CLIENT_NEED = 'REMOVE_CLIENT_NEED';
 
 // export const SAVE_RESOURCE_MATCH_STATE = 'SAVE_RESOURCE_MATCH_STATE';
 
@@ -61,34 +59,6 @@ function receieveDashboardClientData(json) {
   }
 }
 
-function receiveClientNeed(clientId, json) {
-  return {
-    type: RECEIVE_CLIENT_NEED,
-    clientId: clientId,
-    need: json,
-    receivedAt: Date.now()
-  }
-}
-
-function receiveUpdatedClientNeed(clientId, needId, json) {
-  return {
-    type: RECEIVE_UPDATED_CLIENT_NEED,
-    clientId: clientId,
-    needId: needId,
-    need: json,
-    receivedAt: Date.now()
-  }
-}
-
-function removeClientNeed(clientId, needId) {
-  return {
-    type: REMOVE_CLIENT_NEED,
-    clientId: clientId,
-    needId: needId,
-    receivedAt: Date.now()
-  }
-}
-
 // function saveResourceMatchState(needId, resourceId, pending, fulfilled) {
 //   return {
 //     type: SAVE_RESOURCE_MATCH_STATE,
@@ -99,9 +69,6 @@ function removeClientNeed(clientId, needId) {
 //     receivedAt: Date.now()
 //   }
 // }
-
-// const serverHost = 'https://sleepy-scrubland-24958.herokuapp.com';
-const serverHost = 'http://127.0.0.1:8000';
 
 export function fetchProviderResources(needId, params) {
   return dispatch => {
@@ -122,7 +89,12 @@ export function fetchClient(id) {
     const url = serverHost + '/client/' + id;
 
     return fetch(url).then(response => response.json())
-      .then(json => dispatch(receiveClient(id, json)))
+      .then(json => {
+        const needs = json.needs;
+        delete json.needs;
+        dispatch(receiveClient(id, json))
+        dispatch(receiveNeeds(id, needs))
+      })
   }
 }
 
@@ -133,41 +105,6 @@ export function fetchDashboardClientData(id) {
 
     return fetch(url).then(response => response.json())
       .then(json => dispatch(receieveDashboardClientData(json)))
-  }
-}
-
-export function createClientNeed(clientId) {
-  return dispatch => {
-    const url = serverHost + '/client/' + clientId + '/needs/';
-          
-    return fetch(url, {method: "POST"}).then(response => response.json())
-      .then(json => dispatch(receiveClientNeed(clientId, json)));
-  }
-}
-
-export function updateClientNeed(clientId, needId, params) {
-  return dispatch => {
-    const url = serverHost + '/client/' + clientId + '/need/' + needId + '/';
-          
-    return fetch(url, {
-      method: "PUT",
-      body: JSON.stringify(params),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(response => response.json())
-      .then(json => dispatch(receiveUpdatedClientNeed(clientId, needId, json)));
-  }
-}
-
-export function deleteClientNeed(clientId, needId, params) {
-  return dispatch => {
-    const url = serverHost + '/client/' + clientId + '/need/' + needId + '/';
-    return fetch(url, {method: "DELETE"}).then(response => {
-      if (response.status === 200) {
-        dispatch(removeClientNeed(clientId, needId))
-      }
-    });
   }
 }
 

@@ -4,7 +4,8 @@ import _ from 'lodash';
 
 // store
 import { connect } from 'react-redux';
-import { createClientNeed, updateClientNeed, deleteClientNeed } from '../../store/actions.js';
+import { createClientNeed, updateClientNeed, deleteClientNeed } 
+  from '../../store/actions/needActions.js';
 
 // components 
 import Need from './Need.js';
@@ -140,4 +141,12 @@ class NeedsByStatus extends Component {
   }
 }
 
-export default connect()(NeedsByStatus);
+const mapStateToProps = (state) => {
+  return {
+    loaded: state.needs.loaded,
+    clientId: state.needs.clientId,
+    needs: state.needs.index
+  }
+}
+
+export default connect(mapStateToProps)(NeedsByStatus);
