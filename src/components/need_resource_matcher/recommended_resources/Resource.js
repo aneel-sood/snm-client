@@ -7,6 +7,8 @@ export default class Resource extends Component {
     return (
       <li className="resource">
         <Glyphicon glyph="glyphicon glyphicon-star" onClick={this.matchResource} />
+        <Glyphicon glyph="glyphicon glyphicon-play-circle" onClick={this.matchResourcePending} />
+        <Glyphicon glyph="glyphicon glyphicon-ok" onClick={this.matchResourceFulfilled} />
         {
           Object.keys(r.details).map((key, i) => {
             return (
@@ -20,6 +22,14 @@ export default class Resource extends Component {
 
   matchResource = () => {
     this.saveMatchState();
+  }
+
+  matchResourcePending = () => {
+    this.saveMatchState(true);
+  }
+
+  matchResourceFulfilled = () => {
+    this.saveMatchState(false, true);
   }
 
   saveMatchState = (pending=false, fulfilled=false) => {
