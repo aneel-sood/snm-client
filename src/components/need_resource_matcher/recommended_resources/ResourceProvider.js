@@ -6,7 +6,7 @@ export default class ResourceProvider extends Component {
     const p = this.props;
     return(
       <li className='provider'>
-        <div>
+        <div className='contact-info'>
           <span className='full-name'>{p.provider.first_name} {p.provider.last_name}</span><br />
           <span className='email'>{p.provider.email} </span>
         </div>
@@ -15,7 +15,7 @@ export default class ResourceProvider extends Component {
             {
               p.provider.resources.map((r) => { 
                 return (
-                  <Resource key={r.id} resource={r} bookmarkResource={p.bookmarkResource} />
+                  <Resource key={r.id} resource={r} saveMatchState={p.saveMatchState} />
                 )
               })
             }

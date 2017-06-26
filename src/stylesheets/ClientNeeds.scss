@@ -25,8 +25,23 @@ div.client-needs {
 
 
     .need {
-      border-bottom: 1px solid black;
       margin: 5px;
+
+      .type-title:hover {
+        background-color: aqua;
+        cursor: pointer;
+      }
+
+      .glyphicon-remove {
+        float: right;
+        padding: 1px;
+
+        &:hover {
+          cursor: pointer;
+          background-color: red;
+          color: white;
+        }
+      }
     }
   }
 

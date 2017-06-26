@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 // store
 import { fetchProviderResources } from '../store/actions.js';
+import { saveNeedMatchState } from '../store/actions/needActions.js';
 import { connect } from 'react-redux';
 
 // Components
@@ -25,12 +26,14 @@ class NeedResourceMatcher extends Component {
       <Modal show={p.show} onHide={p.onHide} container={p.modalContainer} bsSize='lg'
         aria-labelledby="contained-modal-title">
         <Modal.Header closeButton>
-          <NeedControls need={p.need} updateNeed={p.updateNeed} fetchResources={this.fetchResources} />
+          <NeedControls need={p.need} updateNeed={p.updateNeed} 
+            fetchResources={this.fetchResources} />
         </Modal.Header>
         <Modal.Body>
-        {resourcesLoaded &&
-          <RecommendedResources resourcesByProvider={resourcesByProvider} />
-        }
+          {resourcesLoaded &&
+            <RecommendedResources resourcesByProvider={resourcesByProvider} 
+              saveMatchState={this.saveMatchState} />
+          }
         </Modal.Body>
       </Modal>
     )
@@ -42,11 +45,12 @@ class NeedResourceMatcher extends Component {
       resource_type: needType,
       details: detailsParams
     }
-
-    // console.log("search request parameters:")
-    // console.log(params)
-
     p.dispatch(fetchProviderResources(p.need.id, params));
+  }
+
+  saveMatchState = (resourceId, pending=false, fulfilled=false) => {
+    const p = this.props;
+    p.dispatch(saveNeedMatchState(resourceId, p.need.id, pending, fulfilled));
   }
 }
 
