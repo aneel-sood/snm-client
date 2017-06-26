@@ -6,7 +6,7 @@ export default class Resource extends Component {
     const r = this.props.resource;
     return (
       <li className="resource">
-        <Glyphicon glyph="glyphicon glyphicon-star" onClick={this.matchResource} />
+        <Glyphicon glyph="glyphicon glyphicon-pushpin" onClick={this.matchResource} />
         <Glyphicon glyph="glyphicon glyphicon-play-circle" onClick={this.matchResourcePending} />
         <Glyphicon glyph="glyphicon glyphicon-ok" onClick={this.matchResourceFulfilled} />
         {

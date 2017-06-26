@@ -8,7 +8,7 @@ import { createClientNeed, updateClientNeed, deleteClientNeed }
   from '../../store/actions/needActions.js';
 
 // components 
-import Need from './Need.js';
+import NeedOverview from './NeedOverview.js';
 import NeedResourceMatcher from '../NeedResourceMatcher.js';
 
 
@@ -35,23 +35,23 @@ class NeedsByStatus extends Component {
       <div className='needs modal-container'>
         <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
         <Panel header="Needs With No Matched Resources (1)" bsStyle="primary">
-          {needs.withoutResources.map((n) => {
-            return <Need key={n.id} need={n} delete={this.deleteNeed} 
+          {needs.withoutResources.map((n, i) => {
+            return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
                       showSearchModal={this.showSearchModal}/>})}
         </Panel>
         <Panel header="Needs With Potential Resources (7)" bsStyle="success">
-          {needs.withPotentialResources.map((n) => {
-            return <Need key={n.id} need={n} delete={this.deleteNeed} 
+          {needs.withPotentialResources.map((n, i) => {
+            return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
                       showSearchModal={this.showSearchModal}/>})}
         </Panel>
         <Panel header="Needs With Pending Resources (5)" bsStyle="info">
-          {needs.withPendingResources.map((n) => {
-            return <Need key={n.id} need={n} delete={this.deleteNeed} 
+          {needs.withPendingResources.map((n, i) => {
+            return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
                       showSearchModal={this.showSearchModal}/>})}
         </Panel>
         <Panel header="Needs Fulfilled (20)" bsStyle="warning">
-          {needs.withFulfillingResources.map((n) => {
-            return <Need key={n.id} need={n} delete={this.deleteNeed} 
+          {needs.withFulfillingResources.map((n, i) => {
+            return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
                       showSearchModal={this.showSearchModal}/>})}
         </Panel>
         {s.showSearchModal &&

@@ -6,19 +6,27 @@
 
 }
 
-ul.recommended-resources {
-  list-style-type: none;
-  padding: 0;
-  
-  li.provider {
-    margin: 10px;
-    padding: 5px;
-    background-color: lightyellow;
+.recommended-resources {
 
-    div {
-      display: inline-block;
+  .title {
+    margin-top: 0;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    
+    li.provider {
       margin: 10px;
-      vertical-align: top;
+      padding: 5px;
+      background-color: lightyellow;
+
+      div {
+        display: inline-block;
+        margin: 10px;
+        vertical-align: top;
+      }
     }
   }
 }
+
