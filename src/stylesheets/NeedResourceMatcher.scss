@@ -34,11 +34,25 @@
             float: right;
             font-size: 16px;
 
-            .glyphicon-pushpin {
-              color: white;
-              background-color: lightsalmon;
-              padding: 5px;
-              border-radius: 15px;
+            a:focus {
+              outline: none;
+            }
+
+            .current-state {
+              font-weight: bold;
+              color: darkgreen;
+            }
+
+            .glyphicon {
+              color: darkgreen;
+              // background-color: lightsalmon;
+              // padding: 5px;
+              // border-radius: 15px;
+
+              &.glyphicon-pushpin {
+                font-size: 17px;
+                color: green;
+              }
             }
           }
         }

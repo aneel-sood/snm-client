@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Resource from './Resource.js';
+import _ from 'lodash';
 
 export default class ResourceProvider extends Component {
   render() {  
@@ -14,8 +15,10 @@ export default class ResourceProvider extends Component {
           <ul>
             {
               p.provider.resources.map((r) => { 
+                let matchState = this.matchStateForResource(r.id);
                 return (
-                  <Resource key={r.id} resource={r} saveMatchState={p.saveMatchState} />
+                  <Resource key={r.id} resource={r} saveMatchState={p.saveMatchState} 
+                    deleteMatchState={p.deleteMatchState} matchState={matchState} />
                 )
               })
             }
@@ -23,5 +26,16 @@ export default class ResourceProvider extends Component {
         </div>
       </li>
     )
+  }
+
+  matchStateForResource = (resourceId) => {
+    const resource =  _.find(this.props.matchedResources, r => r.resource.id === resourceId);
+    let state = undefined;
+    if (resource) {
+      state = 'matched';
+      state = resource.pending ? 'pending' : state;
+      state = resource.fulfilled ? 'fulfilled' : state;
+    } 
+    return state;
   }
 }

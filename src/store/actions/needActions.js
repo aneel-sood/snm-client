@@ -102,3 +102,12 @@ export function saveNeedMatchState(resourceId, needId, pending, fulfilled) {
       .then(json => dispatch(receiveUpdatedNeedMatchState(needId, json)));
   }
 }
+
+export function deleteNeedMatchState(resourceId, needId) {
+  return dispatch => {
+    const url = serverHost + '/need/' + needId + '/resource/' + resourceId + '/';
+    return fetch(url, {method: "DELETE"})
+      .then(response => response.json())
+      .then(json => dispatch(receiveUpdatedNeedMatchState(needId, json)));
+  }
+}
