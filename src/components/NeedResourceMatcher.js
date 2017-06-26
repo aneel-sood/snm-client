@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 // store
-import { fetchProviderResources, saveResourceMatchState } from '../store/actions.js';
+import { fetchProviderResources } from '../store/actions.js';
+import { saveNeedMatchState } from '../store/actions/needActions.js';
 import { connect } from 'react-redux';
 
 // Components
@@ -49,7 +50,7 @@ class NeedResourceMatcher extends Component {
 
   saveMatchState = (resourceId, pending=false, fulfilled=false) => {
     const p = this.props;
-    p.dispatch(saveResourceMatchState(resourceId, p.need.id, pending, fulfilled));
+    p.dispatch(saveNeedMatchState(resourceId, p.need.id, pending, fulfilled));
   }
 }
 

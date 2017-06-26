@@ -11,8 +11,6 @@ export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
 
-// export const SAVE_RESOURCE_MATCH_STATE = 'SAVE_RESOURCE_MATCH_STATE';
-
 function resourceSearchRequested(needId) {
   return {
     type: SEARCH_REQUESTED,
@@ -59,17 +57,6 @@ function receieveDashboardClientData(json) {
   }
 }
 
-// function saveResourceMatchState(needId, resourceId, pending, fulfilled) {
-//   return {
-//     type: SAVE_RESOURCE_MATCH_STATE,
-//     needId: needId,
-//     resourceId: resourceId,
-//     pending: pending,
-//     fulfilled: fulfilled,
-//     receivedAt: Date.now()
-//   }
-// }
-
 export function fetchProviderResources(needId, params) {
   return dispatch => {
     dispatch(resourceSearchRequested(needId))
@@ -105,19 +92,5 @@ export function fetchDashboardClientData(id) {
 
     return fetch(url).then(response => response.json())
       .then(json => dispatch(receieveDashboardClientData(json)))
-  }
-}
-
-export function saveResourceMatchState(resourceId, needId, pending, fulfilled) {
-  return dispatch => {
-    const url = serverHost + '/need/' + needId + '/resource/' + resourceId + '/',
-          params = { pending: pending, fulfilled: fulfilled };
-    return fetch(url, {
-      method: "POST",
-      body: JSON.stringify(params),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
   }
 }

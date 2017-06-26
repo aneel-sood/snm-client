@@ -32,7 +32,14 @@
 
           .dropdown {
             float: right;
-            font-size: 20px;
+            font-size: 16px;
+
+            .glyphicon-pushpin {
+              color: white;
+              background-color: lightsalmon;
+              padding: 5px;
+              border-radius: 15px;
+            }
           }
         }
       }

@@ -5,6 +5,7 @@ export const RECEIVE_NEEDS = 'RECEIVE_NEEDS';
 export const RECEIVE_NEW_CLIENT_NEED = 'RECEIVE_NEW_CLIENT_NEED';
 export const RECEIVE_UPDATED_CLIENT_NEED = 'RECEIVE_UPDATED_CLIENT_NEED';
 export const REMOVE_CLIENT_NEED = 'REMOVE_CLIENT_NEED';
+export const RECEIVE_UPDATED_NEED_MATCH_STATE = 'RECEIVE_UPDATED_NEED_MATCH_STATE';
 
 export function receiveNeeds(clientId, json) {
   return {
@@ -43,6 +44,15 @@ function removeClientNeed(clientId, needId) {
   }
 }
 
+function receiveUpdatedNeedMatchState(needId, json) {
+  return {
+    type: RECEIVE_UPDATED_NEED_MATCH_STATE,
+    id: needId,
+    need: json,
+    receivedAt: Date.now()
+  }
+}
+
 export function createClientNeed(clientId) {
   return dispatch => {
     const url = serverHost + '/client/' + clientId + '/needs/';
@@ -75,5 +85,20 @@ export function deleteClientNeed(clientId, needId, params) {
         dispatch(removeClientNeed(clientId, needId))
       }
     });
+  }
+}
+
+export function saveNeedMatchState(resourceId, needId, pending, fulfilled) {
+  return dispatch => {
+    const url = serverHost + '/need/' + needId + '/resource/' + resourceId + '/',
+          params = { pending: pending, fulfilled: fulfilled };
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveUpdatedNeedMatchState(needId, json)));
   }
 }
