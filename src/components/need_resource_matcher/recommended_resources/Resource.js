@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Glyphicon } from 'react-bootstrap';
+import _ from 'lodash';
 
 export default class Resource extends Component {
   render() {
@@ -7,8 +8,7 @@ export default class Resource extends Component {
     return (
       <li className="resource">
         <Glyphicon glyph="glyphicon glyphicon-pushpin" onClick={this.matchResource} />
-        <Glyphicon glyph="glyphicon glyphicon-play-circle" onClick={this.matchResourcePending} />
-        <Glyphicon glyph="glyphicon glyphicon-ok" onClick={this.matchResourceFulfilled} />
+        <h5>{_.capitalize(r.type)}</h5>
         {
           Object.keys(r.details).map((key, i) => {
             return (
