@@ -1,0 +1,18 @@
+.dashboard {
+  width: 85%;
+  margin: auto;
+
+  .title {
+    text-decoration: underline;
+  }
+
+  table {
+    th {
+      text-align: center;
+    }
+
+    .centered-text {
+      text-align: center;
+    }
+  }
+}

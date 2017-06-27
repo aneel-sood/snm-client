@@ -3,13 +3,15 @@ import { connect } from 'react-redux'
 import { fetchDashboardClientData } from '../store/actions.js'
 import ClientNeedsOverview from './dashboard/ClientNeedsOverview.js'
 import _ from 'lodash'
+import '../stylesheets/Dashboard.css';
 
 class Dashboard extends Component {
 
   render() {
     const p = this.props;
     return(
-      <div>
+      <div className='dashboard'>
+        <h3 className='title'>Recent Activity</h3>
         { p.clientDataLoaded &&
           <ClientNeedsOverview clients={p.clients} />
         }

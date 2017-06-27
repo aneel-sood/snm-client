@@ -7,13 +7,15 @@ export default class ClientNeedsOverview extends Component {
   render() {
     const p = this.props;
     return(
-      <Table striped bordered condensed hover>
+      <Table striped condensed hover>
         <thead>
           <tr>
-            <th>Client Name</th>
-            <th>Pending Needs</th>
-            <th>Fulfilled Needs</th>
-            <th>Last Resource Bookmark</th>
+            <th>Client</th>
+            <th>Without Matches</th>
+            <th>With Matches</th>
+            <th>Pending</th>
+            <th>Fulfilled</th>
+            <th>Recent Activty</th>
           </tr>
         </thead>
         <tbody>
