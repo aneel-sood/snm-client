@@ -11,7 +11,8 @@ export default class RecommendedResources extends Component {
         <ul>
           {p.resourcesByProvider.map((provider) => { 
             return <ResourceProvider key={provider.id} provider={provider} 
-              saveMatchState={p.saveMatchState}/>
+              saveMatchState={p.saveMatchState} deleteMatchState={p.deleteMatchState}
+              matchedResources={p.matchedResources} />
           })}
         </ul>
       </div>

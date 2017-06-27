@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 // store
 import { fetchProviderResources } from '../store/actions.js';
-import { saveNeedMatchState } from '../store/actions/needActions.js';
+import { saveNeedMatchState, deleteNeedMatchState } from '../store/actions/needActions.js';
 import { connect } from 'react-redux';
 
 // Components
@@ -32,7 +32,8 @@ class NeedResourceMatcher extends Component {
         <Modal.Body>
           {resourcesLoaded &&
             <RecommendedResources resourcesByProvider={resourcesByProvider} 
-              saveMatchState={this.saveMatchState} />
+              saveMatchState={this.saveMatchState} deleteMatchState={this.deleteMatchState}
+              matchedResources={p.need.resources} />
           }
         </Modal.Body>
       </Modal>
@@ -51,6 +52,11 @@ class NeedResourceMatcher extends Component {
   saveMatchState = (resourceId, pending=false, fulfilled=false) => {
     const p = this.props;
     p.dispatch(saveNeedMatchState(resourceId, p.need.id, pending, fulfilled));
+  }
+
+  deleteMatchState = (resourceId) => {
+    const p = this.props;
+    p.dispatch(deleteNeedMatchState(resourceId, p.need.id));
   }
 }
 

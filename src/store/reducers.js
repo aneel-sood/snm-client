@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, RECEIVE_CLIENT, 
           REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA } from './actions.js'
 import { needs } from './reducers/needReducers.js';
-import _ from 'lodash'
 
 function searchResultsByNeedId(state = {}, action) {
   let nextResultObj;
