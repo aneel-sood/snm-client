@@ -63,7 +63,7 @@ class NeedsByStatus extends Component {
         {s.showSearchModal &&
           <NeedResourceMatcher show={s.showSearchModal} onHide={this.closeSearchModal} 
             modalContainer={this} need={this.getNeedById(s.activeNeedId)} updateNeed={this.updateNeed} 
-            deleteNeed={this.deleteNeed}/>
+            deleteNeed={this.deleteNeed} activeTab={s.activeSearchModalTab} />
         }
       </div>
     )
@@ -74,7 +74,7 @@ class NeedsByStatus extends Component {
           newNeed = _.find(p.needs, (n) => {return n.type === ''});
 
     if (newNeed && !prevState.showSearchModal) {
-      this.setState({ activeNeedId: newNeed.id, showSearchModal: true});
+      this.setState({ activeNeedId: newNeed.id, showSearchModal: true, activeSearchModalTab: 1 });
     }
   }
 
@@ -98,8 +98,8 @@ class NeedsByStatus extends Component {
   }
 
   // Matcher Modal Methods
-  showSearchModal = (needId) => {
-    this.setState({ activeNeedId: needId, showSearchModal: true });
+  showSearchModal = (needId, activeTab=2) => {
+    this.setState({ activeNeedId: needId, showSearchModal: true, activeSearchModalTab: activeTab });
   }
 
   closeSearchModal = () => {

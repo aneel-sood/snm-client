@@ -6,63 +6,63 @@
 
 }
 
-.recommended-resources {
-
-  .title {
-    margin-top: 0;
-  }
+ul.provider-resources {
+  list-style-type: none;
+  padding: 0;
   
-  ul {
-    list-style-type: none;
-    padding: 0;
-    
-    li.provider {
-      margin: 10px;
-      padding: 10px;
-      display: flex;
-      flex-direction: row-reverse;
+  li.provider {
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: tomato;
+    border-radius: 10px;
 
-      .resources {
-        width: 100%;
+    .resources {
+      width: 100%;
 
-        .resource {
-          margin-bottom: 5px;
-          background-color: #fcf8e3;
-          padding: 5px 10px 1px 10px;
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
 
-          .dropdown {
-            float: right;
-            font-size: 16px;
+      .resource {
+        margin-bottom: 5px;
+        background-color: aliceblue;
+        border-radius: 5px;
+        padding: 5px 10px 1px 10px;
 
-            a:focus {
-              outline: none;
-            }
+        .dropdown {
+          float: right;
+          font-size: 16px;
 
-            .current-state {
-              font-weight: bold;
-              color: darkgreen;
-            }
+          a:focus {
+            outline: none;
+          }
 
-            .glyphicon {
-              color: darkgreen;
-              // background-color: lightsalmon;
-              // padding: 5px;
-              // border-radius: 15px;
+          .current-state {
+            font-weight: bold;
+            color: darkgreen;
+          }
 
-              &.glyphicon-pushpin {
-                font-size: 17px;
-                color: green;
-              }
+          .glyphicon {
+            color: darkgreen;
+            // background-color: lightsalmon;
+            // padding: 5px;
+            // border-radius: 15px;
+
+            &.glyphicon-pushpin {
+              font-size: 17px;
+              color: green;
             }
           }
         }
       }
+    }
 
-      .contact-info {
-        min-width: 150px;
-        padding-left: 10px;
-      }
+    .contact-info {
+      min-width: 150px;
+      padding-left: 10px;
     }
   }
 }
-

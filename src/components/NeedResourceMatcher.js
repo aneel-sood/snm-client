@@ -9,9 +9,10 @@ import { connect } from 'react-redux';
 // Components
 import NeedControls from './need_resource_matcher/NeedControls.js';
 import RecommendedResources from './need_resource_matcher/RecommendedResources.js';
+import ResourceProvider from './need_resource_matcher/recommended_resources/ResourceProvider.js';
 
 // Styles
-import { Modal } from 'react-bootstrap';
+import { Modal, Tab, Nav, NavItem } from 'react-bootstrap';
 import 'react-select/dist/react-select.css';
 import '../stylesheets/NeedResourceMatcher.css';
 
@@ -30,11 +31,36 @@ class NeedResourceMatcher extends Component {
             fetchResources={this.fetchResources} />
         </Modal.Header>
         <Modal.Body>
-          {resourcesLoaded &&
-            <RecommendedResources resourcesByProvider={resourcesByProvider} 
-              saveMatchState={this.saveMatchState} deleteMatchState={this.deleteMatchState}
-              matchedResources={p.need.resources} />
-          }
+          <Tab.Container id="tabs" defaultActiveKey={p.activeTab} >
+            <div>
+              <Nav bsStyle="pills">
+                <NavItem eventKey={1}>Resource Search</NavItem>
+                <NavItem eventKey={2}>Matched Resources</NavItem>
+              </Nav>
+              <Tab.Content animation>
+                <Tab.Pane eventKey={1}>
+                  {resourcesLoaded && 
+                    <RecommendedResources resourcesByProvider={resourcesByProvider} 
+                      saveMatchState={this.saveMatchState} deleteMatchState={this.deleteMatchState}
+                      matchedResources={p.need.resources} />
+                  }
+                </Tab.Pane>
+                <Tab.Pane eventKey={2}>
+                  {!_.isEmpty(p.need.resources) &&
+                    <ul className='provider-resources'>
+                      {
+                        this.matchedResourcesByProvider().map((provider) => { 
+                          return <ResourceProvider key={provider.id} provider={provider} 
+                            saveMatchState={this.saveMatchState} deleteMatchState={this.deleteMatchState}
+                            matchedResources={p.need.resources} />
+                        })
+                      }
+                    </ul>
+                  }
+                </Tab.Pane>
+              </Tab.Content>
+            </div>
+          </Tab.Container>
         </Modal.Body>
       </Modal>
     )
@@ -57,6 +83,15 @@ class NeedResourceMatcher extends Component {
   deleteMatchState = (resourceId) => {
     const p = this.props;
     p.dispatch(deleteNeedMatchState(resourceId, p.need.id));
+  }
+
+  matchedResourcesByProvider = () => {
+    const p = this.props;
+    let matchedResourcesByProvider = p.need.resources.map((r) => {
+      let resource = r.resource;
+      return _.assign({resources: [resource]}, resource.provider);
+    });
+    return matchedResourcesByProvider;
   }
 }
 
