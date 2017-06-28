@@ -11,11 +11,11 @@ export default class ClientNeedsOverview extends Component {
         <thead>
           <tr>
             <th>Client</th>
-            <th>Without Matches</th>
-            <th>With Matches</th>
-            <th>Pending</th>
-            <th>Fulfilled</th>
-            <th>Recent Activty</th>
+            <th>Needs Without Matches</th>
+            <th>Needs With Matches</th>
+            <th>Needs Pending</th>
+            <th>Needs Fulfilled</th>
+            <th>Need Status Change</th>
           </tr>
         </thead>
         <tbody>

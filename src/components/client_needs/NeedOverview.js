@@ -22,7 +22,8 @@ export default class NeedOverview extends Component {
   }
 
   showSearchModal = () => {
-    const p = this.props;
-    p.showSearchModal(p.need.id);
+    const p = this.props,
+          activeModalTab = _.isEmpty(p.need.resources) ? 1 : 2
+    p.showSearchModal(p.need.id, activeModalTab);
   }
 }

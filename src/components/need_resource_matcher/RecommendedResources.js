@@ -6,9 +6,8 @@ export default class RecommendedResources extends Component {
   render() {
     const p = this.props;
     return (
-      <div className='recommended-resources'>
-        <h5 className='title'>Recommended Resources</h5>
-        <ul>
+      <div>
+        <ul className='provider-resources'>
           {p.resourcesByProvider.map((provider) => { 
             return <ResourceProvider key={provider.id} provider={provider} 
               saveMatchState={p.saveMatchState} deleteMatchState={p.deleteMatchState}
