@@ -7,6 +7,8 @@ export const SEARCH_RESPONSE_RECEIVED = 'SEARCH_RESPONSE_RECEIVED';
 
 export const REQUEST_CLIENT = 'REQUEST_CLIENT';
 export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
+export const REQUEST_CLIENTS = 'REQUEST_CLIENTS';
+export const RECEIVE_CLIENTS = 'RECEIVE_CLIENTS';
 
 export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
@@ -39,6 +41,20 @@ function receiveClient(id, json) {
     type: RECEIVE_CLIENT,
     id: id,
     client: json,
+    receivedAt: Date.now()
+  }
+}
+
+function requestClients() {
+  return {
+    type: REQUEST_CLIENTS
+  }
+}
+
+function receiveClients(json) {
+  return {
+    type: RECEIVE_CLIENTS,
+    clients: json,
     receivedAt: Date.now()
   }
 }
@@ -81,6 +97,18 @@ export function fetchClient(id) {
         delete json.needs;
         dispatch(receiveClient(id, json))
         dispatch(receiveNeeds(id, needs))
+      })
+  }
+}
+
+export function fetchClients() {
+  return dispatch => {
+    dispatch(requestClients())
+    const url = serverHost + '/clients/';
+
+    return fetch(url).then(response => response.json())
+      .then(json => {
+        dispatch(receiveClients(json))
       })
   }
 }
