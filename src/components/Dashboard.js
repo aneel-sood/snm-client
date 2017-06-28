@@ -11,7 +11,7 @@ class Dashboard extends Component {
     const p = this.props;
     return(
       <div className='dashboard'>
-        <h3 className='title'>Recent Activity</h3>
+        <h3 className='title'>Recently Active Clients</h3>
         { p.clientDataLoaded &&
           <ClientNeedsOverview clients={p.clients} />
         }
