@@ -5,8 +5,11 @@ import { receiveNeeds } from './actions/needActions.js'
 export const SEARCH_REQUESTED = 'SEARCH_REQUESTED';
 export const SEARCH_RESPONSE_RECEIVED = 'SEARCH_RESPONSE_RECEIVED';
 
+export const RECEIVE_NEW_CLIENT = 'RECEIVE_NEW_CLIENT';
 export const REQUEST_CLIENT = 'REQUEST_CLIENT';
 export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
+export const REQUEST_CLIENTS = 'REQUEST_CLIENTS';
+export const RECEIVE_CLIENTS = 'RECEIVE_CLIENTS';
 
 export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
@@ -27,6 +30,13 @@ function resourceSearchResponseReceived(needId, json) {
   }
 }
 
+function receiveNewClient(json) {
+  return {
+    type: RECEIVE_NEW_CLIENT,
+    client: json
+  }
+}
+
 function requestClient(id) {
   return {
     type: REQUEST_CLIENT,
@@ -39,6 +49,20 @@ function receiveClient(id, json) {
     type: RECEIVE_CLIENT,
     id: id,
     client: json,
+    receivedAt: Date.now()
+  }
+}
+
+function requestClients() {
+  return {
+    type: REQUEST_CLIENTS
+  }
+}
+
+function receiveClients(json) {
+  return {
+    type: RECEIVE_CLIENTS,
+    clients: json,
     receivedAt: Date.now()
   }
 }
@@ -70,6 +94,21 @@ export function fetchProviderResources(needId, params) {
   }
 }
 
+export function createClient(params) {
+  return dispatch => {
+    const url = serverHost + '/client/';
+          
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveNewClient(json)));
+  }
+}
+
 export function fetchClient(id) {
   return dispatch => {
     dispatch(requestClient(id))
@@ -81,6 +120,18 @@ export function fetchClient(id) {
         delete json.needs;
         dispatch(receiveClient(id, json))
         dispatch(receiveNeeds(id, needs))
+      })
+  }
+}
+
+export function fetchClients() {
+  return dispatch => {
+    dispatch(requestClients())
+    const url = serverHost + '/clients/';
+
+    return fetch(url).then(response => response.json())
+      .then(json => {
+        dispatch(receiveClients(json))
       })
   }
 }

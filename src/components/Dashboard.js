@@ -10,7 +10,7 @@ class Dashboard extends Component {
   render() {
     const p = this.props;
     return(
-      <div className='dashboard'>
+      <div className='dashboard content'>
         <h3 className='title'>Recently Active Clients</h3>
         { p.clientDataLoaded &&
           <ClientNeedsOverview clients={p.clients} />

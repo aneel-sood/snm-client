@@ -4,6 +4,7 @@ import { IndexLinkContainer } from 'react-router-bootstrap';
 
 // components
 import Dashboard from './components/Dashboard.js';
+import Clients from './components/Clients.js';
 import ClientNeeds from './components/ClientNeeds.js';
 
 // style 
@@ -27,7 +28,9 @@ class App extends Component {
               <IndexLinkContainer to={`/`}>
                 <NavItem eventKey={1} href="#">Dashboard</NavItem>
               </IndexLinkContainer>
-              <NavItem eventKey={2} href="#">Clients</NavItem>
+              <IndexLinkContainer to={`/clients/`}>
+                <NavItem eventKey={2} href="#">Clients</NavItem>
+              </IndexLinkContainer>
               <NavItem eventKey={3} href="#">Resources</NavItem>
             </Nav>
             <Nav pullRight>
@@ -36,6 +39,7 @@ class App extends Component {
           </Navbar.Collapse>
         </Navbar>
         <Route exact path='/' component={Dashboard}/>
+        <Route exact path='/clients/' component={Clients}/>
         <Route exact path='/client/:id' component={ClientNeeds}/>
       </div>
     );
