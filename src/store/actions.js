@@ -5,6 +5,7 @@ import { receiveNeeds } from './actions/needActions.js'
 export const SEARCH_REQUESTED = 'SEARCH_REQUESTED';
 export const SEARCH_RESPONSE_RECEIVED = 'SEARCH_RESPONSE_RECEIVED';
 
+export const RECEIVE_NEW_CLIENT = 'RECEIVE_NEW_CLIENT';
 export const REQUEST_CLIENT = 'REQUEST_CLIENT';
 export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 export const REQUEST_CLIENTS = 'REQUEST_CLIENTS';
@@ -26,6 +27,13 @@ function resourceSearchResponseReceived(needId, json) {
     needId: needId,
     providers: json,
     receivedAt: Date.now()
+  }
+}
+
+function receiveNewClient(json) {
+  return {
+    type: RECEIVE_NEW_CLIENT,
+    client: json
   }
 }
 
@@ -83,6 +91,21 @@ export function fetchProviderResources(needId, params) {
 
     return fetch(url).then(response => response.json())
       .then(json => dispatch(resourceSearchResponseReceived(needId, json)))
+  }
+}
+
+export function createClient(params) {
+  return dispatch => {
+    const url = serverHost + '/client/';
+          
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveNewClient(json)));
   }
 }
 

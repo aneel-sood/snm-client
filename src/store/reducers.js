@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, 
           RECEIVE_CLIENT, REQUEST_CLIENTS, RECEIVE_CLIENTS,
-          REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA } from './actions.js'
+          REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA,
+          RECEIVE_NEW_CLIENT } from './actions.js'
 import { needs } from './reducers/needReducers.js';
 
 function searchResultsByNeedId(state = {}, action) {
@@ -19,7 +20,7 @@ function searchResultsByNeedId(state = {}, action) {
 }
 
 function clients(state = {index: [], indexLoaded: false, byId: {}, dashboard: {index: [], loaded: false} }, action) {
-  let nextById;
+  let nextById, nextIndex;
   switch (action.type) {
     case REQUEST_CLIENTS:
       return {...state, indexLoaded: false }
@@ -31,6 +32,9 @@ function clients(state = {index: [], indexLoaded: false, byId: {}, dashboard: {i
     case RECEIVE_CLIENT:
       nextById = {...state.byId, [action.id]: { ...action.client, loaded: true }}
       return {...state, byId: nextById }
+    case RECEIVE_NEW_CLIENT:
+      nextIndex = [action.client, ...state.index]
+      return {...state, index: nextIndex}
     case REQUEST_DASHBOARD_CLIENT_DATA:
       return {...state, dashboard: {index: [], loaded: false}}
     case RECEIEVE_DASHBOARD_CLIENT_DATA:
