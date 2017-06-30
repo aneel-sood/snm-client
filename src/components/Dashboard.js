@@ -19,7 +19,7 @@ class Dashboard extends Component {
         </div>
         <div className='footer'>
           <h5>
-            <a src='http://csse.utoronto.ca/' target='_blank'>
+            <a href='http://csse.utoronto.ca/' target='_blank'>
               Centre for Social Services Engineering
             </a>, University Toronto
           </h5>

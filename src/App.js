@@ -11,7 +11,6 @@ import ClientNeeds from './components/ClientNeeds.js';
 // style 
 import './stylesheets/App.css';
 import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
-import logo from '../public/Utoronto_coa.png';
 
 class App extends Component {
   render() {
