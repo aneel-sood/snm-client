@@ -5,11 +5,13 @@ import { IndexLinkContainer } from 'react-router-bootstrap';
 // components
 import Dashboard from './components/Dashboard.js';
 import Clients from './components/Clients.js';
+import Resources from './components/Resources.js';
 import ClientNeeds from './components/ClientNeeds.js';
 
 // style 
 import './stylesheets/App.css';
 import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
+import logo from '../public/Utoronto_coa.png';
 
 class App extends Component {
   render() {
@@ -19,7 +21,9 @@ class App extends Component {
           <Navbar.Header>
             <Navbar.Brand>
               <IndexLinkContainer to={`/`}>
-                <Glyphicon glyph="link" />
+                <div>
+                  <span>SNM Impact</span>
+                </div>
               </IndexLinkContainer>
             </Navbar.Brand>
           </Navbar.Header>
@@ -31,7 +35,9 @@ class App extends Component {
               <IndexLinkContainer to={`/clients/`}>
                 <NavItem eventKey={2} href="#">Clients</NavItem>
               </IndexLinkContainer>
-              <NavItem eventKey={3} href="#">Resources</NavItem>
+              <IndexLinkContainer to={`/resources/`}>
+                <NavItem eventKey={3} href="#">Resources</NavItem>
+              </IndexLinkContainer> 
             </Nav>
             <Nav pullRight>
               <NavItem eventKey={1} href="#">Reports</NavItem>
@@ -40,6 +46,7 @@ class App extends Component {
         </Navbar>
         <Route exact path='/' component={Dashboard}/>
         <Route exact path='/clients/' component={Clients}/>
+        <Route exact path='/resources/' component={Resources}/>
         <Route exact path='/client/:id' component={ClientNeeds}/>
       </div>
     );

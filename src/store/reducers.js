@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT, 
           RECEIVE_CLIENT, REQUEST_CLIENTS, RECEIVE_CLIENTS,
           REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA,
-          RECEIVE_NEW_CLIENT } from './actions.js'
+          RECEIVE_NEW_CLIENT, REQUEST_RESOURCES, RECEIVE_RESOURCES } from './actions.js'
 import { needs } from './reducers/needReducers.js';
 
 function searchResultsByNeedId(state = {}, action) {
@@ -43,8 +43,21 @@ function clients(state = {index: [], indexLoaded: false, byId: {}, dashboard: {i
       return state
   }
 }
+
+function resources(state = {index: [], loaded: false}, action) {
+  switch (action.type) {
+    case REQUEST_RESOURCES:
+      return {...state, loaded: false};
+    case RECEIVE_RESOURCES:
+      return {index: action.resources, loaded: true}
+    default:
+      return state
+  }
+}
+
 export const rootReducer = combineReducers({
   searchResultsByNeedId,
   clients,
-  needs
+  needs,
+  resources
 });
