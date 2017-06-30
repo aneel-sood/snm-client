@@ -10,11 +10,20 @@ class Dashboard extends Component {
   render() {
     const p = this.props;
     return(
-      <div className='dashboard content'>
-        <h3 className='title'>Recently Active Clients</h3>
-        { p.clientDataLoaded &&
-          <ClientNeedsOverview clients={p.clients} />
-        }
+      <div>
+        <div className='dashboard content'>
+          <h3 className='title'>Recently Active Clients</h3>
+          { p.clientDataLoaded &&
+            <ClientNeedsOverview clients={p.clients} />
+          }
+        </div>
+        <div className='footer'>
+          <h5>
+            <a src='http://csse.utoronto.ca/' target='_blank'>
+              Centre for Social Services Engineering
+            </a>, University Toronto
+          </h5>
+        </div>
       </div>
     )
   }

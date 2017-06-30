@@ -14,6 +14,9 @@ export const RECEIVE_CLIENTS = 'RECEIVE_CLIENTS';
 export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
 
+export const REQUEST_RESOURCES = 'REQUEST_RESOURCES';
+export const RECEIVE_RESOURCES = 'RECEIVE_RESOURCES';
+
 function resourceSearchRequested(needId) {
   return {
     type: SEARCH_REQUESTED,
@@ -63,6 +66,20 @@ function receiveClients(json) {
   return {
     type: RECEIVE_CLIENTS,
     clients: json,
+    receivedAt: Date.now()
+  }
+}
+
+function requestResources() {
+  return {
+    type: REQUEST_RESOURCES
+  }
+}
+
+function receiveResources(json) {
+  return {
+    type: RECEIVE_RESOURCES,
+    resources: json,
     receivedAt: Date.now()
   }
 }
@@ -132,6 +149,18 @@ export function fetchClients() {
     return fetch(url).then(response => response.json())
       .then(json => {
         dispatch(receiveClients(json))
+      })
+  }
+}
+
+export function fetchResources() {
+  return dispatch => {
+    dispatch(requestResources())
+    const url = serverHost + '/resources/';
+
+    return fetch(url).then(response => response.json())
+      .then(json => {
+        dispatch(receiveResources(json))
       })
   }
 }

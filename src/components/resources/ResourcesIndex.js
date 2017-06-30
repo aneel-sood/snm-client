@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
-import ClientRow from './ClientRow.js'
+import ResourceRow from './ResourceRow.js'
 
 import { Table } from 'react-bootstrap';
 
-export default class ClientsIndex extends Component {
+export default class ResourcesIndex extends Component {
   render() {
     const p = this.props;
     return(
       <Table striped condensed hover>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
+            <th>Type</th>
+            <th>Details</th>
+            <th>Provider</th>
           </tr>
         </thead>
         <tbody>
           {
-            p.clients.map((client) => {
-              return <ClientRow key={ client.id } client={ client } />
+            p.resources.map((resource) => {
+              return <ResourceRow key={ resource.id } resource={ resource } />
             })
           }
         </tbody>
