@@ -10,7 +10,7 @@ import ClientNeeds from './components/ClientNeeds.js';
 
 // style 
 import './stylesheets/App.css';
-import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 class App extends Component {
   render() {

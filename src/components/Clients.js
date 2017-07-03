@@ -10,7 +10,6 @@ import { fetchClients, createClient } from '../store/actions.js'
 
 // styles
 import { Modal, Button } from 'react-bootstrap'
-import '../stylesheets/Clients.css'
 
 class Clients extends Component {
   constructor(props) {
