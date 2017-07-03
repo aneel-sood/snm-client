@@ -2,25 +2,38 @@ import React, { Component } from 'react'
 
 // components
 import ResourcesIndex from './resources/ResourcesIndex.js'
+import NewResource from './resources/NewResource.js'
 
 // redux
 import { connect } from 'react-redux'
-import { fetchResources } from '../store/actions.js'
+import { fetchResources, createResource } from '../store/actions.js'
 
 // styles
-// import { Modal, Button } from 'react-bootstrap'
-// import '../stylesheets/Resources.css'
+import { Modal, Button } from 'react-bootstrap'
 
 class Resources extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { showNewResourceModal: false } 
+  }
 
   render() {
     const p = this.props, s = this.state;
     return(
       <div className='resources content'>
+        <Button bsStyle="primary" onClick={this.showNewResourceModal}>New Resource</Button>
         <h3 className='title'>Resources</h3>
         { p.resourcesLoaded &&
           <ResourcesIndex resources={p.resources} />
         }
+        <Modal show={s.showNewResourceModal} onHide={this.hideNewResourceModal}>
+          <Modal.Header closeButton>
+            <h4>New Resource</h4>
+          </Modal.Header>
+          <Modal.Body>
+            <NewResource create={this.createResource}/>
+          </Modal.Body>
+        </Modal>
       </div>
     )
   }
@@ -29,17 +42,17 @@ class Resources extends Component {
     this.props.dispatch(fetchResources());
   }
 
-  // createClient = (params) => {
-  //   this.props.dispatch(createClient(params));
-  // }
+  createResource = (params) => {
+    this.props.dispatch(createResource(params));
+  }
 
-  // showNewClientModal = () => {
-  //   this.setState({ showNewClientModal: true })
-  // } 
+  showNewResourceModal = () => {
+    this.setState({ showNewResourceModal: true })
+  } 
 
-  // hideNewClientModal = () => {
-  //   this.setState({ showNewClientModal: false })
-  // } 
+  hideNewResourceModal = () => {
+    this.setState({ showNewResourceModal: false })
+  } 
 }
 
 const mapStateToProps = (state) => {

@@ -14,6 +14,7 @@ export const RECEIVE_CLIENTS = 'RECEIVE_CLIENTS';
 export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
 
+export const RECEIVE_NEW_RESOURCE = 'RECEIVE_NEW_RESOURCE';
 export const REQUEST_RESOURCES = 'REQUEST_RESOURCES';
 export const RECEIVE_RESOURCES = 'RECEIVE_RESOURCES';
 
@@ -84,6 +85,13 @@ function receiveResources(json) {
   }
 }
 
+function receiveNewResource(json) {
+  return {
+    type: RECEIVE_NEW_RESOURCE,
+    resource: json
+  }
+}
+
 function requestDashboardClientData() {
   return {
     type: REQUEST_DASHBOARD_CLIENT_DATA
@@ -124,6 +132,22 @@ export function createClient(params) {
     }).then(response => response.json())
       .then(json => dispatch(receiveNewClient(json)));
   }
+}
+
+export function createResource(params) {
+  return null;
+  // return dispatch => {
+  //   const url = serverHost + '/resource/';
+          
+  //   return fetch(url, {
+  //     method: "POST",
+  //     body: JSON.stringify(params),
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     }
+  //   }).then(response => response.json())
+  //     .then(json => dispatch(receiveNewResource(json)));
+  // }
 }
 
 export function fetchClient(id) {
