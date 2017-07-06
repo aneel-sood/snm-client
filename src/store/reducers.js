@@ -3,7 +3,8 @@ import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT,
           RECEIVE_CLIENT, REQUEST_CLIENTS, RECEIVE_CLIENTS,
           REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA,
           RECEIVE_NEW_CLIENT, REQUEST_RESOURCES, RECEIVE_RESOURCES,
-          RECEIVE_NEW_RESOURCE } from './actions.js'
+          RECEIVE_NEW_RESOURCE, REQUEST_PROVIDERS, RECEIVE_PROVIDERS, 
+          RECEIVE_NEW_PROVIDER  } from './actions.js'
 import { needs } from './reducers/needReducers.js';
 
 function searchResultsByNeedId(state = {}, action) {
@@ -60,9 +61,26 @@ function resources(state = {index: [], loaded: false}, action) {
   }
 }
 
+function providers(state = {index: [], loaded: false}, action) {
+  let nextIndex;
+  switch (action.type) {
+    case REQUEST_PROVIDERS:
+      return {...state, loaded: false};
+    case RECEIVE_PROVIDERS:
+      return {index: action.providers, loaded: true}
+    case RECEIVE_NEW_PROVIDER:
+      nextIndex = [action.provider, ...state.index]
+      return {...state, index: nextIndex}
+    default:
+      return state
+  }
+}
+
+
 export const rootReducer = combineReducers({
   searchResultsByNeedId,
   clients,
   needs,
-  resources
+  resources,
+  providers
 });
