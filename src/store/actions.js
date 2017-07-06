@@ -11,6 +11,10 @@ export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 export const REQUEST_CLIENTS = 'REQUEST_CLIENTS';
 export const RECEIVE_CLIENTS = 'RECEIVE_CLIENTS';
 
+export const REQUEST_PROVIDERS = 'REQUEST_PROVIDERS';
+export const RECEIVE_PROVIDERS = 'RECEIVE_PROVIDERS';
+export const RECEIVE_NEW_PROVIDER = 'RECEIVE_NEW_PROVIDER';
+
 export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
 
@@ -68,6 +72,27 @@ function receiveClients(json) {
     type: RECEIVE_CLIENTS,
     clients: json,
     receivedAt: Date.now()
+  }
+}
+
+function requestProviders() {
+  return {
+    type: REQUEST_PROVIDERS
+  }
+}
+
+function receiveProviders(json) {
+  return {
+    type: RECEIVE_PROVIDERS,
+    providers: json,
+    receivedAt: Date.now()
+  }
+}
+
+function receiveNewProvider(json) {
+  return {
+    type: RECEIVE_NEW_PROVIDER,
+    provider: json
   }
 }
 
@@ -186,6 +211,33 @@ export function fetchResources() {
       .then(json => {
         dispatch(receiveResources(json))
       })
+  }
+}
+
+export function fetchProviders() {
+  return dispatch => {
+    dispatch(requestProviders())
+    const url = serverHost + '/providers/';
+
+    return fetch(url).then(response => response.json())
+      .then(json => {
+        dispatch(receiveProviders(json))
+      })
+  }
+}
+
+export function createProvider(params) {
+  return dispatch => {
+    const url = serverHost + '/provider/';
+          
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveNewProvider(json)));
   }
 }
 

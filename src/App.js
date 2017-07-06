@@ -6,6 +6,7 @@ import { IndexLinkContainer } from 'react-router-bootstrap';
 import Dashboard from './components/Dashboard.js';
 import Clients from './components/Clients.js';
 import Resources from './components/Resources.js';
+import Providers from './components/Providers.js';
 import ClientNeeds from './components/ClientNeeds.js';
 
 // style 
@@ -37,6 +38,9 @@ class App extends Component {
               <IndexLinkContainer to={`/resources/`}>
                 <NavItem eventKey={3} href="#">Resources</NavItem>
               </IndexLinkContainer> 
+              <IndexLinkContainer to={`/providers/`}>
+                <NavItem eventKey={3} href="#">Providers</NavItem>
+              </IndexLinkContainer> 
             </Nav>
             <Nav pullRight>
               <NavItem eventKey={1} href="#">Reports</NavItem>
@@ -46,6 +50,7 @@ class App extends Component {
         <Route exact path='/' component={Dashboard}/>
         <Route exact path='/clients/' component={Clients}/>
         <Route exact path='/resources/' component={Resources}/>
+        <Route exact path='/providers/' component={Providers}/>
         <Route exact path='/client/:id' component={ClientNeeds}/>
       </div>
     );
