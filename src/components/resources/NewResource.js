@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, FormControl, ControlLabel, Col } from 'react-bootstrap';
-import Select from 'react-select';
 import { defaults } from '../../store/defaults.js';
+import _ from 'lodash';
+
+// components
+import GenericResourceDetails from './new_resource/GenericResourceDetails.js'
+import LanguageResourceDetails from './new_resource/LanguageResourceDetails.js'
+
+// styles
+import { Button, Form, FormGroup, ControlLabel, Col } from 'react-bootstrap';
+import Select from 'react-select';
 
 export default class NewClient extends Component {
   constructor(props) {
     super(props);
     this.state = { 
       form: {
-        provider: '',
+        provider_id: '',
         type: '',
-        details: ''
+        details: {}
       } 
     } 
   }
 
   render() {
+    const DetailsComponent = this.detailsComponent();
+
     return (
       <Form horizontal>
         <FormGroup controlId="provider">
@@ -24,7 +33,7 @@ export default class NewClient extends Component {
           </Col>
           <Col sm={9}>
             <Select options={this.providersSelectOptions()} onChange={this.providerValChange} 
-              value={this.state.form.provider} />
+              value={this.state.form.provider_id} />
           </Col>
         </FormGroup>
 
@@ -38,15 +47,9 @@ export default class NewClient extends Component {
           </Col>
         </FormGroup>
 
-        <FormGroup controlId="details">
-          <Col componentClass={ControlLabel} sm={3}>
-            Details
-          </Col>
-          <Col sm={9}>
-            <FormControl type="text" value={this.state.form.details} 
-              onChange={this.formValChange} />
-          </Col>
-        </FormGroup>
+        {!_.isEmpty(this.state.form.type) && 
+          <DetailsComponent updateDetails={this.detailsChange} />
+        }
 
         <FormGroup>
           <Col smOffset={3} sm={9}>
@@ -70,13 +73,18 @@ export default class NewClient extends Component {
 
   providerValChange = (newVal) => {
     newVal = newVal ? newVal.value : "";
-    let nextForm = {...this.state.form, provider: newVal};
+    let nextForm = {...this.state.form, provider_id: newVal};
     this.setState({ form: nextForm });    
   }
 
   typeValChange = (newVal) => {
     newVal = newVal ? newVal.value : "";
-    let nextForm = {...this.state.form, type: newVal};
+    let nextForm = {...this.state.form, type: newVal, details: {}};
+    this.setState({ form: nextForm });    
+  }
+
+  detailsChange = (newVal) => {
+    let nextForm = {...this.state.form, details: newVal};
     this.setState({ form: nextForm });    
   }
 
@@ -86,5 +94,18 @@ export default class NewClient extends Component {
       return {value: provider.id, label: name}
     })
     return options;
+  }
+
+  detailsComponent = () => {
+    let Component;
+    switch (this.state.form.type) {
+      case 'interpreter':
+      case 'translator':
+        Component = LanguageResourceDetails;
+        break;
+      default:
+        Component = GenericResourceDetails;
+    }
+    return Component;
   }
 }
