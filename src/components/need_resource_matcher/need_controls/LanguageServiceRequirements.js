@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import { FormGroup, InputGroup, ControlLabel } from 'react-bootstrap';
-import defaults from './defaults.js';
+import { defaults } from '../../../store/defaults.js';
 import _ from 'lodash';
 
 export default class LanguageServiceRequirements extends Component {
@@ -27,12 +27,12 @@ export default class LanguageServiceRequirements extends Component {
        <FormGroup>
         <InputGroup className='language-select source'>
           <ControlLabel>Source Language</ControlLabel>
-          <Select options={defaults.languageMap} onChange={this.updateSourceLang} 
+          <Select options={this.languageOptionsMap()} onChange={this.updateSourceLang} 
             value={s.source_lang} />
         </InputGroup>
         <InputGroup className='language-select target'>
           <ControlLabel>Target Language</ControlLabel>
-          <Select options={defaults.languageMap} onChange={this.updateTargetLang} 
+          <Select options={this.languageOptionsMap()} onChange={this.updateTargetLang} 
             value={s.target_lang} />
         </InputGroup>
       </FormGroup>
@@ -59,5 +59,11 @@ export default class LanguageServiceRequirements extends Component {
     if (this.props.resourceType !== nextProps.resourceType) {
       this.setState(this.defaultProps)
     }
+  }
+
+  languageOptionsMap = () => {
+    let map = _.clone(defaults.languageMap);
+    map.unshift({value: "", label: "Any"});
+    return map;
   }
 }

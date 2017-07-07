@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { Form, FormGroup, InputGroup } from 'react-bootstrap';
 import Select from 'react-select';
-import defaults from './need_controls/defaults.js';
+import { defaults } from '../../store/defaults.js';
 
 // components
 import GenericServiceRequirements from './need_controls/GenericServiceRequirements.js'

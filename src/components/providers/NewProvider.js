@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, FormControl, ControlLabel, Col } from 'react-bootstrap'
+import { Button, Form, FormGroup, FormControl, ControlLabel, Col } from 'react-bootstrap';
 
 export default class NewProvider extends Component {
   constructor(props) {

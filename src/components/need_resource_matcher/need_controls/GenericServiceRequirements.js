@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import { FormGroup, InputGroup, ControlLabel } from 'react-bootstrap';
-import defaults from './defaults.js';
+import { defaults } from '../../../store/defaults.js';
 import _ from 'lodash';
 
 export default class GenericServiceRequirements extends Component {
@@ -23,7 +23,7 @@ export default class GenericServiceRequirements extends Component {
       <FormGroup>
         <InputGroup className='language_of_service-select'>
           <ControlLabel>Language of Service</ControlLabel>
-          <Select options={defaults.languageMap} onChange={this.updateLanguage} 
+          <Select options={this.languageOptionsMap()} onChange={this.updateLanguage} 
             value={s.language_of_service} />
         </InputGroup>
       </FormGroup>
@@ -33,6 +33,12 @@ export default class GenericServiceRequirements extends Component {
   updateLanguage = (option) => {
     const newValue = option ? option.value : this.defaultProps.language_of_service;
     this.setState({language_of_service: newValue});
+  }
+
+  languageOptionsMap = () => {
+    let map = _.clone(defaults.languageMap);
+    map.unshift({value: "", label: "Any"});
+    return map;
   }
 
   componentWillUpdate(nextProps, nextState) {

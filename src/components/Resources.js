@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 // components
-import ResourcesIndex from './resources/ResourcesIndex.js'
-import NewResource from './resources/NewResource.js'
+import ResourcesIndex from './resources/ResourcesIndex.js';
+import NewResource from './resources/NewResource.js';
 
 // redux
-import { connect } from 'react-redux'
-import { fetchResources, createResource } from '../store/actions.js'
+import { connect } from 'react-redux';
+import { fetchResources, createResource, fetchProviders } from '../store/actions.js';
 
 // styles
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button } from 'react-bootstrap';
 
 class Resources extends Component {
   constructor(props) {
@@ -31,7 +31,9 @@ class Resources extends Component {
             <h4>New Resource</h4>
           </Modal.Header>
           <Modal.Body>
-            <NewResource create={this.createResource}/>
+            {p.providersLoaded &&
+              <NewResource create={this.createResource} providers={p.providers} />
+            }
           </Modal.Body>
         </Modal>
       </div>
@@ -40,6 +42,7 @@ class Resources extends Component {
 
   componentWillMount() {
     this.props.dispatch(fetchResources());
+    this.props.dispatch(fetchProviders());
   }
 
   createResource = (params) => {
@@ -58,7 +61,9 @@ class Resources extends Component {
 const mapStateToProps = (state) => {
   return {
     resources: state.resources.index,
-    resourcesLoaded: state.resources.loaded
+    resourcesLoaded: state.resources.loaded,
+    providers: state.providers.index,
+    providersLoaded: state.providers.loaded
   }
 }
 

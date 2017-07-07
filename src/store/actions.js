@@ -160,19 +160,18 @@ export function createClient(params) {
 }
 
 export function createResource(params) {
-  return null;
-  // return dispatch => {
-  //   const url = serverHost + '/resource/';
+  return dispatch => {
+    const url = serverHost + '/resource/';
           
-  //   return fetch(url, {
-  //     method: "POST",
-  //     body: JSON.stringify(params),
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     }
-  //   }).then(response => response.json())
-  //     .then(json => dispatch(receiveNewResource(json)));
-  // }
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveNewResource(json)));
+  }
 }
 
 export function fetchClient(id) {
