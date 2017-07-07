@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, FormControl, ControlLabel, Col } from 'react-bootstrap'
+import { Button, Form, FormGroup, FormControl, ControlLabel, Col } from 'react-bootstrap';
+import Select from 'react-select';
+import { defaults } from '../../store/defaults.js';
 
 export default class NewClient extends Component {
   constructor(props) {
@@ -21,8 +23,8 @@ export default class NewClient extends Component {
             Provider
           </Col>
           <Col sm={9}>
-            <FormControl type="text" value={this.state.form.provider} 
-              onChange={this.formValChange} />
+            <Select options={this.providersSelectOptions()} onChange={this.providerValChange} 
+              value={this.state.form.provider} />
           </Col>
         </FormGroup>
 
@@ -31,8 +33,8 @@ export default class NewClient extends Component {
             Type
           </Col>
           <Col sm={9}>
-            <FormControl type="text" value={this.state.form.type} 
-              onChange={this.formValChange} />
+            <Select options={defaults.resourceTypeMap} onChange={this.typeValChange} 
+              value={this.state.form.type} />
           </Col>
         </FormGroup>
 
@@ -64,5 +66,25 @@ export default class NewClient extends Component {
   formValChange = (e) => {
     let nextForm = {...this.state.form, [e.target.id]: e.target.value};
     this.setState({ form: nextForm });    
+  }
+
+  providerValChange = (newVal) => {
+    newVal = newVal ? newVal.value : "";
+    let nextForm = {...this.state.form, provider: newVal};
+    this.setState({ form: nextForm });    
+  }
+
+  typeValChange = (newVal) => {
+    newVal = newVal ? newVal.value : "";
+    let nextForm = {...this.state.form, type: newVal};
+    this.setState({ form: nextForm });    
+  }
+
+  providersSelectOptions = () => {
+    const options = this.props.providers.map(provider => {
+      let name = provider.first_name + ' ' + provider.last_name;
+      return {value: provider.id, label: name}
+    })
+    return options;
   }
 }

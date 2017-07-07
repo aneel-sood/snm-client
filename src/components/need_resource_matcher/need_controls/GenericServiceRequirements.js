@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import { FormGroup, InputGroup, ControlLabel } from 'react-bootstrap';
-import defaults from './defaults.js';
+import { defaults } from '../../../store/defaults.js';
 import _ from 'lodash';
 
 export default class GenericServiceRequirements extends Component {
