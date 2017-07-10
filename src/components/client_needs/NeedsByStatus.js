@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Panel, Button } from 'react-bootstrap';
+import { Panel, Button, Badge, Accordion } from 'react-bootstrap';
 import _ from 'lodash';
 
 // store
@@ -18,7 +18,7 @@ class NeedsByStatus extends Component {
 
     this.state = {
       showSearchModal: false,
-      activeNeedId: undefined    
+      activeNeedId: undefined
     } 
   }
 
@@ -31,35 +31,37 @@ class NeedsByStatus extends Component {
         withFulfillingResources: this.withFulfillingResources()
       }, 
       headers = {
-        withoutResources: "Needs Without Matched Resources (" + needs.withoutResources.length + ")",
-        withPotentialResources: "Needs With Matched Resources (" + needs.withPotentialResources.length + ")",
-        withPendingResources: "Needs With Pending Resources (" + needs.withPendingResources.length + ")",
-        withFulfillingResources: "Needs Fulfilled (" + needs.withFulfillingResources.length + ")"
+        withoutResources: this.panelHeaderContent(needs.withoutResources.length, "Needs Without Matched Resources"),
+        withPotentialResources: this.panelHeaderContent(needs.withPotentialResources.length, "Needs With Matched Resources"),
+        withPendingResources: this.panelHeaderContent(needs.withPendingResources.length, "Needs With Pending Resources"),
+        withFulfillingResources: this.panelHeaderContent(needs.withFulfillingResources.length, "Needs Fulfilled")
       }
 
     return (
       <div className='needs modal-container'>
-        <Button bsStyle="info" onClick={this.addNeed}>New Need</Button>
-        <Panel header={headers.withoutResources} bsStyle="primary">
-          {needs.withoutResources.map((n, i) => {
-            return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
-                      showSearchModal={this.showSearchModal}/>})}
-        </Panel>
-        <Panel header={headers.withPotentialResources} bsStyle="success">
-          {needs.withPotentialResources.map((n, i) => {
-            return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
-                      showSearchModal={this.showSearchModal}/>})}
-        </Panel>
-        <Panel header={headers.withPendingResources} bsStyle="info">
-          {needs.withPendingResources.map((n, i) => {
-            return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
-                      showSearchModal={this.showSearchModal}/>})}
-        </Panel>
-        <Panel header={headers.withFulfillingResources} bsStyle="warning">
-          {needs.withFulfillingResources.map((n, i) => {
-            return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
-                      showSearchModal={this.showSearchModal}/>})}
-        </Panel>
+        <Button bsStyle="primary" onClick={this.addNeed}>New Need</Button>
+        <Accordion defaultActiveKey="1">
+          <Panel header={headers.withoutResources} collapsible eventKey="1" bsStyle="danger">
+            {needs.withoutResources.map((n, i) => {
+              return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
+                        showSearchModal={this.showSearchModal}/>})}
+          </Panel>
+          <Panel header={headers.withPotentialResources} collapsible eventKey="2" bsStyle="warning">
+            {needs.withPotentialResources.map((n, i) => {
+              return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
+                        showSearchModal={this.showSearchModal}/>})}
+          </Panel>
+          <Panel header={headers.withPendingResources} collapsible eventKey="3" bsStyle="info">
+            {needs.withPendingResources.map((n, i) => {
+              return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
+                        showSearchModal={this.showSearchModal}/>})}
+          </Panel>
+          <Panel header={headers.withFulfillingResources} collapsible eventKey="4" bsStyle="success">
+            {needs.withFulfillingResources.map((n, i) => {
+              return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
+                        showSearchModal={this.showSearchModal}/>})}
+          </Panel>
+        </Accordion>
         {s.showSearchModal &&
           <NeedResourceMatcher show={s.showSearchModal} onHide={this.closeSearchModal} 
             modalContainer={this} need={this.getNeedById(s.activeNeedId)} updateNeed={this.updateNeed} 
@@ -76,6 +78,10 @@ class NeedsByStatus extends Component {
     if (newNeed && !prevState.showSearchModal) {
       this.setState({ activeNeedId: newNeed.id, showSearchModal: true, activeSearchModalTab: 1 });
     }
+  }
+
+  panelHeaderContent = (needsCount, title) => {
+    return <h3><Badge>{needsCount}</Badge>{title}</h3>
   }
 
   // Need CRUD Methods
