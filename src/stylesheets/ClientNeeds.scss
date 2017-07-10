@@ -16,11 +16,22 @@ div.client-needs {
     width: 100%;
 
     button {
-      margin: 5px;
+      margin: 0 5px 5px;
+      float: right;
     }
 
     .panel {
       margin: 5px;
+      clear: right;
+
+      .panel-heading a:hover {
+        cursor: pointer;
+      }
+
+      .badge {
+        vertical-align: text-bottom;
+        margin-right: 10px;
+      }
     }
 
 
