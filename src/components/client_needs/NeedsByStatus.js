@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Panel, Button, Badge, Glyphicon, Accordion } from 'react-bootstrap';
+import { Panel, Button, Badge, Accordion } from 'react-bootstrap';
 import _ from 'lodash';
 
 // store
