@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ClientRow from './ClientRow.js'
-
 import { Table } from 'react-bootstrap';
 
 export default class ClientsIndex extends Component {

@@ -32,25 +32,20 @@ div.client-needs {
         vertical-align: text-bottom;
         margin-right: 10px;
       }
-    }
 
+      tr.need {
 
-    .need {
-      margin: 5px;
-
-      .type-title:hover {
-        background-color: aqua;
-        cursor: pointer;
-      }
-
-      .glyphicon-remove {
-        float: right;
-        padding: 1px;
+        .glyphicon {
+          visibility: hidden;
+          color: darkred;
+        }
 
         &:hover {
           cursor: pointer;
-          background-color: red;
-          color: white;
+
+          .glyphicon {
+            visibility: visible;
+          }
         }
       }
     }
