@@ -8,7 +8,7 @@ import { createClientNeed, updateClientNeed, deleteClientNeed }
   from '../../store/actions/needActions.js';
 
 // components 
-import NeedOverview from './NeedOverview.js';
+import NeedGroup from './needs_by_status/NeedGroup.js';
 import NeedResourceMatcher from '../NeedResourceMatcher.js';
 
 
@@ -42,24 +42,20 @@ class NeedsByStatus extends Component {
         <Button bsStyle="primary" onClick={this.addNeed}>New Need</Button>
         <Accordion defaultActiveKey="1">
           <Panel header={headers.withoutResources} collapsible eventKey="1" bsStyle="danger">
-            {needs.withoutResources.map((n, i) => {
-              return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
-                        showSearchModal={this.showSearchModal}/>})}
+            <NeedGroup needs={needs.withoutResources} showSearchModal={this.showSearchModal}
+              delete={this.deleteNeed} />
           </Panel>
           <Panel header={headers.withPotentialResources} collapsible eventKey="2" bsStyle="warning">
-            {needs.withPotentialResources.map((n, i) => {
-              return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
-                        showSearchModal={this.showSearchModal}/>})}
+            <NeedGroup needs={needs.withPotentialResources} showSearchModal={this.showSearchModal}
+              delete={this.deleteNeed} />
           </Panel>
           <Panel header={headers.withPendingResources} collapsible eventKey="3" bsStyle="info">
-            {needs.withPendingResources.map((n, i) => {
-              return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
-                        showSearchModal={this.showSearchModal}/>})}
+            <NeedGroup needs={needs.withPendingResources} showSearchModal={this.showSearchModal}
+              delete={this.deleteNeed} />
           </Panel>
           <Panel header={headers.withFulfillingResources} collapsible eventKey="4" bsStyle="success">
-            {needs.withFulfillingResources.map((n, i) => {
-              return <NeedOverview key={n.id} need={n} delete={this.deleteNeed} index={i+1} 
-                        showSearchModal={this.showSearchModal}/>})}
+            <NeedGroup needs={needs.withPendingResources} showSearchModal={this.showSearchModal}
+              delete={this.deleteNeed} />
           </Panel>
         </Accordion>
         {s.showSearchModal &&
