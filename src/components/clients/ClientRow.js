@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import CustomToggle from '../shared/CustomToggle.js';
 import { Link } from 'react-router-dom';
-import { Glyphicon } from 'react-bootstrap';
+import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
 
 export default class ClientRow extends Component {
   render() {
@@ -16,7 +17,16 @@ export default class ClientRow extends Component {
           {c.email}
         </td>
         <td>
-          <Glyphicon glyph="glyphicon glyphicon-remove" onClick={this.delete} />
+          <Dropdown id='match-menu' pullRight>
+          <CustomToggle bsRole="toggle">
+            <Glyphicon glyph="option-vertical" /> 
+          </CustomToggle>
+          <Dropdown.Menu>
+            <MenuItem eventKey="2" onClick={this.delete}>
+              <span>Delete</span>
+            </MenuItem>
+          </Dropdown.Menu>
+        </Dropdown>
         </td>
       </tr>
     )
@@ -26,4 +36,6 @@ export default class ClientRow extends Component {
     const p = this.props;
     p.delete(p.client.id);
   }
+
+
 }
