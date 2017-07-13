@@ -1,6 +1,6 @@
 import { RECEIVE_NEEDS, RECEIVE_NEW_CLIENT_NEED, RECEIVE_UPDATED_CLIENT_NEED, 
-          REMOVE_CLIENT_NEED, RECEIVE_UPDATED_NEED_MATCH_STATE } from '../actions/needActions.js'
-import _ from 'lodash'
+          REMOVE_CLIENT_NEED, RECEIVE_UPDATED_NEED_MATCH_STATE } from '../actions/needActions.js';
+import _ from 'lodash';
 
 export function needs(state = {index: {}, clientId: null, loaded: false}, action) {
   let nextIndex;

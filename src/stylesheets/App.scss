@@ -10,6 +10,21 @@
   button {
     float: right;
   }
+
+  tr {
+
+    .glyphicon {
+      visibility: hidden;
+      color: darkred;
+    }
+
+    &:hover {
+      .glyphicon {
+        visibility: visible;
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .content {

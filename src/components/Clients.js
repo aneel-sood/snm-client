@@ -6,7 +6,7 @@ import NewClient from './clients/NewClient.js'
 
 // redux
 import { connect } from 'react-redux'
-import { fetchClients, createClient } from '../store/actions.js'
+import { fetchClients, createClient, deleteClient } from '../store/actions.js'
 
 // styles
 import { Modal, Button } from 'react-bootstrap'
@@ -24,7 +24,7 @@ class Clients extends Component {
         <Button bsStyle="primary" onClick={this.showNewClientModal}>New Client</Button>
         <h3 className='title'>Clients</h3>
         { p.clientsLoaded &&
-          <ClientsIndex clients={p.clients} />
+          <ClientsIndex clients={p.clients} delete={this.deleteClient} />
         }
         <Modal show={s.showNewClientModal} onHide={this.hideNewClientModal}>
           <Modal.Header closeButton>
@@ -44,6 +44,10 @@ class Clients extends Component {
 
   createClient = (params) => {
     this.props.dispatch(createClient(params));
+  }
+
+  deleteClient = (id) => {
+    this.props.dispatch(deleteClient(id));
   }
 
   showNewClientModal = () => {

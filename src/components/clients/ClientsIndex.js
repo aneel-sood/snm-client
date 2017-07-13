@@ -11,12 +11,13 @@ export default class ClientsIndex extends Component {
           <tr>
             <th>Name</th>
             <th>Email</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {
             p.clients.map((client) => {
-              return <ClientRow key={ client.id } client={ client } />
+              return <ClientRow key={ client.id } client={ client } delete={p.delete} />
             })
           }
         </tbody>
