@@ -167,6 +167,21 @@ export function createClient(params) {
   }
 }
 
+export function updateClient(id, params) {
+  return dispatch => {
+    const url = serverHost + '/client/' + id + '/';
+          
+    return fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveNewClient(json)));
+  }
+}
+
 export function createResource(params) {
   return dispatch => {
     const url = serverHost + '/resource/';
@@ -185,7 +200,7 @@ export function createResource(params) {
 export function fetchClient(id) {
   return dispatch => {
     dispatch(requestClient(id))
-    const url = serverHost + '/client/' + id;
+    const url = serverHost + '/client/' + id + '/';
 
     return fetch(url).then(response => response.json())
       .then(json => {

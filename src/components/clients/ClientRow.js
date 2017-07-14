@@ -22,6 +22,9 @@ export default class ClientRow extends Component {
             <Glyphicon glyph="option-vertical" /> 
           </CustomToggle>
           <Dropdown.Menu>
+            <MenuItem eventKey="1" onClick={this.update}>
+              <span>Update</span>
+            </MenuItem>
             <MenuItem eventKey="2" onClick={this.delete}>
               <span>Delete</span>
             </MenuItem>
@@ -35,6 +38,11 @@ export default class ClientRow extends Component {
   delete = () => {
     const p = this.props;
     p.delete(p.client.id);
+  }
+
+  update = () => {
+    const p = this.props;
+    p.showUpdateModal(p.client);
   }
 
 

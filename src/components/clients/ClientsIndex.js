@@ -17,7 +17,8 @@ export default class ClientsIndex extends Component {
         <tbody>
           {
             p.clients.map((client) => {
-              return <ClientRow key={ client.id } client={ client } delete={p.delete} />
+              return <ClientRow key={ client.id } client={ client } 
+                        showUpdateModal={p.showUpdateModal} delete={p.delete} />
             })
           }
         </tbody>
