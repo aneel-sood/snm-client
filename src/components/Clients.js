@@ -2,38 +2,37 @@ import React, { Component } from 'react'
 
 // components
 import ClientsIndex from './clients/ClientsIndex.js'
-import NewClient from './clients/NewClient.js'
+import CrupdateModal from './clients/CrupdateModal.js'
 
 // redux
 import { connect } from 'react-redux'
-import { fetchClients, createClient } from '../store/actions.js'
+import { fetchClients, createClient, updateClient, deleteClient } from '../store/actions.js'
 
 // styles
-import { Modal, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 class Clients extends Component {
   constructor(props) {
     super(props);
-    this.state = { showNewClientModal: false } 
+    this.state = { 
+      showCrupdateModal: false,
+      activeClient: {}
+    } 
   }
 
   render() {
     const p = this.props, s = this.state;
     return(
       <div className='clients content'>
-        <Button bsStyle="primary" onClick={this.showNewClientModal}>New Client</Button>
+        <Button bsStyle="primary" onClick={this.showCrupdateModal}>New Client</Button>
         <h3 className='title'>Clients</h3>
         { p.clientsLoaded &&
-          <ClientsIndex clients={p.clients} />
+          <ClientsIndex clients={p.clients} delete={this.deleteClient} 
+            showUpdateModal={this.showCrupdateModal} />
         }
-        <Modal show={s.showNewClientModal} onHide={this.hideNewClientModal}>
-          <Modal.Header closeButton>
-            <h4>New Client</h4>
-          </Modal.Header>
-          <Modal.Body>
-            <NewClient create={this.createClient}/>
-          </Modal.Body>
-        </Modal>
+        <CrupdateModal record={s.activeClient} create={this.createClient} 
+          update={this.updateClient} show={s.showCrupdateModal} 
+          hide={this.hideCrupdateModal} recordType={'Client'} />
       </div>
     )
   }
@@ -46,12 +45,22 @@ class Clients extends Component {
     this.props.dispatch(createClient(params));
   }
 
-  showNewClientModal = () => {
-    this.setState({ showNewClientModal: true })
+  updateClient = (params) => {
+    const id = params.id;
+    delete params.id;
+    this.props.dispatch(updateClient(id, params));
+  }
+
+  deleteClient = (id) => {
+    this.props.dispatch(deleteClient(id));
+  }
+
+  showCrupdateModal = (client={}) => {
+    this.setState({ showCrupdateModal: true, activeClient: client })
   } 
 
-  hideNewClientModal = () => {
-    this.setState({ showNewClientModal: false })
+  hideCrupdateModal = () => {
+    this.setState({ showCrupdateModal: false })
   } 
 }
 

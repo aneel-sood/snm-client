@@ -10,6 +10,7 @@ export const REQUEST_CLIENT = 'REQUEST_CLIENT';
 export const RECEIVE_CLIENT = 'RECEIVE_CLIENT';
 export const REQUEST_CLIENTS = 'REQUEST_CLIENTS';
 export const RECEIVE_CLIENTS = 'RECEIVE_CLIENTS';
+export const REMOVE_CLIENT = 'REMOVE_CLIENT';
 
 export const REQUEST_PROVIDERS = 'REQUEST_PROVIDERS';
 export const RECEIVE_PROVIDERS = 'RECEIVE_PROVIDERS';
@@ -72,6 +73,13 @@ function receiveClients(json) {
     type: RECEIVE_CLIENTS,
     clients: json,
     receivedAt: Date.now()
+  }
+}
+
+function removeClient(id) {
+  return {
+    type: REMOVE_CLIENT,
+    id: id
   }
 }
 
@@ -159,6 +167,21 @@ export function createClient(params) {
   }
 }
 
+export function updateClient(id, params) {
+  return dispatch => {
+    const url = serverHost + '/client/' + id + '/';
+          
+    return fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveNewClient(json)));
+  }
+}
+
 export function createResource(params) {
   return dispatch => {
     const url = serverHost + '/resource/';
@@ -177,7 +200,7 @@ export function createResource(params) {
 export function fetchClient(id) {
   return dispatch => {
     dispatch(requestClient(id))
-    const url = serverHost + '/client/' + id;
+    const url = serverHost + '/client/' + id + '/';
 
     return fetch(url).then(response => response.json())
       .then(json => {
@@ -198,6 +221,17 @@ export function fetchClients() {
       .then(json => {
         dispatch(receiveClients(json))
       })
+  }
+}
+
+export function deleteClient(id) {
+  return dispatch => {
+    const url = serverHost + '/client/' + id + '/';
+    return fetch(url, {method: "DELETE"}).then(response => {
+      if (response.status === 200) {
+        dispatch(removeClient(id))
+      }
+    });
   }
 }
 

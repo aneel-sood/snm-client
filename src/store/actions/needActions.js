@@ -77,7 +77,7 @@ export function updateClientNeed(clientId, needId, params) {
   }
 }
 
-export function deleteClientNeed(clientId, needId, params) {
+export function deleteClientNeed(clientId, needId) {
   return dispatch => {
     const url = serverHost + '/client/' + clientId + '/need/' + needId + '/';
     return fetch(url, {method: "DELETE"}).then(response => {

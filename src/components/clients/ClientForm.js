@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, FormControl, ControlLabel, Col } from 'react-bootstrap'
 
-export default class NewClient extends Component {
+export default class ClientForm extends Component {
   constructor(props) {
     super(props);
+    const client = this.props.client;
     this.state = { 
       form: {
-        first_name: '',
-        last_name: '',
-        email: ''
+        id: client.id || '',
+        first_name: client.first_name || '',
+        last_name: client.last_name || '',
+        email: client.email || ''
       } 
     } 
   }
@@ -51,8 +53,8 @@ export default class NewClient extends Component {
 
         <FormGroup>
           <Col smOffset={3} sm={9}>
-            <Button type="submit" onClick={this.createClient}>
-              Save
+            <Button type="submit" onClick={this.submit}>
+              Submit
             </Button>
           </Col>
         </FormGroup>
@@ -60,8 +62,8 @@ export default class NewClient extends Component {
     )
   }
 
-  createClient = () => {
-    this.props.create(this.state.form);
+  submit = () => {
+    this.props.action(this.state.form);
   }
 
   formValChange = (e) => {

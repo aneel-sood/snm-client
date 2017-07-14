@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CustomToggle from '../../shared/CustomToggle.js';
 import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash';
 
@@ -74,20 +75,5 @@ export default class Resource extends Component {
       default:
         return state === matchState;
     }
-  }
-}
-
-class CustomToggle extends React.Component {
-  handleClick = (e) => {
-    e.preventDefault();
-    this.props.onClick(e);
-  }
-
-  render() {
-    return (
-      <a href="" onClick={this.handleClick}>
-        {this.props.children}
-      </a>
-    );
   }
 }

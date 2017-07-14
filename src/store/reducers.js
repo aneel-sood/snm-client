@@ -4,8 +4,9 @@ import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT,
           REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA,
           RECEIVE_NEW_CLIENT, REQUEST_RESOURCES, RECEIVE_RESOURCES,
           RECEIVE_NEW_RESOURCE, REQUEST_PROVIDERS, RECEIVE_PROVIDERS, 
-          RECEIVE_NEW_PROVIDER  } from './actions.js'
+          RECEIVE_NEW_PROVIDER, REMOVE_CLIENT } from './actions.js'
 import { needs } from './reducers/needReducers.js';
+import _ from 'lodash';
 
 function searchResultsByNeedId(state = {}, action) {
   let nextResultObj;
@@ -28,6 +29,10 @@ function clients(state = {index: [], indexLoaded: false, byId: {}, dashboard: {i
       return {...state, indexLoaded: false }
     case RECEIVE_CLIENTS:
       return {...state, index: action.clients, indexLoaded: true }
+    case REMOVE_CLIENT:
+      nextIndex = _.clone(state.index);
+      _.remove(nextIndex, (n) => { return n.id === action.id });
+      return {...state, index: nextIndex}
     case REQUEST_CLIENT:
       nextById = { ...state.byId, [action.id]: { loaded: false } }
       return {...state, byId: nextById }
