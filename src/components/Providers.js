@@ -1,39 +1,46 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 
 // components
 import ProvidersIndex from './providers/ProvidersIndex.js'
-import NewProvider from './providers/NewProvider.js'
+import ProviderRow from './providers/ProviderRow.js'
+import CrupdateModal from './shared/CrupdateModal.js'
+import ProviderForm from './providers/ProviderForm.js'
 
 // redux
 import { connect } from 'react-redux'
-import { fetchProviders, createProvider } from '../store/actions.js'
+import { fetchProviders, createProvider, updateProvider, deleteProvider } from '../store/actions.js'
 
 // styles
-import { Modal, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 class Providers extends Component {
   constructor(props) {
     super(props);
-    this.state = { showNewProviderModal: false } 
+    this.state = { 
+      showCrupdateModal: false,
+      activeProvider: {}
+    } 
   }
 
   render() {
     const p = this.props, s = this.state;
     return(
       <div className='providers content'>
-        <Button bsStyle="primary" onClick={this.showNewProviderModal}>New Provider</Button>
+        <Button bsStyle="primary" onClick={this.showCrupdateModal}>New Provider</Button>
         <h3 className='title'>Providers</h3>
         { p.providersLoaded &&
-          <ProvidersIndex providers={p.providers} />
+          <ProvidersIndex>{
+            p.providers.map((provider) => {
+              return <ProviderRow key={ provider.id } provider={ provider }
+                        showUpdateModal={this.showCrupdateModal} delete={this.deleteProvider} />
+            })
+          }</ProvidersIndex>
         }
-        <Modal show={s.showNewProviderModal} onHide={this.hideNewProviderModal}>
-          <Modal.Header closeButton>
-            <h4>New Provider</h4>
-          </Modal.Header>
-          <Modal.Body>
-            <NewProvider create={this.createProvider}/>
-          </Modal.Body>
-        </Modal>
+        <CrupdateModal  show={s.showCrupdateModal} hide={this.hideCrupdateModal} 
+          title={this.modalTitle()}>
+          <ProviderForm action={this.formAction()} provider={s.activeProvider} />
+        </CrupdateModal>
       </div>
     )
   }
@@ -46,13 +53,37 @@ class Providers extends Component {
     this.props.dispatch(createProvider(params));
   }
 
-  showNewProviderModal = () => {
-    this.setState({ showNewProviderModal: true })
+  updateProvider = (params) => {
+    const id = params.id;
+    delete params.id;
+    this.props.dispatch(updateProvider(id, params));
+  }
+
+  deleteProvider = (id) => {
+    this.props.dispatch(deleteProvider(id));
+  }
+
+  showCrupdateModal = (provider={}) => {
+    this.setState({ showCrupdateModal: true, activeProvider: provider })
   } 
 
-  hideNewProviderModal = () => {
-    this.setState({ showNewProviderModal: false })
-  } 
+  hideCrupdateModal = () => {
+    this.setState({ showCrupdateModal: false })
+  }
+
+  activeProviderIsNew = () => {
+    return(_.isUndefined(this.state.activeProvider.id));
+  }
+
+  formAction = () => {
+    return(this.activeProviderIsNew() ? this.createProvider : this.updateProvider);
+  }
+
+  modalTitle = () => {
+    let title = this.activeProviderIsNew() ? "New" : "Update"
+    return(title + " Provider");
+  }
+
 }
 
 const mapStateToProps = (state) => {

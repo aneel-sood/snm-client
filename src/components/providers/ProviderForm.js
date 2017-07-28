@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, FormControl, ControlLabel, Col } from 'react-bootstrap';
+import { Button, Form, FormGroup, FormControl, ControlLabel, Col } from 'react-bootstrap'
 
-export default class NewProvider extends Component {
+export default class ProviderForm extends Component {
   constructor(props) {
     super(props);
+    const provider = this.props.provider;
     this.state = { 
       form: {
-        first_name: '',
-        last_name: '',
-        email: ''
+        id: provider.id || '',
+        first_name: provider.first_name || '',
+        last_name: provider.last_name || '',
+        email: provider.email || ''
       } 
     } 
   }
@@ -22,7 +24,7 @@ export default class NewProvider extends Component {
           </Col>
           <Col sm={9}>
             <FormControl type="text" value={this.state.form.first_name} 
-              placeholder="Pro"
+              placeholder="Aravind"
               onChange={this.formValChange} />
           </Col>
         </FormGroup>
@@ -33,7 +35,7 @@ export default class NewProvider extends Component {
           </Col>
           <Col sm={9}>
             <FormControl type="text" value={this.state.form.last_name} 
-              placeholder="Vider"
+              placeholder="Adiga"
               onChange={this.formValChange} />
           </Col>
         </FormGroup>
@@ -44,15 +46,15 @@ export default class NewProvider extends Component {
           </Col>
           <Col sm={9}>
             <FormControl type="text" value={this.state.form.email} 
-              placeholder="pro.vider@email.com"
+              placeholder="aravind.adiga.gmail.com"
               onChange={this.formValChange} />
           </Col>
         </FormGroup>
 
         <FormGroup>
           <Col smOffset={3} sm={9}>
-            <Button type="submit" onClick={this.createProvider}>
-              Save
+            <Button type="submit" onClick={this.submit}>
+              Submit
             </Button>
           </Col>
         </FormGroup>
@@ -60,8 +62,8 @@ export default class NewProvider extends Component {
     )
   }
 
-  createProvider = () => {
-    this.props.create(this.state.form);
+  submit = () => {
+    this.props.action(this.state.form);
   }
 
   formValChange = (e) => {
