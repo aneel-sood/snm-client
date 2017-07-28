@@ -12,9 +12,10 @@ export const REQUEST_CLIENTS = 'REQUEST_CLIENTS';
 export const RECEIVE_CLIENTS = 'RECEIVE_CLIENTS';
 export const REMOVE_CLIENT = 'REMOVE_CLIENT';
 
+export const RECEIVE_NEW_PROVIDER = 'RECEIVE_NEW_PROVIDER';
 export const REQUEST_PROVIDERS = 'REQUEST_PROVIDERS';
 export const RECEIVE_PROVIDERS = 'RECEIVE_PROVIDERS';
-export const RECEIVE_NEW_PROVIDER = 'RECEIVE_NEW_PROVIDER';
+export const REMOVE_PROVIDER = 'REMOVE_PROVIDER';
 
 export const REQUEST_DASHBOARD_CLIENT_DATA = 'REQUEST_DASHBOARD_CLIENT_DATA';
 export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
@@ -101,6 +102,13 @@ function receiveNewProvider(json) {
   return {
     type: RECEIVE_NEW_PROVIDER,
     provider: json
+  }
+}
+
+function removeProvider(id) {
+  return {
+    type: REMOVE_PROVIDER,
+    id: id
   }
 }
 
@@ -271,6 +279,32 @@ export function createProvider(params) {
       }
     }).then(response => response.json())
       .then(json => dispatch(receiveNewProvider(json)));
+  }
+}
+
+export function updateProvider(id, params) {
+  return dispatch => {
+    const url = serverHost + '/provider/' + id + '/';
+          
+    return fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveNewProvider(json)));
+  }
+}
+
+export function deleteProvider(id) {
+  return dispatch => {
+    const url = serverHost + '/provider/' + id + '/';
+    return fetch(url, {method: "DELETE"}).then(response => {
+      if (response.status === 200) {
+        dispatch(removeProvider(id))
+      }
+    });
   }
 }
 

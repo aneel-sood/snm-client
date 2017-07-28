@@ -17,7 +17,7 @@ export default class ClientRow extends Component {
           {c.email}
         </td>
         <td>
-          <Dropdown id='match-menu' pullRight>
+          <Dropdown id='action-menu' pullRight>
           <CustomToggle bsRole="toggle">
             <Glyphicon glyph="option-vertical" /> 
           </CustomToggle>
@@ -44,6 +44,4 @@ export default class ClientRow extends Component {
     const p = this.props;
     p.showUpdateModal(p.client);
   }
-
-
 }
