@@ -5,6 +5,7 @@ import _ from 'lodash'
 import ClientsIndex from './clients/ClientsIndex.js'
 import CrupdateModal from './shared/CrupdateModal.js'
 import ClientForm from './clients/ClientForm.js'
+import ClientRow from './clients/ClientRow.js'
 
 // redux
 import { connect } from 'react-redux'
@@ -29,8 +30,12 @@ class Clients extends Component {
         <Button bsStyle="primary" onClick={this.showCrupdateModal}>New Client</Button>
         <h3 className='title'>Clients</h3>
         { p.clientsLoaded &&
-          <ClientsIndex clients={p.clients} delete={this.deleteClient} 
-            showUpdateModal={this.showCrupdateModal} />
+          <ClientsIndex>{
+            p.clients.map((client) => {
+              return <ClientRow key={ client.id } client={ client }
+                        showUpdateModal={this.showCrupdateModal} delete={this.deleteClient} />
+            })
+          }</ClientsIndex>
         }
         <CrupdateModal  show={s.showCrupdateModal} hide={this.hideCrupdateModal} 
           title={this.modalTitle()}>
