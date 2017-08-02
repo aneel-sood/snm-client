@@ -23,6 +23,7 @@ export const RECEIEVE_DASHBOARD_CLIENT_DATA = 'RECEIEVE_DASHBOARD_CLIENT_DATA';
 export const RECEIVE_NEW_RESOURCE = 'RECEIVE_NEW_RESOURCE';
 export const REQUEST_RESOURCES = 'REQUEST_RESOURCES';
 export const RECEIVE_RESOURCES = 'RECEIVE_RESOURCES';
+export const REMOVE_RESOURCE = 'REMOVE_RESOURCE';
 
 function resourceSearchRequested(needId) {
   return {
@@ -130,6 +131,28 @@ function receiveNewResource(json) {
   return {
     type: RECEIVE_NEW_RESOURCE,
     resource: json
+  }
+}
+
+export function updateResource(id, params) {
+  return dispatch => {
+    const url = serverHost + '/resource/' + id + '/';
+          
+    return fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(params),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => response.json())
+      .then(json => dispatch(receiveNewClient(json)));
+  }
+}
+
+function removeResource(id) {
+  return {
+    type: REMOVE_RESOURCE,
+    id: id
   }
 }
 
@@ -252,6 +275,17 @@ export function fetchResources() {
       .then(json => {
         dispatch(receiveResources(json))
       })
+  }
+}
+
+export function deleteResource(id) {
+  return dispatch => {
+    const url = serverHost + '/resource/' + id + '/';
+    return fetch(url, {method: "DELETE"}).then(response => {
+      if (response.status === 200) {
+        dispatch(removeResource(id))
+      }
+    });
   }
 }
 

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import ClientRow from './ClientRow.js'
 import { Table } from 'react-bootstrap';
 
 export default class ClientsIndex extends Component {
   render() {
-    const p = this.props;
     return(
       <Table striped condensed hover>
         <thead>
@@ -15,12 +13,7 @@ export default class ClientsIndex extends Component {
           </tr>
         </thead>
         <tbody>
-          {
-            p.clients.map((client) => {
-              return <ClientRow key={ client.id } client={ client } 
-                        showUpdateModal={p.showUpdateModal} delete={p.delete} />
-            })
-          }
+          { this.props.children }
         </tbody>
       </Table>
     )

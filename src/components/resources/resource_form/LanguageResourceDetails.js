@@ -7,9 +7,10 @@ import _ from 'lodash';
 export default class LanguageResourceDetails extends Component {
   constructor(props) {
     super(props);
+    const details = this.props.details;
     this.state = { 
-      source_lang: '',
-      target_lang: ''
+      source_lang: details.source_lang || '',
+      target_lang: details.target_lang || ''
    };
   }
 

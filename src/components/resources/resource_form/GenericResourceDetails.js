@@ -7,7 +7,10 @@ import _ from 'lodash';
 export default class GenericResourceDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = { language_of_service: '' };
+    const details = this.props.details;
+    this.state = { 
+      language_of_service: details.language_of_service || ''
+    };
   }
 
   render() {

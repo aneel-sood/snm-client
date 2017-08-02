@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 
 // components
 import ClientsIndex from './clients/ClientsIndex.js'
-import CrupdateModal from './clients/CrupdateModal.js'
+import CrupdateModal from './shared/CrupdateModal.js'
+import ClientForm from './clients/ClientForm.js'
+import ClientRow from './clients/ClientRow.js'
 
 // redux
 import { connect } from 'react-redux'
@@ -27,12 +30,17 @@ class Clients extends Component {
         <Button bsStyle="primary" onClick={this.showCrupdateModal}>New Client</Button>
         <h3 className='title'>Clients</h3>
         { p.clientsLoaded &&
-          <ClientsIndex clients={p.clients} delete={this.deleteClient} 
-            showUpdateModal={this.showCrupdateModal} />
+          <ClientsIndex>{
+            p.clients.map((client) => {
+              return <ClientRow key={ client.id } client={ client }
+                        showUpdateModal={this.showCrupdateModal} delete={this.deleteClient} />
+            })
+          }</ClientsIndex>
         }
-        <CrupdateModal record={s.activeClient} create={this.createClient} 
-          update={this.updateClient} show={s.showCrupdateModal} 
-          hide={this.hideCrupdateModal} recordType={'Client'} />
+        <CrupdateModal  show={s.showCrupdateModal} hide={this.hideCrupdateModal} 
+          title={this.modalTitle()}>
+          <ClientForm action={this.formAction()} client={s.activeClient} />
+        </CrupdateModal>
       </div>
     )
   }
@@ -62,6 +70,19 @@ class Clients extends Component {
   hideCrupdateModal = () => {
     this.setState({ showCrupdateModal: false })
   } 
+
+  activeClientIsNew = () => {
+    return(_.isUndefined(this.state.activeClient.id));
+  }
+
+  formAction = () => {
+    return(this.activeClientIsNew() ? this.createClient : this.updateClient);
+  }
+
+  modalTitle = () => {
+    let title = this.activeClientIsNew() ? "New" : "Update"
+    return(title + " Client");
+  }
 }
 
 const mapStateToProps = (state) => {
