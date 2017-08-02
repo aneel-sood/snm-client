@@ -3,21 +3,23 @@ import { defaults } from '../../store/defaults.js';
 import _ from 'lodash';
 
 // components
-import GenericResourceDetails from './new_resource/GenericResourceDetails.js'
-import LanguageResourceDetails from './new_resource/LanguageResourceDetails.js'
+import GenericResourceDetails from './resource_form/GenericResourceDetails.js'
+import LanguageResourceDetails from './resource_form/LanguageResourceDetails.js'
 
 // styles
 import { Button, Form, FormGroup, ControlLabel, Col } from 'react-bootstrap';
 import Select from 'react-select';
 
-export default class NewClient extends Component {
+export default class ResourceForm extends Component {
   constructor(props) {
     super(props);
+    const resource = this.props.resource;
     this.state = { 
       form: {
-        provider_id: '',
-        type: '',
-        details: {}
+        id: resource.id || '',
+        provider_id: (resource.provider && resource.provider.id) || '',
+        type: resource.type || '',
+        details: resource.details || ''
       } 
     } 
   }
@@ -48,13 +50,13 @@ export default class NewClient extends Component {
         </FormGroup>
 
         {!_.isEmpty(this.state.form.type) && 
-          <DetailsComponent updateDetails={this.detailsChange} />
+          <DetailsComponent details={this.state.form.details} updateDetails={this.detailsChange} />
         }
 
         <FormGroup>
           <Col smOffset={3} sm={9}>
-            <Button type="submit" onClick={this.createResource}>
-              Save
+            <Button type="submit" onClick={this.submit}>
+              Submit
             </Button>
           </Col>
         </FormGroup>
@@ -62,8 +64,8 @@ export default class NewClient extends Component {
     )
   }
 
-  createResource = () => {
-    this.props.create(this.state.form);
+  submit = () => {
+    this.props.action(this.state.form);
   }
 
   formValChange = (e) => {

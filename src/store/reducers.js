@@ -4,7 +4,8 @@ import { SEARCH_REQUESTED, SEARCH_RESPONSE_RECEIVED, REQUEST_CLIENT,
           REQUEST_DASHBOARD_CLIENT_DATA, RECEIEVE_DASHBOARD_CLIENT_DATA,
           RECEIVE_NEW_CLIENT, REQUEST_RESOURCES, RECEIVE_RESOURCES,
           RECEIVE_NEW_RESOURCE, REQUEST_PROVIDERS, RECEIVE_PROVIDERS, 
-          RECEIVE_NEW_PROVIDER, REMOVE_CLIENT, REMOVE_PROVIDER } from './actions.js'
+          RECEIVE_NEW_PROVIDER, REMOVE_CLIENT, REMOVE_PROVIDER,
+          REMOVE_RESOURCE } from './actions.js'
 import { needs } from './reducers/needReducers.js';
 import _ from 'lodash';
 
@@ -58,6 +59,10 @@ function resources(state = {index: [], loaded: false}, action) {
       return {...state, loaded: false};
     case RECEIVE_RESOURCES:
       return {index: action.resources, loaded: true}
+    case REMOVE_RESOURCE:
+      nextIndex = _.clone(state.index);
+      _.remove(nextIndex, (n) => { return n.id === action.id });
+      return {...state, index: nextIndex}
     case RECEIVE_NEW_RESOURCE:
       nextIndex = [action.resource, ...state.index]
       return {...state, index: nextIndex}

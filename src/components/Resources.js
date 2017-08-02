@@ -1,41 +1,46 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 
 // components
 import ResourcesIndex from './resources/ResourcesIndex.js';
-import NewResource from './resources/NewResource.js';
+import CrupdateModal from './shared/CrupdateModal.js';
+import ResourceForm from './resources/ResourceForm.js';
+import ResourceRow from './resources/ResourceRow.js';
 
 // redux
 import { connect } from 'react-redux';
-import { fetchResources, createResource, fetchProviders } from '../store/actions.js';
+import { fetchResources, createResource, updateResource, deleteResource, fetchProviders } from '../store/actions.js';
 
 // styles
-import { Modal, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 class Resources extends Component {
   constructor(props) {
     super(props);
-    this.state = { showNewResourceModal: false } 
+    this.state = { 
+      showCrupdateModal: false,
+      activeResource: {}
+    } 
   }
 
   render() {
     const p = this.props, s = this.state;
     return(
       <div className='resources content'>
-        <Button bsStyle="primary" onClick={this.showNewResourceModal}>New Resource</Button>
+        <Button bsStyle="primary" onClick={this.showCrupdateModal}>New Resource</Button>
         <h3 className='title'>Resources</h3>
         { p.resourcesLoaded &&
-          <ResourcesIndex resources={p.resources} />
+          <ResourcesIndex>{
+            p.resources.map((resource) => {
+              return <ResourceRow key={ resource.id } resource={ resource }
+                        showUpdateModal={this.showCrupdateModal} delete={this.deleteResource} />
+            })
+          }</ResourcesIndex>
         }
-        <Modal show={s.showNewResourceModal} onHide={this.hideNewResourceModal}>
-          <Modal.Header closeButton>
-            <h4>New Resource</h4>
-          </Modal.Header>
-          <Modal.Body>
-            {p.providersLoaded &&
-              <NewResource create={this.createResource} providers={p.providers} />
-            }
-          </Modal.Body>
-        </Modal>
+        <CrupdateModal  show={s.showCrupdateModal} hide={this.hideCrupdateModal} 
+          title={this.modalTitle()}>
+          <ResourceForm action={this.formAction()} resource={s.activeResource} providers={p.providers} />
+        </CrupdateModal>
       </div>
     )
   }
@@ -49,13 +54,36 @@ class Resources extends Component {
     this.props.dispatch(createResource(params));
   }
 
-  showNewResourceModal = () => {
-    this.setState({ showNewResourceModal: true })
-  } 
+  updateResource = (params) => {
+    const id = params.id;
+    delete params.id;
+    this.props.dispatch(updateResource(id, params));
+  }
 
-  hideNewResourceModal = () => {
-    this.setState({ showNewResourceModal: false })
-  } 
+  deleteResource = (id) => {
+    this.props.dispatch(deleteResource(id));
+  }
+
+  showCrupdateModal = (resource={}) => {
+    this.setState({ showCrupdateModal: true, activeResource: resource })
+  }
+
+  hideCrupdateModal = () => {
+    this.setState({ showCrupdateModal: false })
+  }
+
+  activeResourceIsNew = () => {
+    return(_.isUndefined(this.state.activeResource.id));
+  }
+
+  formAction = () => {
+    return(this.activeResourceIsNew() ? this.createResource : this.updateResource);
+  }
+
+  modalTitle = () => {
+    let title = this.activeResourceIsNew() ? "New" : "Update"
+    return(title + " Resource");
+  }
 }
 
 const mapStateToProps = (state) => {
