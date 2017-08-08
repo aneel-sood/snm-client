@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ClientOverviewRow from './ClientOverviewRow.js'
-
 import { Table } from 'react-bootstrap';
 
 export default class ClientNeedsOverview extends Component {
