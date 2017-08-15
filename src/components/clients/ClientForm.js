@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { Button, Form, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap';
+import { encodePointCoordinates, parsePointCoordinates } from '../../util.js';
+
+// Mapping
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
@@ -7,7 +11,8 @@ import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 export default class ClientForm extends Component {
   constructor(props) {
     super(props);
-    const client = this.props.client;
+    const client = this.props.client,
+          lk = client.location;
     this.state = { 
       form: {
         id: client.id || '',
@@ -15,8 +20,8 @@ export default class ClientForm extends Component {
         last_name: client.last_name || '',
         email: client.email || '',
         location: {
-          address: '',
-          geoPoint: { lat: 43.6570, lng: -79.3932 }
+          lng_lat: (lk && parsePointCoordinates(lk.geometry.coordinates)) || '',
+          address: (lk && lk.properties.address) || ''
         }
       },
       mapZoom: 12
@@ -24,17 +29,19 @@ export default class ClientForm extends Component {
   }
 
   render() {
-    const s = this.state;
-    const autoCompleteInputProps = {
-      value: this.state.form.location.address, 
-      onChange: this.addressValChange
-    }
+    const s = this.state,
+          torontoCentroid = { lat: 43.6570, lng: -79.3932 },
+          autoCompleteInputProps = {
+            value: this.state.form.location.address, 
+            onChange: this.addressValChange
+          };
     const GettingStartedGoogleMap = withGoogleMap(props => (
       <GoogleMap
         defaultZoom={s.mapZoom}
-        defaultCenter={s.form.location.geoPoint}
-      >
-        <Marker position={s.form.location.geoPoint} />
+        defaultCenter={this.hasLocation() ? s.form.location.lng_lat : torontoCentroid} >
+        {this.hasLocation() &&
+          <Marker position={s.form.location.lng_lat} />
+        }
       </GoogleMap>
     ));
     return (
@@ -110,7 +117,13 @@ export default class ClientForm extends Component {
   }
 
   submit = () => {
-    this.props.action(this.state.form);
+    let form = this.state.form;
+    if (this.hasLocation()) { 
+      form.location.lng_lat = encodePointCoordinates(form.location.lng_lat);
+    } else {
+      form.location = null;
+    }
+    this.props.action(form);
   }
 
   formValChange = (e) => {
@@ -119,8 +132,10 @@ export default class ClientForm extends Component {
   }
 
   addressValChange = (val) => {
-    let nextLocation = {...this.state.form.location, address: val},
-        nextForm = {...this.state.form, location: nextLocation};
+    let updateVals = {address: val};
+    if (_.isEmpty(_.trim(val))) updateVals.lng_lat = '';
+    let nextLocation = {...this.state.form.location, ...updateVals};
+    let nextForm = {...this.state.form, location: nextLocation};
     this.setState({ form: nextForm });    
   }
 
@@ -128,16 +143,22 @@ export default class ClientForm extends Component {
     this.addressValChange(address);
 
     geocodeByAddress(address)
-      .then((results) => getLatLng(results[0]))
+      .then((results) => {
+          return getLatLng(results[0])
+        }
+      )
       .then(({ lat, lng }) => {
-        console.log('Success Yay', { lat, lng })
-        let nextGeoPoint = {lat, lng},
-            nextLocation = {...this.state.form.location, geoPoint: nextGeoPoint},
+        let nextLngLat = {lat, lng},
+            nextLocation = {...this.state.form.location, lng_lat: nextLngLat},
             nextForm = {...this.state.form, location: nextLocation};
         this.setState({ form: nextForm, mapZoom: 14 })
       })
       .catch((error) => {
         console.log('Oh no!', error)
       })
+  }
+
+  hasLocation = () => {
+    return !_.isEmpty(_.trim(this.state.form.location.lng_lat));
   }
 }

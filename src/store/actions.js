@@ -185,7 +185,7 @@ export function fetchProviderResources(needId, params) {
 
 export function createClient(params) {
   return dispatch => {
-    const url = serverHost + '/client/';
+    const url = serverHost + '/clients/';
           
     return fetch(url, {
       method: "POST",
