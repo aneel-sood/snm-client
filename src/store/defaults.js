@@ -17,7 +17,6 @@ const resourceTypeMap = [
   {value: "dentist", label: "Dentist"}
 ]
 
-
 export const defaults = {
   languageMap: languageMap,
   resourceTypeMap: resourceTypeMap
