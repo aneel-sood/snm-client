@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import CustomToggle from '../../shared/CustomToggle.js';
 import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash';
+import { defaults } from '../../../store/defaults.js';
+
+// components
+import GenericResourceDetails from './resource/GenericResourceDetails.js'
+import LanguageResourceDetails from './resource/LanguageResourceDetails.js'
+import CustomToggle from '../../shared/CustomToggle.js';
 
 export default class Resource extends Component {
   render() {
     const p = this.props,
-          r = p.resource;
+          r = p.resource,
+          DetailsComponent = this.detailsComponent();
     return (
       <li className="resource">
         <Dropdown id='match-menu' pullRight>
@@ -34,13 +40,7 @@ export default class Resource extends Component {
           </Dropdown.Menu>
         </Dropdown>
         <h5>{_.capitalize(r.type)}</h5>
-        {
-          Object.keys(r.details).map((key, i) => {
-            return (
-              <p key={i}>{key}: {r.details[key].toString()}</p>
-            )
-          })
-        }
+        <DetailsComponent details={r.details} />
       </li>
     );
   }
@@ -75,5 +75,18 @@ export default class Resource extends Component {
       default:
         return state === matchState;
     }
+  }
+
+  detailsComponent = () => {
+    let Component;
+    switch (this.props.resource.type) {
+      case 'interpreter':
+      case 'translator':
+        Component = LanguageResourceDetails;
+        break;
+      default:
+        Component = GenericResourceDetails;
+    }
+    return Component;
   }
 }
