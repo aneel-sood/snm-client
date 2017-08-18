@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
-import CustomToggle from '../shared/CustomToggle.js';
-import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash';
+
+// components
+import GenericResourceDetails from './resource_row/GenericResourceDetails.js'
+import LanguageResourceDetails from './resource_row/LanguageResourceDetails.js'
+import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
+import CustomToggle from '../shared/CustomToggle.js';
 
 export default class ResourceRow extends Component {
   render() {
-    const r = this.props.resource;
+    const r = this.props.resource,
+          DetailsComponent = this.detailsComponent();
     return(
       <tr>
         <td>
           {_.capitalize(r.type)}
         </td>
         <td className='centered-text'>
-          {this.detailsText()}
+          <DetailsComponent details={r.details} />
         </td>
         <td className='centered-text'>
           {r.provider.first_name} {r.provider.last_name}
@@ -36,15 +41,6 @@ export default class ResourceRow extends Component {
     )
   }
 
-  detailsText = () => {
-    const r = this.props.resource;
-    let text = "";
-    _.forOwn(r.details, (value, key) => {
-      text = text + key + ": " + value + "; "
-    })
-    return text
-  }
-
   delete = () => {
     const p = this.props;
     p.delete(p.resource.id);
@@ -53,5 +49,18 @@ export default class ResourceRow extends Component {
   update = () => {
     const p = this.props;
     p.showUpdateModal(p.resource);
+  }
+
+  detailsComponent = () => {
+    let Component;
+    switch (this.props.resource.type) {
+      case 'interpreter':
+      case 'translator':
+        Component = LanguageResourceDetails;
+        break;
+      default:
+        Component = GenericResourceDetails;
+    }
+    return Component;
   }
 }

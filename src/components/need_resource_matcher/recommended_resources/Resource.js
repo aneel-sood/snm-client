@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash';
-import { defaults } from '../../../store/defaults.js';
 
 // components
 import GenericResourceDetails from './resource/GenericResourceDetails.js'
