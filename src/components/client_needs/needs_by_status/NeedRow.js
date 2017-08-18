@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
+import { Glyphicon } from 'react-bootstrap';
+
+// components
+import GenericResourceRequirements from './need_row/GenericResourceRequirements.js';
+import LanguageResourceRequirements from './need_row/LanguageResourceRequirements.js';
+
+// utilities
 import _ from 'lodash';
 import moment from 'moment';
-import { Glyphicon } from 'react-bootstrap';
 
 export default class NeedRow extends Component {
   render() {
-    const n = this.props.need;
+    const n = this.props.need,
+              RequirementsComponent = this.requirementsComponent();
     return(
       <tr className='need' onClick={this.showSearchModal}>
         <td>
           {_.capitalize(n.type)}
         </td>
         <td className='centered-text'>
-          {this.requirementsText()}
+          {!_.isEmpty(n.requirements) &&
+            <RequirementsComponent requirements={n.requirements} />
+          }
         </td>
         <td>
           {moment(n.created_at).format('MMMM Do YYYY, h:mm a')}
@@ -36,12 +45,16 @@ export default class NeedRow extends Component {
     p.showSearchModal(p.need.id, activeModalTab);
   }
 
-  requirementsText = () => {
-    const n = this.props.need;
-    let text = "";
-    _.forOwn(n.requirements, (value, key) => {
-      text = text + key + ": " + value + "; "
-    })
-    return text
+  requirementsComponent = () => {
+    let Component;
+    switch (this.props.need.type) {
+      case 'interpreter':
+      case 'translator':
+        Component = LanguageResourceRequirements;
+        break;
+      default:
+        Component = GenericResourceRequirements;
+    }
+    return Component;
   }
 }

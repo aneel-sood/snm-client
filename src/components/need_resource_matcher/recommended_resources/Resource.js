@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash';
-import { defaults } from '../../../store/defaults.js';
 
 // components
 import GenericResourceDetails from './resource/GenericResourceDetails.js'
@@ -40,7 +39,7 @@ export default class Resource extends Component {
           </Dropdown.Menu>
         </Dropdown>
         <h5>{_.capitalize(r.type)}</h5>
-        <DetailsComponent details={r.details} />
+        <DetailsComponent details={r.details} resource={r} />
       </li>
     );
   }
