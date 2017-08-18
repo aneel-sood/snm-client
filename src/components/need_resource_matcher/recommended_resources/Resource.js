@@ -39,7 +39,7 @@ export default class Resource extends Component {
           </Dropdown.Menu>
         </Dropdown>
         <h5>{_.capitalize(r.type)}</h5>
-        <DetailsComponent details={r.details} resource={r} />
+        <DetailsComponent details={r.details} />
       </li>
     );
   }
