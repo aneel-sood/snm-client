@@ -38,7 +38,7 @@ export default class ClientForm extends Component {
             value: this.state.form.location.address, 
             onChange: this.addressValChange
           };
-    const GettingStartedGoogleMap = withGoogleMap(props => (
+    const GMap = withGoogleMap(props => (
       <GoogleMap
         defaultZoom={s.mapZoom}
         defaultCenter={this.hasLocation() ? s.form.location.lng_lat : torontoCentroid} >
@@ -135,7 +135,7 @@ export default class ClientForm extends Component {
         </Col>
         <Col sm={4}>
           <div style={{width: '100%', height: '190px'}}>
-            <GettingStartedGoogleMap
+            <GMap
               containerElement={
                 <div style={{ height: `100%` }} />
               }
