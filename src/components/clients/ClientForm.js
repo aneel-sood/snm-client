@@ -19,23 +19,26 @@ export default class ClientForm extends Component {
         first_name: client.first_name || '',
         last_name: client.last_name || '',
         email: client.email || '',
+        cell_phone: client.cell_phone || '',
+        home_phone: client.home_phone || '',
+        birthdate: client.birthdate || '',
         location: {
           lng_lat: (lk && parsePointCoordinates(lk.geometry.coordinates)) || '',
           address: (lk && lk.properties.address) || ''
         }
       },
-      mapZoom: 12
+      mapZoom: 10
     } 
   }
 
   render() {
     const s = this.state,
-          torontoCentroid = { lat: 43.6570, lng: -79.3932 },
+          torontoCentroid = { lat: 43.6870, lng: -79.4132 },
           autoCompleteInputProps = {
             value: this.state.form.location.address, 
             onChange: this.addressValChange
           };
-    const GettingStartedGoogleMap = withGoogleMap(props => (
+    const GMap = withGoogleMap(props => (
       <GoogleMap
         defaultZoom={s.mapZoom}
         defaultCenter={this.hasLocation() ? s.form.location.lng_lat : torontoCentroid} >
@@ -81,6 +84,36 @@ export default class ClientForm extends Component {
             </Col>
           </FormGroup>
 
+          <FormGroup controlId="cell_phone">
+            <Col componentClass={ControlLabel} sm={3}>
+              Cell Phone
+            </Col>
+            <Col sm={9}>
+              <FormControl type="tel" value={this.state.form.cell_phone} 
+                onChange={this.formValChange} />
+            </Col>
+          </FormGroup>
+
+          <FormGroup controlId="home_phone">
+            <Col componentClass={ControlLabel} sm={3}>
+              Home Phone
+            </Col>
+            <Col sm={9}>
+              <FormControl type="tel" value={this.state.form.home_phone} 
+                onChange={this.formValChange} />
+            </Col>
+          </FormGroup>
+
+          <FormGroup controlId="birthdate">
+            <Col componentClass={ControlLabel} sm={3}>
+              Birthdate
+            </Col>
+            <Col sm={9}>
+              <FormControl type="date" value={this.state.form.birthdate} 
+                onChange={this.formValChange} />
+            </Col>
+          </FormGroup>
+
           <FormGroup controlId="address">
             <Col componentClass={ControlLabel} sm={3}>
               Address
@@ -102,7 +135,7 @@ export default class ClientForm extends Component {
         </Col>
         <Col sm={4}>
           <div style={{width: '100%', height: '190px'}}>
-            <GettingStartedGoogleMap
+            <GMap
               containerElement={
                 <div style={{ height: `100%` }} />
               }
@@ -118,11 +151,15 @@ export default class ClientForm extends Component {
 
   submit = () => {
     let form = this.state.form;
+    
     if (this.hasLocation()) { 
       form.location.lng_lat = encodePointCoordinates(form.location.lng_lat);
     } else {
       form.location = null;
     }
+
+    if (_.isEmpty(form.birthdate)) form.birthdate = null;
+
     this.props.action(form);
   }
 
