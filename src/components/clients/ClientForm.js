@@ -19,6 +19,7 @@ export default class ClientForm extends Component {
         first_name: client.first_name || '',
         last_name: client.last_name || '',
         email: client.email || '',
+        birthdate: client.birthdate || '',
         location: {
           lng_lat: (lk && parsePointCoordinates(lk.geometry.coordinates)) || '',
           address: (lk && lk.properties.address) || ''
@@ -81,6 +82,16 @@ export default class ClientForm extends Component {
             </Col>
           </FormGroup>
 
+          <FormGroup controlId="birthdate">
+            <Col componentClass={ControlLabel} sm={3}>
+              Birthdate
+            </Col>
+            <Col sm={9}>
+              <FormControl type="date" value={this.state.form.birthdate} 
+                onChange={this.formValChange} />
+            </Col>
+          </FormGroup>
+
           <FormGroup controlId="address">
             <Col componentClass={ControlLabel} sm={3}>
               Address
@@ -118,11 +129,15 @@ export default class ClientForm extends Component {
 
   submit = () => {
     let form = this.state.form;
+    
     if (this.hasLocation()) { 
       form.location.lng_lat = encodePointCoordinates(form.location.lng_lat);
     } else {
       form.location = null;
     }
+
+    if (_.isEmpty(form.birthdate)) form.birthdate = null;
+
     this.props.action(form);
   }
 
