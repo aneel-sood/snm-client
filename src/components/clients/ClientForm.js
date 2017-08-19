@@ -19,19 +19,21 @@ export default class ClientForm extends Component {
         first_name: client.first_name || '',
         last_name: client.last_name || '',
         email: client.email || '',
+        cell_phone: client.cell_phone || '',
+        home_phone: client.home_phone || '',
         birthdate: client.birthdate || '',
         location: {
           lng_lat: (lk && parsePointCoordinates(lk.geometry.coordinates)) || '',
           address: (lk && lk.properties.address) || ''
         }
       },
-      mapZoom: 12
+      mapZoom: 10
     } 
   }
 
   render() {
     const s = this.state,
-          torontoCentroid = { lat: 43.6570, lng: -79.3932 },
+          torontoCentroid = { lat: 43.6870, lng: -79.4132 },
           autoCompleteInputProps = {
             value: this.state.form.location.address, 
             onChange: this.addressValChange
@@ -78,6 +80,26 @@ export default class ClientForm extends Component {
             <Col sm={9}>
               <FormControl type="text" value={this.state.form.email} 
                 placeholder="aravind.adiga.gmail.com"
+                onChange={this.formValChange} />
+            </Col>
+          </FormGroup>
+
+          <FormGroup controlId="cell_phone">
+            <Col componentClass={ControlLabel} sm={3}>
+              Cell Phone
+            </Col>
+            <Col sm={9}>
+              <FormControl type="tel" value={this.state.form.cell_phone} 
+                onChange={this.formValChange} />
+            </Col>
+          </FormGroup>
+
+          <FormGroup controlId="home_phone">
+            <Col componentClass={ControlLabel} sm={3}>
+              Home Phone
+            </Col>
+            <Col sm={9}>
+              <FormControl type="tel" value={this.state.form.home_phone} 
                 onChange={this.formValChange} />
             </Col>
           </FormGroup>
