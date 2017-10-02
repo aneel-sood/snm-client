@@ -54,7 +54,7 @@ class NeedsByStatus extends Component {
               delete={this.deleteNeed} />
           </Panel>
           <Panel header={headers.withFulfillingResources} collapsible eventKey="4" bsStyle="success">
-            <NeedGroup needs={needs.withPendingResources} showSearchModal={this.showSearchModal}
+            <NeedGroup needs={needs.withFulfillingResources} showSearchModal={this.showSearchModal}
               delete={this.deleteNeed} />
           </Panel>
         </Accordion>
