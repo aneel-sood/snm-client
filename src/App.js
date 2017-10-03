@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { IndexLinkContainer } from 'react-router-bootstrap';
+import { serverHost } from './store/defaults.js';
 
 // components
 import Dashboard from './components/Dashboard.js';
@@ -11,10 +12,13 @@ import ClientNeeds from './components/ClientNeeds.js';
 
 // style 
 import './stylesheets/App.css';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 class App extends Component {
   render() {
+    const clientsReportPath = serverHost + '/clients.csv',
+          needsReportPath = serverHost + '/needs.csv'
+
     return (
       <div className="App">
         <Navbar inverse collapseOnSelect>
@@ -39,11 +43,14 @@ class App extends Component {
                 <NavItem eventKey={3} href="#">Resources</NavItem>
               </IndexLinkContainer> 
               <IndexLinkContainer to={`/providers/`}>
-                <NavItem eventKey={3} href="#">Providers</NavItem>
+                <NavItem eventKey={4} href="#">Providers</NavItem>
               </IndexLinkContainer> 
             </Nav>
             <Nav pullRight>
-              <NavItem eventKey={1} href="#">Reports</NavItem>
+              <NavDropdown eventKey={5} title="Reports" id="basic-nav-dropdown">
+                <MenuItem eventKey={5.1} href={clientsReportPath}>Clients</MenuItem>
+                <MenuItem eventKey={5.2} href={needsReportPath}>Client Needs</MenuItem>
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
