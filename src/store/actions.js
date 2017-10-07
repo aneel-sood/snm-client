@@ -259,7 +259,7 @@ export function deleteClient(id) {
   return dispatch => {
     const url = serverHost + '/client/' + id + '/';
     return fetch(url, {method: "DELETE"}).then(response => {
-      if (response.status === 200) {
+      if (response.status === 204) {
         dispatch(removeClient(id))
       }
     });
@@ -282,7 +282,7 @@ export function deleteResource(id) {
   return dispatch => {
     const url = serverHost + '/resource/' + id + '/';
     return fetch(url, {method: "DELETE"}).then(response => {
-      if (response.status === 200) {
+      if (response.status === 204) {
         dispatch(removeResource(id))
       }
     });
@@ -303,7 +303,7 @@ export function fetchProviders() {
 
 export function createProvider(params) {
   return dispatch => {
-    const url = serverHost + '/provider/';
+    const url = serverHost + '/providers/';
           
     return fetch(url, {
       method: "POST",
@@ -335,7 +335,7 @@ export function deleteProvider(id) {
   return dispatch => {
     const url = serverHost + '/provider/' + id + '/';
     return fetch(url, {method: "DELETE"}).then(response => {
-      if (response.status === 200) {
+      if (response.status === 204) {
         dispatch(removeProvider(id))
       }
     });

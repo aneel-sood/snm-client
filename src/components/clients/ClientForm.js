@@ -19,8 +19,8 @@ export default class ClientForm extends Component {
         first_name: client.first_name || '',
         last_name: client.last_name || '',
         email: client.email || '',
-        cell_phone: client.cell_phone || '',
         home_phone: client.home_phone || '',
+        cell_phone: client.cell_phone || '',
         birthdate: client.birthdate || '',
         location: {
           lng_lat: (lk && parsePointCoordinates(lk.geometry.coordinates)) || '',
@@ -50,7 +50,7 @@ export default class ClientForm extends Component {
     return (
       <Row>
         <Col sm={8}>
-        <Form horizontal>
+          <Form horizontal>
           <FormGroup controlId="first_name">
             <Col componentClass={ControlLabel} sm={3}>
               First name
