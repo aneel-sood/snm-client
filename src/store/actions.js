@@ -176,7 +176,7 @@ export function fetchProviderResources(needId, params) {
     
     const paramsJSON = JSON.stringify(params),
           paramsUrlEncoded = encodeURIComponent(paramsJSON),
-          url = serverHost + '/providers/?params=' + paramsUrlEncoded;
+          url = serverHost + '/providers/resources/search/?params=' + paramsUrlEncoded;
 
     return fetch(url).then(response => response.json())
       .then(json => dispatch(resourceSearchResponseReceived(needId, json)))
