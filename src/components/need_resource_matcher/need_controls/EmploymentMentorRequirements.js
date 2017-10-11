@@ -4,11 +4,14 @@ import { FormGroup, InputGroup, ControlLabel } from 'react-bootstrap';
 import { defaults } from '../../../store/defaults.js';
 import _ from 'lodash';
 
-export default class GenericServiceRequirements extends Component {
+export default class EmploymentMentorRequirements extends Component {
   constructor(props) {
     super(props);
 
-    this.defaultProps = { language_of_service: '' }
+    this.defaultProps = {
+      profession: '',
+      language_of_service: '' 
+    }
     if (_.isEmpty(props.requirements)) {
       this.state = this.defaultProps
     } else {
@@ -21,6 +24,11 @@ export default class GenericServiceRequirements extends Component {
 
     return (
       <FormGroup>
+        <InputGroup className='profession-select'>
+          <ControlLabel>Profession</ControlLabel>
+          <Select options={defaults.professionTypeMap} onChange={this.updateProfession} 
+            value={s.profession} />
+        </InputGroup>
         <InputGroup className='language-of-service-select'>
           <ControlLabel>Language of Service</ControlLabel>
           <Select options={this.languageOptionsMap()} onChange={this.updateLanguage} 
@@ -33,6 +41,11 @@ export default class GenericServiceRequirements extends Component {
   updateLanguage = (option) => {
     const newValue = option ? option.value : this.defaultProps.language_of_service;
     this.setState({language_of_service: newValue});
+  }
+
+  updateProfession = (option) => {
+    const newValue = option ? option.value : this.defaultProps.profession;
+    this.setState({profession: newValue});
   }
 
   languageOptionsMap = () => {

@@ -80,7 +80,6 @@ class NeedsByStatus extends Component {
     return <h3><Badge>{needsCount}</Badge>{title}</h3>
   }
 
-  // Need CRUD Methods
   addNeed = (event) => {
     const p = this.props;
     p.dispatch(createClientNeed(p.clientId));

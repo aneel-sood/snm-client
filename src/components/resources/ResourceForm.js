@@ -5,6 +5,7 @@ import _ from 'lodash';
 // components
 import GenericResourceDetails from './resource_form/GenericResourceDetails.js'
 import LanguageResourceDetails from './resource_form/LanguageResourceDetails.js'
+import EmploymentMentorDetails from './resource_form/EmploymentMentorDetails.js'
 
 // styles
 import { Button, Form, FormGroup, ControlLabel, Col } from 'react-bootstrap';
@@ -104,6 +105,9 @@ export default class ResourceForm extends Component {
       case 'interpreter':
       case 'translator':
         Component = LanguageResourceDetails;
+        break;
+      case 'employment_mentor':
+        Component = EmploymentMentorDetails;
         break;
       default:
         Component = GenericResourceDetails;

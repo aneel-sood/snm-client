@@ -14,10 +14,28 @@ const languageMap = [
 const resourceTypeMap = [
   {value: "interpreter", label: "Interpreter"},
   {value: "translator", label: "Translator"},
-  {value: "dentist", label: "Dentist"}
+  {value: "dentist", label: "Dentist"},
+  {value: "employment_mentor", label: "Employment Mentor"}
+]
+
+const professionTypeMap = [
+  {value: "accounting", label: "Accounting"},
+  {value: "architecture", label: "Architecture"},
+  {value: "construction", label: "Construction"},
+  {value: "electrical", label: "Electrical Engineering"},
+  {value: "finance", label: "Finance"},
+  {value: "food_preperation", label: "Food Preperation"},
+  {value: "hr", label: "Human Resources"},
+  {value: "it", label: "Information Technology"},
+  {value: "nursing", label: "Nursing"},
+  {value: "nutrition", label: "Nutritional Science"},
+  {value: "psych", label: "Psychology / Psychiatry"},
+  {value: "software_eng", label: "Software Engineering"},
+  {value: "social_work", label: "Social Work"}
 ]
 
 export const defaults = {
   languageMap: languageMap,
-  resourceTypeMap: resourceTypeMap
+  resourceTypeMap: resourceTypeMap,
+  professionTypeMap: professionTypeMap
 }

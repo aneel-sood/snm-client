@@ -7,6 +7,7 @@ import { defaults } from '../../store/defaults.js';
 // components
 import GenericServiceRequirements from './need_controls/GenericServiceRequirements.js'
 import LanguageServiceRequirements from './need_controls/LanguageServiceRequirements.js'
+import EmploymentMentorRequirements from './need_controls/EmploymentMentorRequirements.js'
 
 export default class NeedControls extends Component {
   constructor(props) {
@@ -27,10 +28,12 @@ export default class NeedControls extends Component {
             value={s.type} placeholder={'Type of need...'}/>
           </InputGroup>
         </FormGroup>
-        {typeSet &&
-          <RequirementsComponent resourceType={s.type} requirements={s.requirements} 
-            saveNeed={this.saveNeed} requirementsChanged={this.requirementsChanged} />
-        }
+        <div className='requirements'>
+          {typeSet &&
+            <RequirementsComponent resourceType={s.type} requirements={s.requirements} 
+              saveNeed={this.saveNeed} requirementsChanged={this.requirementsChanged} />
+          }
+        </div>
       </Form>
     )
   }
@@ -67,6 +70,9 @@ export default class NeedControls extends Component {
       case 'interpreter':
       case 'translator':
         Component = LanguageServiceRequirements;
+        break;
+      case 'employment_mentor':
+        Component = EmploymentMentorRequirements;
         break;
       default:
         Component = GenericServiceRequirements;

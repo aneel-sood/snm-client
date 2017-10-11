@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { defaults } from '../../store/defaults.js';
 import _ from 'lodash';
 
 // components
 import GenericResourceDetails from './resource_row/GenericResourceDetails.js'
 import LanguageResourceDetails from './resource_row/LanguageResourceDetails.js'
+import EmploymentMentorDetails from './resource_row/EmploymentMentorDetails.js'
 import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
 import CustomToggle from '../shared/CustomToggle.js';
 
@@ -14,7 +16,7 @@ export default class ResourceRow extends Component {
     return(
       <tr>
         <td>
-          {_.capitalize(r.type)}
+          {this.getResourceLabelForType(r.type)}
         </td>
         <td className='centered-text'>
           <DetailsComponent details={r.details} />
@@ -58,9 +60,19 @@ export default class ResourceRow extends Component {
       case 'translator':
         Component = LanguageResourceDetails;
         break;
+      case 'employment_mentor':
+        Component = EmploymentMentorDetails;
+        break;
       default:
         Component = GenericResourceDetails;
     }
     return Component;
+  }
+
+  getResourceLabelForType = (type) => {
+    if (type === "") return "";
+    const rtm = defaults.resourceTypeMap;
+    const resource = _.find(rtm, r => { return r.value === type});
+    return resource.label;
   }
 }
