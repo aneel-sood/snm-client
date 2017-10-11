@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Glyphicon, Dropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash';
+import { defaults } from '../../../store/defaults.js';
 
 // components
 import GenericResourceDetails from './resource/GenericResourceDetails.js'
 import LanguageResourceDetails from './resource/LanguageResourceDetails.js'
+import EmploymentMentorDetails from './resource/EmploymentMentorDetails.js'
 import CustomToggle from '../../shared/CustomToggle.js';
 
 export default class Resource extends Component {
@@ -38,7 +40,7 @@ export default class Resource extends Component {
             }
           </Dropdown.Menu>
         </Dropdown>
-        <h5>{_.capitalize(r.type)}</h5>
+        <h5>{this.getResourceLabelForType(r.type)}</h5>
         <DetailsComponent details={r.details} />
       </li>
     );
@@ -83,9 +85,19 @@ export default class Resource extends Component {
       case 'translator':
         Component = LanguageResourceDetails;
         break;
+      case 'employment_mentor':
+        Component = EmploymentMentorDetails;
+        break;
       default:
         Component = GenericResourceDetails;
     }
     return Component;
+  }
+
+  getResourceLabelForType = (type) => {
+    if (type === "") return "";
+    const rtm = defaults.resourceTypeMap;
+    const resource = _.find(rtm, r => { return r.value === type});
+    return resource.label;
   }
 }
