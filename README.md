@@ -1,8 +1,8 @@
 ## Project Overview
 
-Service Needs Marketplace is an application conceived of by the [Centre for Social Services Engineering](http://csse.utoronto.ca/) at the University of Toronto. Its intended audience is Canadian newcomer settlement service providers (e.g. JIAS Toronto, North York Community House, YMCA, etc.), who would use it to match their clients, newcomers to Canada, with the resources (goods and services) they need access to.
+Service Needs Marketplace is an application conceived of by the [Centre for Social Services Engineering](http://csse.utoronto.ca/) at the University of Toronto. Its meant to be used by Canadian newcomer settlement service providers (e.g. JIAS Toronto, North York Community House, YMCA, etc.), to help them match newcomers to Canada with the resources (both services and goods) they need access to.
 
-This code base, together with [snm-server](https://github.com/leonL/snm-server), is an MVP implementation of the app. As of this writing the CSSE is using a [staging deployment](https://secret-island-33471.herokuapp.com/clients/) of it as part of their pitch to service providers and other interested parties.
+This code base, together with [snm-server](https://github.com/leonL/snm-server), is an MVP implementation of the app. As of this writing the CSSE is using a [staging deployment](https://secret-island-33471.herokuapp.com/clients/) of SNM as part of their pitch to service providers and other interested parties.
 
 ## Running SNM in your development environment
 
@@ -12,7 +12,7 @@ The client is designed to operate in conjunction with a deployment of [snm-serve
 
 ## If you are a developer building on this code...
 
-### Consider a redesign / refactor of the following code structures before adding to them or writing new code that relies upon  them significantly
+### Consider a redesign / refactor of the following code structures before adding to them or writing new code that relies upon them significantly
 
 #### Components related to both `needs` and their `requirements` and `resources` and their `details`. 
 
